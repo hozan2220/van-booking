@@ -1,0 +1,2538 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VanTrack | Projects & Vans & locations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+   <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #e0e7ff;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --success: #4ade80;
+            --success-light: #dcfce7;
+            --warning: #fbbf24;
+            --warning-light: #fef3c7;
+            --danger: #f87171;
+            --danger-light: #fee2e2;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body[dir="rtl"] {
+            font-family: 'Inter', sans-serif;
+            text-align: right;
+
+            background-color: #f1f5f9;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--dark);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+/* Mobile header styles */
+
+        
+        /* Dashboard Layout */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+        .badge-outline {
+    background: transparent;
+    border: 1px solid var(--gray-light);
+    color: var(--gray);
+}
+        /* Sidebar */
+ .sidebar {
+    background: white;
+    border-right: 1px solid var(--gray-light);
+    padding: 1.5rem;
+    right: 0;
+    left: auto;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 10;
+}
+/* Table right alignment styles */
+.table th, .table td {
+    padding: 1rem;
+    text-align: right; /* Changed from left to right */
+    border-bottom: 1px solid var(--gray-light);
+}
+
+/* Specific alignment for action buttons column */
+.table td:last-child {
+    text-align: right;
+}
+
+/* Center alignment for specific elements that look better centered */
+.table .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Progress bars alignment */
+.table .progress {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+/* Button group alignment in action column */
+.table td:last-child .btn {
+    margin-left: 0.25rem;
+    margin-right: 0;
+}
+     
+
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item:hover {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+        
+        .nav-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+        
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        /* Main Content */
+        .main {
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0;
+}
+
+        
+   .header-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+        
+      
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-title i {
+            color: var(--primary);
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Add these to your CSS */
+.mr-1 { margin-right: 0.25rem; }
+.mr-2 { margin-right: 0.5rem; }
+.d-flex { display: flex; }
+.justify-content-end { justify-content: flex-end; }
+.gap-2 { gap: 0.5rem; }
+.text-muted { color: var(--gray); }
+.font-weight-600 { font-weight: 600; }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-100%);
+            transition: var(--transition);
+        }
+        
+        .btn:hover::after {
+            transform: translateX(0);
+        }
+        
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.8125rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--gray-light);
+            color: var(--dark);
+        }
+        
+        .btn-outline:hover {
+            background: var(--gray-light);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #ef4444;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(248, 113, 113, 0.2);
+        }
+        
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 800px;
+        }
+        
+        .table th {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 2;
+        }
+        
+        .table th, .table td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .table th {
+            font-weight: 600;
+            color: var(--gray);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--light);
+        }
+        
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .table tr:hover td {
+            background: var(--primary-light);
+        }
+        
+        .table td {
+            transition: var(--transition);
+        }
+        
+        /* Badges */
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .badge-primary {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+        
+        .badge-warning {
+            background: var(--warning-light);
+            color: #92400e;
+        }
+        
+        .badge-danger {
+            background: var(--danger-light);
+            color: #b91c1c;
+        }
+        
+        .badge-success {
+            background: var(--success-light);
+            color: #166534;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            transition: var(--transition);
+            background: white;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            background-color: white;
+            transition: var(--transition);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        
+        /* Stats Cards */
+.stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1rem !important;
+    margin-bottom: 1.5rem !important;
+
+}
+
+        
+.stat-card {
+    background: var(--card-bg) !important;
+    border-radius: var(--radius) !important;
+    padding: 1rem !important;
+    box-shadow: var(--shadow) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: var(--transition) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    min-height: 90px !important;
+}
+.stat-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.stat-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.stat-title {
+    font-size: 0.75rem;
+    color: var(--gray);
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.2;
+}
+
+
+.stat-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+    font-size: 0.875rem;
+}
+        
+        .stat-icon.primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .stat-icon.warning {
+            background: linear-gradient(135deg, var(--warning), #f59e0b);
+        }
+        
+        .stat-icon.danger {
+            background: linear-gradient(135deg, var(--danger), #ef4444);
+        }
+        
+.stat-change {
+    font-size: 0.625rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0;
+    font-weight: 500;
+}
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    line-height: 1;
+}
+        
+        .stat-change.positive {
+            color: var(--success);
+        }
+        
+        .stat-change.negative {
+            color: var(--danger);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .animate-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            background: white;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+            max-width: 350px;
+        }
+        
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .toast.warning {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .toast i {
+            font-size: 1.25rem;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+text-align: right;
+
+            border-radius: var(--radius-lg);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .close:hover {
+            color: var(--danger);
+            background-color: rgba(239, 35, 60, 0.1);
+        }
+                @media (min-width: 769px) {
+            .mobile-only {
+                display: none;
+            }
+            
+            .desktop-only {
+                display: block;
+            }
+            
+            .mobile-header {
+                display: none;
+            }
+            
+            .main {
+                padding-top: 2rem;
+            }
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+                position: relative;
+            }
+        .mobile-only {
+            display: block;
+        }
+        
+        .desktop-only {
+            display: none;
+        }
+            
+       .sidebar {
+        position: fixed;
+        right: -240px; /* Change from left: -240px to right: -240px */
+        top: 0;
+        height: 100vh;
+        width: 240px;
+        transition: right var(--transition); /* Change from left to right */
+        z-index: 1001;
+        box-shadow: var(--shadow-lg);
+    }
+            .sidebar.mobile-open {
+        right: 0; /* This should slide in from the right */
+    }
+    .mobile-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0; /* Keep overlay covering full screen */
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+
+    .mobile-overlay.show {
+        display: block;
+    }
+
+            
+           
+            
+            .main {
+                padding: 4rem 1rem 1rem;
+                grid-column: 1;
+            }
+    .header {
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+    }
+    
+    .header-title {
+        font-size: 1.25rem;
+        gap: 0.5rem;
+    }
+            
+            .card {
+                padding: 1rem;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+            
+            .table th, .table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.875rem;
+            }
+/* Mobile header styles */
+.mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 0.5rem 0.5rem; /* Increase vertical padding from 1rem to 1.5rem */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--gray-light);
+    z-index: 999;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex-direction: row-reverse; /* This swaps the order of children */
+}
+.mobile-menu-btn:focus {
+    outline: none;
+    background: var(--gray-light);
+}
+.mobile-menu-btn {
+    background: none;
+    border: none; /* Add this line */
+    outline: none; /* Add this line */
+    font-size: 1.5rem;
+    color: var(--primary);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: background 0.2s;
+    border-radius: var(--radius-sm); /* Optional: add border radius for better appearance */
+}
+
+.mobile-menu-btn:hover {
+    background: var(--gray-light);
+}
+
+.mobile-logo {
+    display: flex;
+
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.mobile-logo-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--primary);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+        right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.mobile-overlay.show {
+    display: block;
+}
+            
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        margin-bottom: 1 rem;
+    }
+
+            
+           .stat-card {
+        padding: 1rem;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        min-height: auto;
+    }
+   .stat-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+        flex: 1;
+    }
+    
+    .stat-icon {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        order: -1;
+    }
+    
+    .stat-title {
+        font-size: 0.8125rem;
+        margin-bottom: 0;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .stat-change {
+        font-size: 0.6875rem;
+        margin-top: 0.125rem;
+    }
+            .btn {
+                justify-content: center;
+                width: 100%;
+            }
+            
+            .user-menu {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main {
+                padding: 4rem 0.5rem 0.5rem;
+            }
+   .stat-card {
+        padding: 0.75rem;
+        gap: 0.75rem;
+        min-height: 55px;
+    }
+    
+    .stat-icon {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .stat-value {
+        font-size: 1.125rem;
+    }
+    
+    .stat-title {
+        font-size: 0.625rem;
+    }
+    
+    .stat-change {
+        font-size: 0.5rem;
+    }
+            
+            .table {
+                min-width: 600px;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+ <div class="mobile-only">
+    <!-- Mobile header -->
+    <div class="mobile-header">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-logo">
+            <div class="mobile-logo-icon">
+                <i class="fas fa-van-shuttle"></i>
+            </div>
+            <span>المشاريع & المناطق & الفانات</span> <!-- Changed title -->
+        </div>
+    </div>
+    
+    <!-- Mobile overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+</div>
+    
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-van-shuttle"></i>
+                </div>
+                <div class="logo-text">VanTrack</div>
+            </div>
+            
+            <nav class="nav">
+                <a href="/dashboard" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>لوحة الحجز</span>
+                </a>
+                <a href="/organizer" class="nav-item">
+                    <i class="fas fa-tasks"></i>
+                    <span>منسق الرحلات</span>
+                </a>
+                <a href="/projects" class="nav-item active">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>المشاريع & الفانات & المناطق</span>
+                </a>
+                <a href="/reports" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>التقارير</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main">
+<!-- Replace the existing header div with this -->
+
+            
+           <!-- Stats Overview -->
+<div class="stats-grid">
+    <div class="stat-card animate-in" style="animation-delay: 0.1s">
+        <div class="stat-header">
+            <div class="stat-title">المشاريع</div>
+            <div class="stat-icon primary">
+                <i class="fas fa-project-diagram"></i>
+            </div>
+        </div>
+        <div class="stat-value"><%= projects.length %></div>
+        <div class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <%= projects.length > 3 ? 'جيد' : 'إضافة المزيد' %>
+        </div>
+    </div>
+    
+    <div class="stat-card animate-in" style="animation-delay: 0.2s">
+        <div class="stat-header">
+            <div class="stat-title">الفانات</div>
+            <div class="stat-icon primary">
+                <i class="fas fa-van-shuttle"></i>
+            </div>
+        </div>
+        <div class="stat-value"><%= vans.length %></div>
+        <div class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <%= vans.length > 4 ? 'ممتاز' : 'إضافة المزيد' %>
+        </div>
+    </div>
+    
+    <div class="stat-card animate-in" style="animation-delay: 0.3s">
+        <div class="stat-header">
+            <div class="stat-title">المناطق</div>
+            <div class="stat-icon primary">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+        </div>
+        <div class="stat-value"><%= destinations.length %></div>
+        <div class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <%= destinations.length > 2 ? 'تغطية جيدة' : 'إضافة المزيد' %>
+        </div>
+    </div>
+</div>
+            
+          <!-- Projects Section -->
+<div class="card animate-in" style="animation-delay: 0.4s">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="fas fa-project-diagram"></i> المشاريع
+        </h2>
+        <button class="btn btn-primary" id="addProjectBtn">
+            <i class="fas fa-plus"></i> اضافة مشروع 
+        </button>
+    </div>
+    
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>الاسم</th>
+                    <th>المنطقة</th>
+                    <th>الرحلات المتبقية</th>
+                    <th>الحالة</th>
+                    <th>الاجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="projectsTable">
+                <% projects.forEach(project => { %>
+                    <% 
+                        // Calculate projectLocation for each project
+                        const projectLocation = destinations.find(d => d.id === project.locationId);
+                    %>
+                    <tr data-project-id="<%= project.id %>">
+                        <td>
+                            <div class="font-weight-600"><%= project.name %></div>
+                            <div class="text-muted small">تاريخ الاضافة <%= new Date().toLocaleDateString() %></div>
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">
+                                <%= projectLocation ? projectLocation.name : 'Unspecified' %>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="progress" style="height: 6px; width: 100px; background: #e2e8f0; border-radius: 3px; margin: 4px 0;">
+                                <div class="progress-bar" style="height: 100%; width: <%= (project.number_of_remaining_trips / (project.initial_trips || project.number_of_remaining_trips)) * 100 %>%; background: <%= project.number_of_remaining_trips <= 10 ? '#f87171' : project.number_of_remaining_trips <= 25 ? '#fbbf24' : '#4361ee' %>; border-radius: 3px;"></div>
+                            </div>
+                            <span class="text-muted small"><%= project.number_of_remaining_trips %> / <%= project.initial_trips || project.number_of_remaining_trips %></span>
+                        </td>
+                        <td>
+                            <% 
+                                const totalTrips = project.initial_trips || project.number_of_remaining_trips;
+                                const remainingPercentage = (project.number_of_remaining_trips / totalTrips) * 100;
+                            %>
+                            <% if (remainingPercentage <= 20) { %>
+                                <span class="badge badge-danger">
+                                    <i class="fas fa-exclamation-circle"></i> منخفض
+                                </span>
+                            <% } else if (remainingPercentage <= 50) { %>
+                                <span class="badge badge-warning">
+                                    <i class="fas fa-info-circle"></i> متوسط
+                                </span>
+                            <% } else { %>
+                                <span class="badge badge-success">
+                                    <i class="fas fa-check-circle"></i> جيد
+                                </span>
+                            <% } %>
+                        </td>
+                        <td>
+<p style="padding-bottom: 3px;">
+                            <button   class="btn btn-outline btn-sm mr-1">
+                                <i class="fas fa-edit"></i>
+                            </button>
+</p>
+<p style="padding-bottom: 5px;">
+                            <button class="btn btn-danger btn-sm delete-project-btn" data-project-id="<%= project.id %>">
+                                <i class="fas fa-trash"></i>
+                            </button>
+</p>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+            
+            <!-- Vans Section -->
+<!-- Vans Section -->
+<div class="card animate-in" style="animation-delay: 0.5s">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="fas fa-van-shuttle"></i> الفانات
+        </h2>
+        <button class="btn btn-primary" id="addVanBtn">
+            <i class="fas fa-plus"></i> اضافة فان
+        </button>
+    </div>
+    
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>السائق</th>
+                    <th>السعة</th>
+                    <th>المشروع</th>
+                    <th>الحالة</th>
+                    <th>الاجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="vansTable">
+                <% vans.forEach(van => { %>
+                    <% 
+                        // Find the project for this van
+                        const vanProject = projects.find(p => p.id === van.projectId);
+                        // Find the location for this project
+                        const projectLocation = vanProject ? destinations.find(d => d.id === vanProject.locationId) : null;
+                    %>
+                    <tr data-van-id="<%= van.id %>">
+                        <td>
+                            <div class="font-weight-600"><%= van.driver %></div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-chair mr-2"></i>
+                                <%= van.capacity %> seats
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">
+                                <%= vanProject ? vanProject.name : 'Unknown Project' %>
+                            </span>
+                            <% if (projectLocation) { %>
+                                <div class="text-muted small">
+                                    <i class="fas fa-map-marker-alt"></i> <%= projectLocation.name %>
+                                </div>
+                            <% } %>
+                        </td>
+                        <td>
+                            <span class="badge badge-success">
+                                <i class="fas fa-check-circle"></i> Active
+                            </span>
+                        </td>
+                        <td>
+<p style="padding-bottom: 3px;">
+
+                            <button class="btn btn-outline btn-sm mr-1">
+                                <i class="fas fa-edit"></i>
+                            </button>
+</p>
+<p style="padding-bottom: 3px;">
+
+                            <button class="btn btn-danger btn-sm delete-van-btn" data-van-id="<%= van.id %>">
+                                <i class="fas fa-trash"></i>
+                            </button>
+</p>
+
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Destinations Section -->
+<div class="card animate-in" style="animation-delay: 0.6s">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="fas fa-map-marker-alt"></i> المناطق
+        </h2>
+        <button class="btn btn-primary" id="addDestinationBtn">
+            <i class="fas fa-plus"></i> اضافة منطقة
+        </button>
+    </div>
+    
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>اسم المنطقة</th>
+                    <th>المشاريع في هذه المنطقة</th>
+                    <th>الاجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="destinationsTable">
+                <% destinations.forEach(destination => { %>
+                    <% 
+                        // Count projects using this destination
+                        const projectCount = projects.filter(p => p.locationId === destination.id).length;
+                    %>
+                    <tr data-destination-id="<%= destination.id %>">
+                        <td>
+                            <div class="font-weight-600"><%= destination.name %></div>
+                        </td>
+                        <td>
+                            <span class="badge <%= projectCount > 0 ? 'badge-primary' : 'badge-outline' %>">
+                                <%= projectCount %> project<%= projectCount !== 1 ? 's' : '' %>
+                            </span>
+                        </td>
+                        <td>
+<p style="padding-bottom: 3px;">
+
+                            <button class="btn btn-outline btn-sm mr-1 edit-destination-btn" data-destination-id="<%= destination.id %>">
+                                <i class="fas fa-edit"></i>
+                            </button>
+</p>
+<p style="padding-bottom: 3px;">
+
+                            <button class="btn btn-danger btn-sm delete-destination-btn" 
+                                    data-destination-id="<%= destination.id %>"
+                                    data-destination-name="<%= destination.name %>"
+                                    <%= projectCount < 0 ? 'disabled title="Cannot delete - used by projects"' : '' %>>
+                                <i class="fas fa-trash"></i>
+                            </button>
+</p>
+
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+        </main>
+    </div>
+   <!-- Edit Project Modal -->
+<div class="modal" id="editProjectModal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3  style="padding-top: 35px;"><i class="fas fa-project-diagram"></i> تعديل</h3>
+        
+        <form id="editProjectForm">
+            <input type="hidden" id="editProjectId">
+            <div class="form-group">
+                <label class="form-label" for="editProjectName">الاسم</label>
+                <input type="text" class="form-control" id="editProjectName" required placeholder="Enter project name">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="editProjectLocation">المنطقة</label>
+                <select class="form-select" id="editProjectLocation">
+                    <option value="">Select a location</option>
+                    <% destinations.forEach(destination => { %>
+                        <option value="<%= destination.id %>"><%= destination.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="editProjectInitialTrips">الرحلات الابتدائية</label>
+                <input type="number" class="form-control" id="editProjectInitialTrips" min="1" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="editProjectRemainingTrips">الرحلات المتبقية</label>
+                <input type="number" class="form-control" id="editProjectRemainingTrips" min="0" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-save"></i> تأكيد
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Van Modal -->
+<div class="modal" id="editVanModal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3 style="padding-top: 35px;"><i class="fas fa-van-shuttle"></i> تعديل</h3>
+        
+        <form id="editVanForm">
+            <input type="hidden" id="editVanId">
+            <div class="form-group">
+                <label class="form-label" for="editVanDriver">اسم السائق</label>
+                <input type="text" class="form-control" id="editVanDriver" required placeholder="Enter driver's name">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="editVanProject">المشروع</label>
+                <select class="form-select" id="editVanProject" required>
+                    <% projects.forEach(project => { %>
+                        <option value="<%= project.id %>"><%= project.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-save"></i> تأكيد
+            </button>
+        </form>
+    </div>
+</div>
+    <!-- Add Project Modal -->
+   <!-- Add Project Modal -->
+<div class="modal" id="addProjectModal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3  style="padding-top:35px;"><i class="fas fa-project-diagram"></i> اضافة مشروع جديد</h3>
+        
+        <form id="addProjectForm">
+            <div class="form-group">
+                <label class="form-label" for="projectName">اسم المشروع</label>
+                <input type="text" class="form-control" id="projectName" required placeholder="Enter project name">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="projectLocation">المنطقة</label>
+                <select class="form-select" id="projectLocation">
+                    <option value="">Select a location</option>
+                    <% destinations.forEach(destination => { %>
+                        <option value="<%= destination.id %>"><%= destination.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="projectTrips">الرحلات الابتدائية</label>
+                <input type="number" class="form-control" id="projectTrips" value="50" min="1">
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-save"></i> تأكيد
+            </button>
+        </form>
+    </div>
+</div>
+
+    
+    <!-- Add Van Modal -->
+    <div class="modal" id="addVanModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 style="padding-top:35px;"><i class="fas fa-van-shuttle"></i> اضافة فان جديد</h3>
+            
+            <form id="addVanForm">
+                <div class="form-group">
+                    <label class="form-label" for="vanDriver">اسم السائق</label>
+                    <input type="text" class="form-control" id="vanDriver" required placeholder="Enter driver's name">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="vanCapacity">السعة</label>
+                    <select class="form-select" id="vanCapacity" required>
+                        <option value="8">8 seats (Standard)</option>
+                        <option value="12">12 seats (Large)</option>
+                        <option value="15">15 seats (Extra Large)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="vanProject">المشروع</label>
+                    <select class="form-select" id="vanProject" required>
+                        <% projects.forEach(project => { %>
+                            <option value="<%= project.id %>"><%= project.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-save"></i> تأكيد
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="confirmTitle"><i class="fas fa-exclamation-triangle"></i> Confirm Action</h3>
+            <p id="confirmMessage">Are you sure you want to perform this action?</p>
+            <div class="d-flex justify-content-end gap-2">
+                <button class="btn btn-outline" id="confirmCancel">
+                    إلغاء
+                </button>
+                <button class="btn btn-danger" id="confirmAction">
+                    تأكيد
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Add Destination Modal -->
+<div class="modal" id="addDestinationModal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3  style="padding-top:35px;"><i class="fas fa-map-marker-alt"></i> اضافة منطقة جديدة</h3>
+        
+        <form id="addDestinationForm">
+            <div class="form-group">
+                <label class="form-label" for="destinationName">اسم المنطقة</label>
+                <input type="text" class="form-control" id="destinationName" required placeholder="Enter destination name">
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-save"></i> تأكيد
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Destination Modal -->
+<div class="modal" id="editDestinationModal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3  style="padding-top: 35px;"><i class="fas fa-map-marker-alt"></i> تعديل</h3>
+        
+        <form id="editDestinationForm">
+            <input type="hidden" id="editDestinationId">
+            <div class="form-group">
+                <label class="form-label" for="editDestinationName">اسم المنطقة</label>
+                <input type="text" class="form-control" id="editDestinationName" required placeholder="Enter destination name">
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-save"></i> تأكيد
+            </button>
+        </form>
+    </div>
+</div>
+<!-- Delete Destination Confirmation Modal -->
+<div class="modal" id="deleteDestinationModal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3 style="padding-top: 35px;"><i class="fas fa-exclamation-triangle" style="padding-bottom: 0px;"></i> تأكيد الحذف</h3>
+        <p id="deleteDestinationMessage">متأكد أنك تود حذف هذه المنطقة؟</p>
+        <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-outline" id="cancelDeleteDestination">
+                إلغاء
+            </button>
+            <button class="btn btn-danger" id="confirmDeleteDestination">
+                حذف
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileOverlay = document.getElementById('mobileOverlay');
+const sidebar = document.getElementById('sidebar');
+
+// Toggle mobile menu
+function toggleMobileMenu() {
+    sidebar.classList.toggle('mobile-open');
+    mobileOverlay.classList.toggle('show');
+    
+    // Toggle button icon
+    const icon = mobileMenuBtn.querySelector('i');
+    if (sidebar.classList.contains('mobile-open')) {
+        icon.className = 'fas fa-times';
+    } else {
+        icon.className = 'fas fa-bars';
+    }
+}
+
+// Close mobile menu
+function closeMobileMenu() {
+    sidebar.classList.remove('mobile-open');
+    mobileOverlay.classList.remove('show');
+    mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+}
+
+// Event listeners
+mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+mobileOverlay.addEventListener('click', closeMobileMenu);
+
+// Close menu when clicking on nav items (optional - for better UX)
+document.querySelectorAll('.nav-item').forEach(navItem => {
+    navItem.addEventListener('click', closeMobileMenu);
+});
+
+// Close menu on window resize if screen becomes large
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+        closeMobileMenu();
+    }
+});
+    // Elements
+    let localProjects = JSON.parse('<%- JSON.stringify(projects) %>');
+    let localDestinations = JSON.parse('<%- JSON.stringify(destinations) %>');
+    let localVans = JSON.parse('<%- JSON.stringify(vans) %>');
+    
+    const addProjectModal = document.getElementById('addProjectModal');
+    const addVanModal = document.getElementById('addVanModal');
+    const addDestinationModal = document.getElementById('addDestinationModal');
+    const editDestinationModal = document.getElementById('editDestinationModal');
+    const confirmModal = document.getElementById('confirmModal');
+    const closeButtons = document.querySelectorAll('.close');
+    
+    // Forms
+    const addProjectForm = document.getElementById('addProjectForm');
+    const addVanForm = document.getElementById('addVanForm');
+    const addDestinationForm = document.getElementById('addDestinationForm');
+    const editDestinationForm = document.getElementById('editDestinationForm');
+    
+    // Buttons
+    const addProjectBtn = document.getElementById('addProjectBtn');
+    const addVanBtn = document.getElementById('addVanBtn');
+    const addDestinationBtn = document.getElementById('addDestinationBtn');
+    const confirmCancel = document.getElementById('confirmCancel');
+    const confirmAction = document.getElementById('confirmAction');
+    
+    // Show modals with animation
+    function showModal(modal) {
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.querySelector('.modal-content').classList.add('animate-in');
+        }, 10);
+    }
+    
+    // Hide modals with animation
+    function hideModal(modal) {
+        modal.querySelector('.modal-content').classList.remove('animate-in');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
+    
+    // Show modals
+    addProjectBtn.addEventListener('click', () => showModal(addProjectModal));
+    addVanBtn.addEventListener('click', () => showModal(addVanModal));
+    addDestinationBtn.addEventListener('click', () => showModal(addDestinationModal));
+    
+    // Close modals
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            hideModal(this.closest('.modal'));
+        });
+    });
+    
+    // Close modals when clicking outside
+    window.addEventListener('click', function(e) {
+        if (e.target === addProjectModal) hideModal(addProjectModal);
+        if (e.target === addVanModal) hideModal(addVanModal);
+        if (e.target === addDestinationModal) hideModal(addDestinationModal);
+        if (e.target === editDestinationModal) hideModal(editDestinationModal);
+        if (e.target === confirmModal) hideModal(confirmModal);
+    });
+    
+    // Add project form submission
+   // Add project form submission
+addProjectForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const projectName = document.getElementById('projectName').value;
+    const initialTrips = document.getElementById('projectTrips').value || 50;
+    const projectLocation = document.getElementById('projectLocation').value;
+    
+    fetch('/add-project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            name: projectName,
+            number_of_remaining_trips: parseInt(initialTrips),
+            locationId: projectLocation || null,  // Send null if no location selected
+            initial_trips: parseInt(initialTrips)
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            showToast('تمت إضافة مشروع جديد بنجاح!', 'success');
+            hideModal(addProjectModal);
+            addProjectForm.reset();
+            // Optional: Refresh the page to see changes
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showToast(data.error || 'Failed to add project', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Failed to add project', 'error');
+    });
+});
+    
+    // Add van form submission
+    addVanForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const driver = document.getElementById('vanDriver').value;
+        const projectId = document.getElementById('vanProject').value;
+        const capacity = document.getElementById('vanCapacity').value;
+        
+        fetch('/add-van', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                driver, 
+                projectId,
+                capacity
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast('تم إضافة فان جديد!', 'success');
+                hideModal(addVanModal);
+                addVanForm.reset();
+            } else {
+                showToast(data.error || 'فشل إضافة فان', 'error');
+            }
+        })
+        .catch(() => showToast('فشل إضافة فان', 'error'));
+    });
+    
+    // Add destination form submission
+    addDestinationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('destinationName').value;
+        
+        fetch('/add-destination', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast('تم إضافة منطقة جديدة بنجاح!', 'success');
+                hideModal(addDestinationModal);
+                addDestinationForm.reset();
+            } else {
+                showToast(data.error || 'فشل إضافة منطقة جديدة', 'error');
+            }
+        })
+        .catch(() => showToast('فشل إضافة فان', 'error'));
+    });
+
+    // Attach edit button listeners
+    function attachEditButtonListeners() {
+        // Edit project buttons
+        document.querySelectorAll('#projectsTable .btn-outline').forEach(btn => {
+            // Remove existing listeners to prevent duplicates
+            btn.replaceWith(btn.cloneNode(true));
+        });
+        
+        document.querySelectorAll('#projectsTable .btn-outline').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const projectId = this.closest('tr').dataset.projectId;
+                const project = localProjects.find(p => p.id == projectId);
+                
+                if (project) {
+                    document.getElementById('editProjectId').value = project.id;
+                    document.getElementById('editProjectName').value = project.name;
+                    document.getElementById('editProjectLocation').value = project.locationId || '';
+                    document.getElementById('editProjectInitialTrips').value = project.initial_trips;
+                    document.getElementById('editProjectRemainingTrips').value = project.number_of_remaining_trips;
+                    showModal(document.getElementById('editProjectModal'));
+                }
+            });
+        });
+
+        // Edit van buttons
+        document.querySelectorAll('#vansTable .btn-outline').forEach(btn => {
+            // Remove existing listeners to prevent duplicates
+            btn.replaceWith(btn.cloneNode(true));
+        });
+        
+        document.querySelectorAll('#vansTable .btn-outline').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const vanId = this.closest('tr').dataset.vanId;
+                const van = localVans.find(v => v.id == vanId);
+                
+                if (van) {
+                    document.getElementById('editVanId').value = van.id;
+                    document.getElementById('editVanDriver').value = van.driver;
+                    document.getElementById('editVanProject').value = van.projectId;
+                    showModal(document.getElementById('editVanModal'));
+                }
+            });
+        });
+    }
+
+    // Attach delete button listeners
+    function attachDeleteButtonListeners() {
+        // Delete project buttons
+        document.querySelectorAll('.delete-project-btn').forEach(btn => {
+            // Remove existing listeners to prevent duplicates
+            btn.replaceWith(btn.cloneNode(true));
+        });
+        
+        document.querySelectorAll('.delete-project-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const projectId = this.dataset.projectId;
+                const projectRow = this.closest('tr');
+                const projectName = projectRow.querySelector('td:nth-child(1) div').textContent;
+                
+                showConfirmModal(
+                    `حذف مشروع "${projectName}"?`,
+                    "هذا الاجراء غير قابل للاسترداد",
+                    () => {
+                        fetch(`/delete-project/${projectId}`, {
+                            method: 'POST'
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                showToast('تم حذف المشروع بنجاح!', 'success');
+                            } else {
+                                showToast(data.error || 'فشل حذف المشروع', 'error');
+                            }
+                        })
+                        .catch(() => showToast('فشل حذف المشروع', 'error'));
+                    }
+                );
+            });
+        });
+
+        // Delete van buttons
+        document.querySelectorAll('.delete-van-btn').forEach(btn => {
+            // Remove existing listeners to prevent duplicates
+            btn.replaceWith(btn.cloneNode(true));
+        });
+        
+        document.querySelectorAll('.delete-van-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const vanId = this.dataset.vanId;
+                const vanRow = this.closest('tr');
+                const driverName = vanRow.querySelector('td:nth-child(1) div').textContent;
+                
+                showConfirmModal(
+                    `حذف الفان #${vanId}?`,
+                    `هذا سوف يحذف فان السيد ${driverName} بشكل نهائي من النظام.`,
+                    () => {
+                        fetch(`/delete-van/${vanId}`, {
+                            method: 'POST'
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                showToast('تم حذف الفان بنجاح!', 'success');
+                            } else {
+                                showToast(data.error || 'فشل حذف الفان', 'error');
+                            }
+                        })
+                        .catch(() => showToast('فشل حذف الفان', 'error'));
+                    }
+                );
+            });
+        });
+
+        // Delete destination buttons
+        document.querySelectorAll('.delete-destination-btn:not([disabled])').forEach(btn => {
+            // Remove existing listeners to prevent duplicates
+            btn.replaceWith(btn.cloneNode(true));
+        });
+        
+        document.querySelectorAll('.delete-destination-btn:not([disabled])').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const destinationId = this.dataset.destinationId;
+                const destinationName = this.dataset.destinationName;
+                
+                document.getElementById('deleteDestinationMessage').textContent = 
+                    `متأكد أنك تريد حذف منطقة "${destinationName}"؟ هذا الاجراء غير قابل للاسترداد!.`;
+                
+                const deleteModal = document.getElementById('deleteDestinationModal');
+                showModal(deleteModal);
+                
+                const confirmBtn = document.getElementById('confirmDeleteDestination');
+                confirmBtn.onclick = function() {
+                    fetch(`/delete-destination/${destinationId}`, {
+                        method: 'POST'
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            showToast('تم حذف المنطقة بنجاح!', 'success');
+                            hideModal(deleteModal);
+                        } else {
+                            showToast(data.error || 'فشل حذف المنطقة', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showToast('فشل حذف المنطقة', 'error');
+                    });
+                };
+                
+                document.getElementById('cancelDeleteDestination').onclick = function() {
+                    hideModal(deleteModal);
+                };
+            });
+        });
+    }
+
+    // Attach edit destination listeners
+    function attachEditDestinationListeners() {
+        document.querySelectorAll('.edit-destination-btn').forEach(btn => {
+            // Remove existing listeners to prevent duplicates
+            btn.replaceWith(btn.cloneNode(true));
+        });
+        
+        document.querySelectorAll('.edit-destination-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const destinationId = this.dataset.destinationId;
+                const destination = localDestinations.find(d => d.id == destinationId);
+                
+                if (destination) {
+                    document.getElementById('editDestinationId').value = destination.id;
+                    document.getElementById('editDestinationName').value = destination.name;
+                    showModal(document.getElementById('editDestinationModal'));
+                }
+            });
+        });
+    }
+
+    // Initialize all button listeners
+    attachDeleteButtonListeners();
+    attachEditButtonListeners();
+    attachEditDestinationListeners();
+
+    // Edit project form submission
+    document.getElementById('editProjectForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = document.getElementById('editProjectId').value;
+        const name = document.getElementById('editProjectName').value;
+        const locationId = document.getElementById('editProjectLocation').value || null;
+        const initial_trips = document.getElementById('editProjectInitialTrips').value;
+        const number_of_remaining_trips = document.getElementById('editProjectRemainingTrips').value;
+        
+        fetch(`/edit-project/${id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                name, 
+                locationId,
+                initial_trips,
+                number_of_remaining_trips
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast('تم تعديل المشروع بنجاح!', 'success');
+                hideModal(document.getElementById('editProjectModal'));
+                // OPTIONAL: Reload page to see changes immediately
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.error || 'فشل تعديل المشروع', 'error');
+            }
+        })
+        .catch(() => showToast('فشل تعديل المشروع', 'error'));
+    });
+
+    // Edit van form submission
+    document.getElementById('editVanForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = document.getElementById('editVanId').value;
+        const driver = document.getElementById('editVanDriver').value;
+        const projectId = document.getElementById('editVanProject').value;
+        
+        fetch(`/edit-van/${id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ driver, projectId })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast('تم تعديل الفان بنجاح!', 'success');
+                hideModal(document.getElementById('editVanModal'));
+                // OPTIONAL: Reload page to see changes immediately
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.error || 'فشل تعديل الفان', 'error');
+            }
+        })
+        .catch(() => showToast('فشل تعديل الفان', 'error'));
+    });
+
+    // Edit destination form submission
+    document.getElementById('editDestinationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = document.getElementById('editDestinationId').value;
+        const name = document.getElementById('editDestinationName').value;
+        
+        fetch(`/edit-destination/${id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast('تم تعديل المنطقة بنجاح!', 'success');
+                hideModal(document.getElementById('editDestinationModal'));
+                // OPTIONAL: Reload page to see changes immediately
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.error || 'فشل تعديل المنطقة', 'error');
+            }
+        })
+        .catch(() => showToast('فشل تعديل المنطقة', 'error'));
+    });
+
+    // Add project to table
+    function addProjectToTable(project) {
+        localProjects.push(project);
+        
+        const projectsTable = document.getElementById('projectsTable');
+        const row = document.createElement('tr');
+        row.dataset.projectId = project.id;
+        
+        const projectLocation = localDestinations.find(d => d.id === project.locationId);
+        const locationName = projectLocation ? projectLocation.name : 'Unspecified';
+        
+        updateDestinationProjectCount(project.locationId, 1);
+        
+        const totalTrips = project.initial_trips || project.number_of_remaining_trips;
+        const remainingPercentage = totalTrips > 0 ? (project.number_of_remaining_trips / totalTrips) * 100 : 0;
+        
+        let statusBadge;
+        if (project.number_of_remaining_trips === 0) {
+            statusBadge = `<span class="badge badge-danger"><i class="fas fa-ban"></i> Exhausted</span>`;
+        } else if (remainingPercentage <= 20) {
+            statusBadge = `<span class="badge badge-danger"><i class="fas fa-exclamation-circle"></i> Low</span>`;
+        } else if (remainingPercentage <= 50) {
+            statusBadge = `<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Medium</span>`;
+        } else {
+            statusBadge = `<span class="badge badge-success"><i class="fas fa-check-circle"></i> Good</span>`;
+        }
+        
+        let progressColor;
+        if (project.number_of_remaining_trips === 0 || remainingPercentage <= 20) {
+            progressColor = '#f87171';
+        } else if (remainingPercentage <= 50) {
+            progressColor = '#fbbf24';
+        } else {
+            progressColor = '#4361ee';
+        }
+                
+        row.innerHTML = `
+            <td>
+                <div class="font-weight-600">${project.name}</div>
+                <div class="text-muted small">Created just now</div>
+            </td>
+            <td>
+                <span class="badge badge-primary">
+                    ${locationName}
+                </span>
+            </td>
+            <td>
+                <div class="progress" style="height: 6px; width: 100px; background: #e2e8f0; border-radius: 3px; margin: 4px 0;">
+                    <div class="progress-bar" style="height: 100%; width: ${remainingPercentage}%; background: ${progressColor}; border-radius: 3px;"></div>
+                </div>
+                <span class="text-muted small">${project.number_of_remaining_trips} / ${totalTrips}</span>
+            </td>
+            <td>
+                ${statusBadge}
+            </td>
+            <td>
+                <button class="btn btn-outline btn-sm mr-1">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm delete-project-btn" data-project-id="${project.id}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+        
+        projectsTable.appendChild(row);
+        
+        // Update project location select if it exists
+        const vanProjectSelect = document.getElementById('vanProject');
+        if (vanProjectSelect) {
+            const option = document.createElement('option');
+            option.value = project.id;
+            option.textContent = project.name;
+            vanProjectSelect.appendChild(option);
+        }
+        
+        // Reattach all event listeners after adding new row
+        attachDeleteButtonListeners();
+        attachEditButtonListeners();
+        
+        row.style.animation = 'fadeIn 0.5s ease-out';
+        setTimeout(() => {
+            row.style.backgroundColor = 'rgba(67, 97, 238, 0.1)';
+            setTimeout(() => {
+                row.style.backgroundColor = '';
+            }, 2000);
+        }, 100);
+    }
+
+    function updateDestinationProjectCount(destinationId, change) {
+        const destinationRow = document.querySelector(`tr[data-destination-id="${destinationId}"]`);
+        if (!destinationRow) return;
+        
+        const badgeElement = destinationRow.querySelector('td:nth-child(3) .badge');
+        if (!badgeElement) return;
+        
+        // Get current count from the badge text with better parsing
+        const currentText = badgeElement.textContent.trim();
+        console.log('Current badge text:', currentText); // Debug log
+        
+        // More robust regex to find the number
+        const match = currentText.match(/(\d+)\s+project/);
+        const currentCount = match ? parseInt(match[1]) : 0;
+        console.log('Current count:', currentCount, 'Change:', change); // Debug log
+        
+        const newCount = Math.max(0, currentCount + change);
+        console.log('New count:', newCount); // Debug log
+        
+        // Update the badge
+        badgeElement.textContent = `${newCount} project${newCount !== 1 ? 's' : ''}`;
+        
+        // Update badge style based on count
+        if (newCount > 0) {
+            badgeElement.className = 'badge badge-primary';
+        } else {
+            badgeElement.className = 'badge badge-outline';
+        }
+        
+        // Update delete button state
+        const deleteBtn = destinationRow.querySelector('.delete-destination-btn');
+        if (deleteBtn) {
+            if (newCount > 0) {
+                deleteBtn.disabled = true;
+                deleteBtn.title = 'Cannot delete - used by projects';
+            } else {
+                deleteBtn.disabled = false;
+                deleteBtn.removeAttribute('title');
+            }
+        }
+        
+        // Add visual feedback
+        badgeElement.style.backgroundColor = 'rgba(67, 97, 238, 0.2)';
+        setTimeout(() => {
+            badgeElement.style.backgroundColor = '';
+        }, 1500);
+    }
+        
+    function removeProjectFromTable(projectId) {
+        const row = document.querySelector(`tr[data-project-id="${projectId}"]`);
+        if (row) {
+            // Get the project data to find its locationId
+            const project = localProjects.find(p => p.id == projectId);
+            if (project && project.locationId) {
+                // UPDATE: Decrement the project count for this destination
+                updateDestinationProjectCount(project.locationId, -1);
+            }
+            
+            // Remove from local state
+            localProjects = localProjects.filter(p => p.id != projectId);
+            
+            row.style.backgroundColor = 'rgba(248, 113, 113, 0.1)';
+            setTimeout(() => {
+                row.remove();
+            }, 300);
+        }
+        
+        const vanProjectSelect = document.getElementById('vanProject');
+        if (vanProjectSelect) {
+            const option = vanProjectSelect.querySelector(`option[value="${projectId}"]`);
+            if (option) option.remove();
+        }
+    }
+    
+    // Add van to table
+    function addVanToTable(van) {
+        localVans.push(van);
+        
+        const vansTable = document.getElementById('vansTable');
+        const row = document.createElement('tr');
+        row.dataset.vanId = van.id;
+        
+        const project = localProjects.find(p => p.id === van.projectId);
+        const projectName = project ? project.name : 'Unknown';
+        const projectLocation = project ? localDestinations.find(d => d.id === project.locationId) : null;
+        
+        row.innerHTML = `
+            <td>
+                <div class="font-weight-600">${van.driver}</div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-chair mr-2"></i>
+                    ${van.capacity} seats
+                </div>
+            </td>
+            <td>
+                <span class="badge badge-primary">
+                    ${projectName}
+                </span>
+                ${projectLocation ? `<div class="text-muted small"><i class="fas fa-map-marker-alt"></i> ${projectLocation.name}</div>` : ''}
+            </td>
+            <td>
+                <span class="badge badge-success">
+                    <i class="fas fa-check-circle"></i> Active
+                </span>
+            </td>
+            <td>
+                <button class="btn btn-outline btn-sm mr-1">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm delete-van-btn" data-van-id="${van.id}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+        vansTable.appendChild(row);
+        
+        // Reattach all event listeners after adding new row
+        attachDeleteButtonListeners();
+        attachEditButtonListeners();
+        
+        row.style.animation = 'fadeIn 0.5s ease-out';
+        setTimeout(() => {
+            row.style.backgroundColor = 'rgba(67, 97, 238, 0.1)';
+            setTimeout(() => {
+                row.style.backgroundColor = '';
+            }, 2000);
+        }, 100);
+    }
+    
+    function removeVanFromTable(vanId) {
+        const row = document.querySelector(`tr[data-van-id="${vanId}"]`);
+        if (row) {
+            // Remove from local state
+            localVans = localVans.filter(v => v.id != vanId);
+            
+            row.style.backgroundColor = 'rgba(248, 113, 113, 0.1)';
+            setTimeout(() => {
+                row.remove();
+            }, 300);
+        }
+    }
+    
+    // Add destination to table
+    function addDestinationToTable(destination) {
+        localDestinations.push(destination);
+        
+        const destinationsTable = document.getElementById('destinationsTable');
+        const row = document.createElement('tr');
+        row.dataset.destinationId = destination.id;
+        
+        row.innerHTML = `
+            <td>
+                <div class="font-weight-600">${destination.name}</div>
+            </td>
+            <td>
+                <span class="badge badge-outline">0 projects</span>
+            </td>
+            <td>
+                <button class="btn btn-outline btn-sm mr-1 edit-destination-btn" data-destination-id="${destination.id}">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm delete-destination-btn" 
+                        data-destination-id="${destination.id}"
+                        data-destination-name="${destination.name}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+        
+        destinationsTable.appendChild(row);
+        
+        // Update project location select if it exists
+        const projectLocationSelect = document.getElementById('projectLocation');
+        if (projectLocationSelect) {
+            const option = document.createElement('option');
+            option.value = destination.id;
+            option.textContent = destination.name;
+            projectLocationSelect.appendChild(option);
+        }
+        
+        // Reattach all event listeners after adding new row
+        attachDeleteButtonListeners();
+        attachEditDestinationListeners();
+        
+        row.style.animation = 'fadeIn 0.5s ease-out';
+        setTimeout(() => {
+            row.style.backgroundColor = 'rgba(67, 97, 238, 0.1)';
+            setTimeout(() => {
+                row.style.backgroundColor = '';
+            }, 2000);
+        }, 100);
+    }
+    
+    function updateDestinationInTable(destinationId, newName) {
+        const row = document.querySelector(`tr[data-destination-id="${destinationId}"]`);
+        if (row) {
+            row.querySelector('td:nth-child(2) div').textContent = newName;
+            row.querySelector('.delete-destination-btn').dataset.destinationName = newName;
+            
+            // Update local state
+            const destination = localDestinations.find(d => d.id == destinationId);
+            if (destination) {
+                destination.name = newName;
+            }
+            
+            // Update project location selects if they exist
+            const projectLocationSelects = document.querySelectorAll('#projectLocation');
+            projectLocationSelects.forEach(select => {
+                const option = select.querySelector(`option[value="${destinationId}"]`);
+                if (option) option.textContent = newName;
+            });
+            
+            row.style.backgroundColor = 'rgba(255, 214, 0, 0.1)';
+            setTimeout(() => {
+                row.style.backgroundColor = '';
+            }, 2000);
+        }
+    }
+    
+    function removeDestinationFromTable(destinationId) {
+        const row = document.querySelector(`tr[data-destination-id="${destinationId}"]`);
+        if (row) {
+            row.style.backgroundColor = 'rgba(248, 113, 113, 0.1)';
+            setTimeout(() => {
+                row.remove();
+            }, 300);
+        }
+        
+        // Update local state
+        localDestinations = localDestinations.filter(d => d.id != destinationId);
+        
+        // Update project location selects if they exist
+        const projectLocationSelects = document.querySelectorAll('#projectLocation');
+        projectLocationSelects.forEach(select => {
+            const option = select.querySelector(`option[value="${destinationId}"]`);
+            if (option) option.remove();
+        });
+    }
+
+    // Update stats cards
+    function updateStatsCards() {
+        // Update Total Projects
+        const totalProjectsElement = document.querySelector('.stat-card .stat-value');
+        if (totalProjectsElement) {
+            totalProjectsElement.textContent = localProjects.length;
+            
+            // Update the status message
+            const projectStatusElement = totalProjectsElement.nextElementSibling;
+            if (projectStatusElement) {
+                const projectCount = localProjects.length;
+                projectStatusElement.innerHTML = `
+                    <i class="fas fa-arrow-up"></i>
+                    ${projectCount > 3 ? 'Good' : 'Add more'}
+                `;
+            }
+        }
+        
+        // Update Total Vans
+        const statCards = document.querySelectorAll('.stat-card');
+        if (statCards.length >= 2) {
+            const totalVansElement = statCards[1].querySelector('.stat-value');
+            if (totalVansElement) {
+                totalVansElement.textContent = localVans.length;
+                
+                // Update the status message
+                const vanStatusElement = totalVansElement.nextElementSibling;
+                if (vanStatusElement) {
+                    const vanCount = localVans.length;
+                    vanStatusElement.innerHTML = `
+                        <i class="fas fa-arrow-up"></i>
+                        ${vanCount > 4 ? 'Excellent' : 'Add more'}
+                    `;
+                }
+            }
+        }
+        
+        // Update Total Locations
+        if (statCards.length >= 3) {
+            const totalLocationsElement = statCards[2].querySelector('.stat-value');
+            if (totalLocationsElement) {
+                totalLocationsElement.textContent = localDestinations.length;
+                
+                // Update the status message
+                const locationStatusElement = totalLocationsElement.nextElementSibling;
+                if (locationStatusElement) {
+                    const locationCount = localDestinations.length;
+                    locationStatusElement.innerHTML = `
+                        <i class="fas fa-arrow-up"></i>
+                        ${locationCount > 2 ? 'Good coverage' : 'Add more'}
+                    `;
+                }
+            }
+        }
+        
+        // Add visual feedback with animation
+        statCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.transform = 'scale(1.02)';
+                card.style.boxShadow = '0 10px 25px -5px rgba(67, 97, 238, 0.2)';
+                
+                setTimeout(() => {
+                    card.style.transform = '';
+                    card.style.boxShadow = '';
+                }, 500);
+            }, index * 100);
+        });
+    }
+    
+    // Confirmation modal
+    function showConfirmModal(title, message, action) {
+        document.getElementById('confirmTitle').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${title}`;
+        document.getElementById('confirmMessage').textContent = message;
+        
+        confirmAction.onclick = function() {
+            hideModal(confirmModal);
+            action();
+        };
+        
+        showModal(confirmModal);
+    }
+    
+    confirmCancel.addEventListener('click', () => hideModal(confirmModal));
+    
+    // Show toast notification
+    function showToast(message, type) {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+            <span>${message}</span>
+        `;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+    
+    // Add hover effects to cards
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-5px)';
+            card.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            card.style.boxShadow = '';
+        });
+    });
+    
+    // SSE for real-time updates
+    const eventSource = new EventSource('/events');
+    
+    eventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        
+        switch(data.type) {
+            case 'destination-added':
+                addDestinationToTable(data.destination);
+                updateStatsCards();
+                break;
+                
+            case 'destination-updated':
+                updateDestinationInTable(data.destinationId, data.newName);
+                break;
+
+            case 'destination-deleted':
+                removeDestinationFromTable(data.destinationId);
+                updateStatsCards();
+                break;
+                
+            case 'project-added':
+                addProjectToTable(data.project);
+                updateStatsCards();
+                break;
+                
+            case 'project-deleted':
+                removeProjectFromTable(data.projectId);
+                updateStatsCards();
+                break;
+                
+            case 'van-added':
+                addVanToTable(data.van);
+                updateStatsCards();
+                break;
+                
+            case 'van-deleted':
+                removeVanFromTable(data.vanId);
+                updateStatsCards();
+                break;
+            case 'project-updated':
+                updateProjectInTable(
+                    data.projectId, 
+                    data.newName, 
+                    data.newLocationId,
+                    data.newInitialTrips,
+                    data.newRemainingTrips
+                );
+                break;
+                
+            case 'van-updated':
+                updateVanInTable(data.vanId, data.newDriver, data.newProjectId);
+                break;
+        }
+    };
+
+    function updateProjectInTable(projectId, newName, newLocationId, newInitialTrips, newRemainingTrips) {
+        const row = document.querySelector(`tr[data-project-id="${projectId}"]`);
+        if (row) {
+            // Update name
+            row.querySelector('td:nth-child(2) div').textContent = newName;
+            
+            // Update location
+            const location = localDestinations.find(d => d.id == newLocationId);
+            const locationName = location ? location.name : 'Unspecified';
+            row.querySelector('td:nth-child(3) .badge').textContent = locationName;
+            
+            // Update progress bar and counts
+            const totalTrips = newInitialTrips;
+            const remainingPercentage = totalTrips > 0 ? (newRemainingTrips / totalTrips) * 100 : 0;
+            
+            // Update progress bar
+            const progressBar = row.querySelector('.progress-bar');
+            progressBar.style.width = `${remainingPercentage}%`;
+            progressBar.style.backgroundColor = newRemainingTrips <= 10 ? '#f87171' : 
+                                            newRemainingTrips <= 25 ? '#fbbf24' : '#4361ee';
+            
+            // Update count text
+            row.querySelector('td:nth-child(4) .text-muted').textContent = 
+                `${newRemainingTrips} / ${newInitialTrips}`;
+            
+            // Update status badge
+            let statusBadge;
+            if (newRemainingTrips === 0) {
+                statusBadge = `<span class="badge badge-danger"><i class="fas fa-ban"></i> Exhausted</span>`;
+            } else if (remainingPercentage <= 20) {
+                statusBadge = `<span class="badge badge-danger"><i class="fas fa-exclamation-circle"></i> Low</span>`;
+            } else if (remainingPercentage <= 50) {
+                statusBadge = `<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Medium</span>`;
+            } else {
+                statusBadge = `<span class="badge badge-success"><i class="fas fa-check-circle"></i> Good</span>`;
+            }
+            row.querySelector('td:nth-child(5)').innerHTML = statusBadge;
+            
+            // Update local state
+            const project = localProjects.find(p => p.id == projectId);
+            if (project) {
+                project.name = newName;
+                project.locationId = newLocationId;
+                project.initial_trips = newInitialTrips;
+                project.number_of_remaining_trips = newRemainingTrips;
+            }
+            
+            // Visual feedback
+            row.style.backgroundColor = 'rgba(255, 214, 0, 0.1)';
+            setTimeout(() => {
+                row.style.backgroundColor = '';
+            }, 2000);
+        }
+    }
+
+    function updateVanInTable(vanId, newDriver, newProjectId) {
+        const row = document.querySelector(`tr[data-van-id="${vanId}"]`);
+        if (row) {
+            // Update driver
+            row.querySelector('td:nth-child(2) div').textContent = newDriver;
+            
+            // Update project
+            const project = localProjects.find(p => p.id == newProjectId);
+            const projectName = project ? project.name : 'Unknown';
+            const projectLocation = project ? localDestinations.find(d => d.id == project.locationId) : null;
+            
+            row.querySelector('td:nth-child(4) .badge').textContent = projectName;
+            
+            // Update location info if it exists
+            const locationElement = row.querySelector('td:nth-child(4) .text-muted');
+            if (projectLocation) {
+                if (!locationElement) {
+                    const newLocationElement = document.createElement('div');
+                    newLocationElement.className = 'text-muted small';
+                    newLocationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${projectLocation.name}`;
+                    row.querySelector('td:nth-child(4)').appendChild(newLocationElement);
+                } else {
+                    locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${projectLocation.name}`;
+                }
+            } else if (locationElement) {
+                locationElement.remove();
+            }
+            
+            // Update local state
+            const van = localVans.find(v => v.id == vanId);
+            if (van) {
+                van.driver = newDriver;
+                van.projectId = newProjectId;
+            }
+            
+            // Visual feedback
+            row.style.backgroundColor = 'rgba(255, 214, 0, 0.1)';
+            setTimeout(() => {
+                row.style.backgroundColor = '';
+            }, 2000);
+        }
+    }
+    
+    // Initialize animations
+    document.querySelectorAll('.animate-in').forEach((el, index) => {
+        el.style.animationDelay = `${index * 0.1}s`;
+    });
+});
+</script>
+</body>
+</html>

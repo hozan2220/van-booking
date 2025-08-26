@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام حجز الفانات | التقارير</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Use the same styles as organizer.ejs with RTL support */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            --radius-sm: 0.25rem;
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body[dir="rtl"] {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.5;
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 240px 1fr ;
+            min-height: 100vh;
+            text-align: right;
+
+        }
+        
+        /* Sidebar */
+       .sidebar {
+    background: white;
+            text-align: right;
+
+    border-right: 1px solid var(--gray-light); /* Change from border-left to border-right */
+    border-left: none;
+    padding: 1.5rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    order: 1; /* Change from order: 2 to order: 1 */
+}
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+            flex-direction: row-reverse;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            color: var(--gray);
+            text-decoration: none;
+            transition: all 0.2s;
+            flex-direction: row-reverse;
+        }
+        
+        .nav-item:hover {
+            background: var(--gray-light);
+            color: var(--dark);
+        }
+        
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main {
+    padding: 2rem;
+            text-align: right;
+
+    overflow-y: auto;
+    max-height: 100vh;
+    order: 2; /* Change from order: 1 to order: 2 */
+}
+        
+        .header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-direction: row-reverse;
+        }
+        
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        /* Trip Cards */
+        .trips-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+        }
+        
+     .trip-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: right; /* Add this */
+    direction: rtl; /* Add this */
+}
+        
+        .trip-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+.trip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Change from center to flex-start */
+    margin-bottom: 1rem;
+    flex-direction: row-reverse;
+    text-align: right; /* Add this */
+}
+
+.trip-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: right; /* Add this */
+    flex: 1; /* Add this to take available space */
+}
+
+.trip-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap; /* Add this to prevent wrapping */
+    margin-left: 1rem; /* Add some spacing from title */
+}
+        
+        .trip-status.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .trip-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            flex-direction: row-reverse;
+            text-align: right;
+
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            text-align: right;
+
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            flex-direction: row-reverse;
+        }
+        
+        .meta-item i {
+            color: var(--gray);
+            width: 16px;
+        }
+        
+        /* Passenger Details */
+        .passenger-details {
+            margin-top: 1rem;
+            text-align: right;
+
+            display: none; /* Hide by default */
+        }
+        
+        .passenger-details.visible {
+            display: block; /* Show when visible class is added */
+        }
+        
+        .passenger-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .passenger-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow-sm);
+            flex-direction: row-reverse;
+        }
+        
+        .passenger-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .passenger-info {
+            flex: 1;
+        }
+        
+        .passenger-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .passenger-email {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        
+        /* Export Modal Styles */
+        .export-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .export-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .export-modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+        
+        .export-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .export-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-direction: row-reverse;
+        }
+        
+        .export-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+        
+        .export-option label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            flex-direction: row-reverse;
+        }
+        
+        .export-warning {
+            background: #fef2f2;
+            border-right: 4px solid var(--danger);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            border-left: none;
+        }
+        
+        .export-warning i {
+            color: var(--danger);
+            margin-left: 0.5rem;
+            margin-right: 0;
+        }
+        
+        .export-modal-buttons {
+            display: flex;
+            justify-content: flex-start;
+            gap: 1rem;
+            flex-direction: row-reverse;
+        }
+        
+        .export-modal-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: none;
+        }
+        
+        .export-modal-btn.cancel {
+            background: var(--gray-light);
+            color: var(--dark);
+        }
+        
+        .export-modal-btn.export {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .export-modal-btn.export:hover {
+            background: var(--primary-dark);
+        }
+        
+        .export-modal-btn.cancel:hover {
+            background: #e2e8f0;
+        }
+        
+        /* Show Passengers Button */
+        .show-passengers-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+        
+        .show-passengers-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            color: var(--gray-light);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-text {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray-light);
+            z-index: 999;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-direction: row-reverse;
+        }
+        
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            transition: background 0.2s;
+        }
+        
+        .mobile-menu-btn:hover {
+            background: var(--gray-light);
+        }
+        
+        .mobile-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            flex-direction: row-reverse;
+        }
+        
+        .mobile-logo-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .mobile-overlay.show {
+            display: block;
+        }
+        
+        /* Mobile utility classes */
+        .mobile-only {
+            display: block;
+        }
+        
+        .desktop-only {
+            display: none;
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none;
+            }
+            
+            .desktop-only {
+                display: block;
+            }
+            
+            .mobile-header {
+                display: none;
+            }
+            
+            .main {
+                padding-top: 2rem;
+            }
+        }
+        
+        /* RESPONSIVE STYLES - ADD THESE */
+        @media (max-width: 768px) {
+            /* Dashboard Layout */
+            .dashboard {
+                grid-template-columns: 1fr;
+                min-height: 100vh;
+            }
+            
+            /* Mobile Sidebar */
+     .sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%; /* Change from right: -100% to left: -100% */
+        right: auto;
+        width: 80%;
+        max-width: 280px;
+        height: 100vh;
+        z-index: 1001;
+        transition: left 0.3s ease; /* Change from right to left transition */
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1); /* Change shadow direction */
+        order: 1;
+    }
+    
+    .sidebar.open {
+        left: 0; /* Change from right: 0 to left: 0 */
+    }
+
+            
+            /* Main Content Adjustments */
+            .main {
+                padding: 1rem;
+                padding-top: 70px; /* Space for mobile header */
+                order: 1;
+            }
+            
+            .header {
+                margin-bottom: 1rem;
+            }
+            
+            .header-title {
+                font-size: 1.5rem;
+            }
+            
+            .user-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+            }
+            
+            /* Export Section Mobile */
+            .export-section {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+.export-section > div {
+    display: flex; 
+    gap: 1rem; 
+    align-items: center;
+    justify-content: flex-start; /* Ensure left alignment */
+}
+            .export-btn {
+                padding: 0.625rem 1rem !important;
+                font-size: 0.875rem;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            /* Trip Cards Mobile */
+          .trip-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: right; /* Add this */
+    direction: rtl; /* Add this */
+}
+            
+          .trip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Change from center to flex-start */
+    margin-bottom: 1rem;
+    flex-direction: row-reverse;
+    text-align: right; /* Add this */
+}
+            
+            .trip-title {
+                font-size: 0.9rem;
+                line-height: 1.2;
+            }
+            
+            .trip-status {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.4rem;
+                align-self: flex-end;
+            }
+            
+            /* Trip Meta Mobile */
+            .trip-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+                margin-bottom: 0.75rem;
+                font-size: 0.75rem;
+            }
+            
+            .meta-item {
+                font-size: 0.75rem;
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+            }
+            
+            .meta-item i {
+                width: 12px;
+                font-size: 0.7rem;
+            }
+            
+            /* Show Passengers Button Mobile */
+            .show-passengers-btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
+                width: 100%;
+                justify-content: center;
+                margin-top: 0.75rem;
+            }
+            
+            /* Passenger Details Mobile */
+            .passenger-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .passenger-card {
+                padding: 0.75rem;
+                gap: 0.75rem;
+            }
+            
+            .passenger-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 0.85rem;
+            }
+            
+            .passenger-name {
+                font-size: 0.85rem;
+            }
+            
+            .passenger-email {
+                font-size: 0.75rem;
+            }
+            
+            /* Export Modal Mobile */
+            .export-modal-content {
+                width: 95%;
+                margin: 1rem;
+                padding: 1.5rem;
+                max-height: 85vh;
+                border-radius: var(--radius);
+            }
+            
+            .export-modal-title {
+                font-size: 1.1rem;
+            }
+            
+            .export-modal-buttons {
+                flex-direction: row-reverse;
+                gap: 0.75rem;
+            }
+            
+            .export-modal-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 0.75rem;
+            }
+            
+            /* Empty State Mobile */
+            .empty-state {
+                padding: 2rem 1rem;
+            }
+            
+            .empty-icon {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* Very Small Screens */
+        @media (max-width: 480px) {
+            .main {
+                padding: 0.75rem;
+                padding-top: 65px;
+            }
+            
+            .mobile-header {
+                padding: 0.75rem;
+            }
+            
+            .header-title {
+                font-size: 1.25rem;
+            }
+            
+            .trip-card {
+                padding: 0.625rem;
+            }
+            
+            .trip-title {
+                font-size: 0.85rem;
+            }
+            
+            .passenger-grid {
+                gap: 0.375rem;
+            }
+        }
+        
+        /* Landscape orientation adjustments */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .mobile-header {
+                padding: 0.5rem 1rem;
+            }
+            
+            .main {
+                padding-top: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+   <div class="mobile-only">
+        <div class="mobile-header">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="mobile-logo">
+                <div class="mobile-logo-icon">
+                    <i class="fas fa-van-shuttle"></i>
+                </div>
+                <span>التقارير</span>
+            </div>
+        </div>
+        
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+    </div>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-van-shuttle"></i>
+                </div>
+                <div class="logo-text">VanTrack
+</div>
+            </div>
+            
+            <nav class="nav">
+                <a href="/dashboard" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>لوحة التحكم</span>
+                </a>
+                <a href="/organizer" class="nav-item">
+                    <i class="fas fa-tasks"></i>
+                    <span>منسق الرحلات</span>
+                </a>
+                <a href="/projects" class="nav-item">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>المشاريع & المناطق & الفانات</span>
+                </a>
+                <a href="/reports" class="nav-item active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>التقارير</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main">
+
+            <!-- Add this right after the header section and before the trips-container -->
+ <div class="export-section" style="margin-bottom: 2rem;margin-top: 2rem;">
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <button id="exportBtn" class="export-btn" style="background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: var(--radius); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s;">
+                <i class="fas fa-file-export"></i>
+               تصدير الرحلات المكتملة
+            </button>
+            <span id="exportStatus" style="color: var(--gray); font-size: 0.875rem;"></span>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="export-modal" id="exportModal">
+        <div class="export-modal-content">
+            <h3 class="export-modal-title">تصدير الرحلات المكتملة</h3>
+            
+            <div class="export-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>تحذير:</strong> بعد التصدير، سيتم حذف الرحلات المكتملة نهائياً من النظام.
+            </div>
+            
+            <div class="export-options">
+                <div class="export-option">
+                    <input type="checkbox" id="exportPdfCheckbox" checked>
+                    <label for="exportPdfCheckbox">
+                        <i class="fas fa-file-pdf" style="color: #dc2626;"></i>
+                        تنسيق PDF
+                    </label>
+                </div>
+                
+                <div class="export-option">
+                    <input type="checkbox" id="exportExcelCheckbox" checked>
+                    <label for="exportExcelCheckbox">
+                        <i class="fas fa-file-excel" style="color: #059669;"></i>
+                        تنسيق Excel
+                    </label>
+                </div>
+            </div>
+            
+            <div class="export-modal-buttons">
+                <button class="export-modal-btn cancel" id="cancelExportBtn">إلغاء</button>
+                <button class="export-modal-btn export" id="confirmExportBtn">تصدير</button>
+            </div>
+        </div>
+    </div>
+            <!-- Trips Container -->
+            <div class="trips-container">
+                <% if (trips.length === 0) { %>
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-van-shuttle"></i>
+                        </div>
+                        <h3>لا توجد رحلات مكتملة بعد لعرضها!</h3>
+                    </div>
+                <% } else { %>
+                    <% trips.forEach(trip => { %>
+                        <div class="trip-card" data-trip-id="<%= trip.id %>">
+                            <div class="trip-header">
+                                <h3 class="trip-title">
+                                    <%= trip.isReturnTrip ? 'العودة من' : 'المغادرة إلى' %> <%= trip.destination %>
+                                </h3>
+                                <div class="trip-status completed">
+                                    مكتملة
+                                </div>
+                            </div>
+                            
+                            <div class="trip-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar-day"></i>
+                                    <span><%= trip.isReturnTrip ? trip.returnDate : trip.goDate %></span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span><%= trip.isReturnTrip ? trip.returnTime : trip.goTime %></span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-users"></i>
+                                    <span><%= trip.bookings.length %> راكب</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span><%= trip.projectName %></span>
+                                </div>
+                                <% if (trip.van) { %>
+                                <div class="meta-item">
+                                    <i class="fas fa-van-shuttle"></i>
+                                    <span>فان <%= trip.van.id %> (<%= trip.van.driver %>)</span>
+                                </div>
+                                <% } %>
+                            </div>
+                            
+                            <!-- Passenger Details -->
+                            <button class="show-passengers-btn" data-trip-id="<%= trip.id %>">
+                                <i class="fas fa-users"></i> عرض الركاب
+                            </button>
+                            
+                            <div class="passenger-details" id="passengers-<%= trip.id %>">
+                                <% if (trip.bookings.length === 0) { %>
+                                    <p>لا يوجد ركاب محجوزون</p>
+                                <% } else { %>
+                                    <div class="passenger-grid">
+                                        <% trip.bookings.forEach(booking => { %>
+                                            <div class="passenger-card">
+                                                <div class="passenger-avatar">
+                                                    <%= booking.name.charAt(0).toUpperCase() %>
+                                                </div>
+                                                <div class="passenger-info">
+                                                    <div class="passenger-name"><%= booking.name %></div>
+                                                    <div class="passenger-email"><%= booking.email %></div>
+                                                </div>
+                                            </div>
+                                        <% }); %>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } %>
+            </div>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show/hide passengers functionality
+    const showPassengersBtns = document.querySelectorAll('.show-passengers-btn');
+    
+    showPassengersBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tripId = this.getAttribute('data-trip-id');
+            const passengerDetails = document.getElementById(`passengers-${tripId}`);
+            
+            if (passengerDetails) {
+                const isVisible = passengerDetails.classList.contains('visible');
+                
+                if (isVisible) {
+                    passengerDetails.classList.remove('visible');
+                    this.innerHTML = '<i class="fas fa-users"></i> عرض الركاب';
+                } else {
+                    passengerDetails.classList.add('visible');
+                    this.innerHTML = '<i class="fas fa-users"></i> اخفاء الركاب';
+                }
+            }
+        });
+    });
+
+    // Mobile menu functionality
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.querySelector('.sidebar');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    
+    if (mobileMenuBtn && sidebar && mobileOverlay) {
+        mobileMenuBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+            mobileOverlay.classList.toggle('show');
+        });
+        
+        mobileOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('open');
+            mobileOverlay.classList.remove('show');
+        });
+        
+        // Close menu when nav item is clicked
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                mobileOverlay.classList.remove('show');
+            });
+        });
+    }
+
+    // Export functionality
+    const exportModal = document.getElementById('exportModal');
+    const exportBtn = document.getElementById('exportBtn');
+    const cancelExportBtn = document.getElementById('cancelExportBtn');
+    const confirmExportBtn = document.getElementById('confirmExportBtn');
+    const exportPdfCheckbox = document.getElementById('exportPdfCheckbox');
+    const exportExcelCheckbox = document.getElementById('exportExcelCheckbox');
+    const exportStatus = document.getElementById('exportStatus');
+
+    // Show modal when export button clicked
+    if (exportBtn && exportModal) {
+        exportBtn.addEventListener('click', () => {
+            exportModal.style.display = 'flex';
+        });
+    }
+
+    // Hide modal when cancel button clicked
+    if (cancelExportBtn && exportModal) {
+        cancelExportBtn.addEventListener('click', () => {
+            exportModal.style.display = 'none';
+        });
+    }
+
+    // Export function with keepData parameter
+    async function exportTrips(format, keepData = false) {
+        return new Promise((resolve, reject) => {
+            fetch('/export-completed-trips', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ format, keepData })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Export failed with status ${response.status}`);
+                }
+                
+                const contentDisposition = response.headers.get('Content-Disposition');
+                const filename = contentDisposition 
+                    ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+                    : `completed-trips.${format === 'pdf' ? 'pdf' : 'xlsx'}`;
+                
+                return response.blob().then(blob => ({ blob, filename }));
+            })
+            .then(({ blob, filename }) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                resolve();
+            })
+            .catch(error => {
+                console.error(`Error exporting ${format}:`, error);
+                reject(error);
+            });
+        });
+    }
+
+    // Function to delete trips after all exports
+    async function deleteExportedTrips() {
+        try {
+            const response = await fetch('/export-completed-trips', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ format: 'pdf', keepData: false })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to delete exported trips');
+            }
+            return true;
+        } catch (error) {
+            console.error('Error deleting trips:', error);
+            throw error;
+        }
+    }
+
+    // Handle export confirmation
+    if (confirmExportBtn) {
+        confirmExportBtn.addEventListener('click', async () => {
+            const exportPdf = exportPdfCheckbox?.checked || false;
+            const exportExcel = exportExcelCheckbox?.checked || false;
+            
+            if (!exportPdf && !exportExcel) {
+                alert('Please select at least one export format');
+                return;
+            }
+
+            exportModal.style.display = 'none';
+            exportBtn.disabled = true;
+            if (exportStatus) {
+                exportStatus.textContent = 'Preparing export...';
+                exportStatus.style.color = 'var(--warning)';
+            }
+
+            try {
+                // First pass: Export all selected formats with keepData=true
+                if (exportPdf) {
+                    if (exportStatus) exportStatus.textContent = 'Exporting to PDF...';
+                    await exportTrips('pdf', true);
+                }
+
+                if (exportExcel) {
+                    if (exportStatus) exportStatus.textContent = 'Exporting to Excel...';
+                    await exportTrips('excel', true);
+                }
+
+                // Second pass: Delete the data
+                if (exportStatus) exportStatus.textContent = 'Finalizing...';
+                await deleteExportedTrips();
+
+                if (exportStatus) {
+                    exportStatus.textContent = exportPdf && exportExcel ? 
+                        'Both exports completed successfully!' : 
+                        'Export completed successfully!';
+                    exportStatus.style.color = 'var(--success)';
+                }
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } catch (error) {
+                console.error('Export error:', error);
+                if (exportStatus) {
+                    exportStatus.textContent = 'Export failed. Please try again.';
+                    exportStatus.style.color = 'var(--danger)';
+                }
+            } finally {
+                setTimeout(() => {
+                    exportBtn.disabled = false;
+                    if (exportStatus && exportStatus.textContent.includes('failed')) {
+                        exportStatus.textContent = '';
+                    }
+                }, 3000);
+            }
+        });
+    }
+
+    // Add hover effects
+    if (exportBtn) {
+        exportBtn.addEventListener('mouseenter', function() {
+            if (!this.disabled) {
+                this.style.transform = 'translateY(-1px)';
+                this.style.boxShadow = 'var(--shadow-md)';
+            }
+        });
+        
+        exportBtn.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'none';
+        });
+    }
+
+    [cancelExportBtn, confirmExportBtn].forEach(btn => {
+        if (btn) {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-1px)';
+                this.style.boxShadow = 'var(--shadow-sm)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            });
+        }
+    });
+});
+</script>
+</body>
+</html>

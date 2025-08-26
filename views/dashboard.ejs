@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Van Booking System | Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+
+            <div class="header-left">
+                <!-- Organization Logo -->
+                <img src="/images/organization-logo.png" 
+                     alt="Organization Logo" 
+                     class="organization-logo"
+                     onerror="this.style.display='none'">
+                
+                <!-- System Logo/Title -->
+                <div class="logo">
+                    <i class="fas fa-van-shuttle"></i>
+                    <span>نظام حجز المركبات</span>
+                </div>
+            </div>
+           <div class="user-info">
+                <button id="addBookingBtn" class="add-booking-btn">
+                    <i class="fas fa-plus"></i>
+                    <span class="btn-text">إضافة حجز</span>
+                </button>
+
+                  <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+                <a href="/organizer">
+                    <i class="fas fa-user-shield"></i>
+                    <span class="btn-text">منسق الرحلات</span>
+                </a>
+                <% } %>
+                <% if (user) { %>
+                <a href="#" id="myBookingsBtn">
+                    <i class="fas fa-calendar-check"></i>
+                    <span class="btn-text">حجوزاتي</span>
+                </a>
+<div class="user-dropdown">
+    <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+        <span aria-label="Administrator">
+            👤 <%= user.email %>
+        </span>
+    <% } else { %>
+        <span aria-label="User">
+            <i class="fas fa-user-circle"></i> <%= user.email %>
+        </span>
+    <% } %>
+
+
+
+                    <div class="dropdown-content">
+                        <a href="/logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="dashboard-container">
+        <div class="dashboard-grid" id="dashboardGrid">
+            <!-- Left sidebar for custom trips -->
+            <div class="dashboard-sidebar">
+                <div class="custom-trips-notification" id="customTripsNotification" style="display: none;">
+                    <div class="notification-header">
+                        <h4><i class="fas fa-map-marker-alt"></i> <span class="notification-title">الرحلات المخصصة المتوفرة</span></h4>
+                        <button class="collapse-btn" onclick="toggleCustomTripsNotification()" aria-label="Toggle custom trips">
+                            <i class="fas fa-chevron-up"></i>
+                        </button>
+                    </div>
+                    <div class="notification-content" id="customTripsContent">
+                        <!-- Custom trips will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right main content for calendar -->
+            <div class="dashboard-main">
+                <div class="calendar-fullview">
+                    <div class="calendar-controls">
+                        <button id="prevMonth" aria-label="Previous month"><i class="fas fa-chevron-left"></i></button>
+                        <h3 id="currentMonth">Month Year</h3>
+                        <button id="nextMonth" aria-label="Next month"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar" id="calendar" role="grid" aria-label="Calendar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Booking Form Modal -->
+    <div class="modal" id="bookingModal" role="dialog" aria-labelledby="booking-modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close" aria-label="Close modal">&times;</span>
+            <h2 id="booking-modal-title"><i class="fas fa-calendar-plus"></i> حجز رحلة</h2>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="destination">الوجهة:</label>
+                    <select name="destination" id="destination" class="floating-input" required aria-required="true">
+                        <option value="">اختر وجهتك</option>
+                        <% destinations.forEach(destination => { %>
+                            <option value="<%= destination.name %>" data-destination-id="<%= destination.id %>">
+                                <%= destination.name %>
+                            </option>
+                        <% }) %>
+                        <option value="custom" data-destination-id="custom">
+                            <i class="fas fa-plus"></i> وجهة مخصصة
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="customDestinationGroup" style="display: none;">
+                    <div class="floating-label-group">
+                        <input type="text" id="customDestination" name="customDestination" class="floating-input" placeholder=" ">
+                        <label class="floating-label">أدخل وجهتك المخصصة</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="project">المشروع:</label>
+                    <select id="project" name="projectId" required aria-required="true">
+                        <option value="">أختر مشروعاً</option>
+                        <% if (projects && projects.length > 0) { %>
+                            <% projects.forEach(project => { %>
+                                <option value="<%= project.id %>" 
+                                        data-journeys="<%= project.journeyCount || project.number_of_remaining_trips || 0 %>" 
+                                        data-location-id="<%= project.locationId || '' %>" 
+                                        <%= (project.journeyCount || project.number_of_remaining_trips || 0) <= 0 ? 'disabled' : '' %>>
+                                    <%= project.name %> 
+                                    (<span class="journey-count"><%= project.journeyCount || project.number_of_remaining_trips || 0 %></span> 
+                                    <%= (project.journeyCount || project.number_of_remaining_trips || 0) <= 0 ? 'لا توجد رحلات متبقية لهذا المشروع' : 'رحلة متبقية' %>)
+                                </option>
+                            <% }); %>
+                        <% } else { %>
+                            <option disabled>No projects available</option>
+                        <% } %>
+                    </select>
+                    <div id="projectLockMessage" style="display: none; color: #666; font-size: 0.9em; margin-top: 5px;">
+                        <i class="fas fa-lock"></i> Project locked to match existing trip
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="goDate">تاريخ الذهاب:</label>
+                        <input type="date" id="goDate" name="goDate" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="returnDate">تاريخ العودة:</label>
+                        <input type="date" id="returnDate" name="returnDate" required min="" aria-required="true">
+                    </div>
+                </div>
+                
+                <div class="time-warning" id="timeWarning" style="display: none;" role="alert">
+                    <!-- Content will be dynamically inserted by JavaScript -->
+                </div>
+                
+                <div class="time-warning" id="returnTimeWarning" style="display: none;" role="alert">
+                    <!-- Content will be dynamically inserted by JavaScript -->
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="goTime">وقت الذهاب:</label>
+                        <input type="time" id="goTime" name="goTime" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="returnTime">وقت العودة:</label>
+                        <input type="time" id="returnTime" name="returnTime" required aria-required="true">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">
+                    <i class="fas fa-paper-plane"></i> 
+                    <span>حجز</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Bookings Details Modal -->
+    <div class="modal" id="bookingsModal" role="dialog" aria-labelledby="bookings-modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close" aria-label="Close modal">&times;</span>
+            <h3 id="modalDate"><i class="fas fa-calendar-day"></i> Bookings for </h3>
+            <div id="bookingDetails"></div>
+        </div>
+    </div>
+
+    <!-- Enrollment Confirmation Modal -->
+    <div class="modal" id="confirmationModal" role="dialog" aria-labelledby="confirmation-modal-title" aria-hidden="true">
+        <div class="modal-content confirmation-modal">
+            <span class="close" aria-label="Close modal">&times;</span>
+            <div class="confirmation-content">
+                <div class="confirmation-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h3 id="confirmationTitle">Confirm Enrollment</h3>
+                <div id="confirmationMessage" class="confirmation-message">
+                    <!-- Message will be populated by JavaScript -->
+                </div>
+                <div class="confirmation-buttons">
+                    <button id="cancelEnrollment" class="btn btn-cancel">
+                        <i class="fas fa-times"></i> 
+                        <span>Cancel</span>
+                    </button>
+                    <button id="confirmEnrollment" class="btn btn-confirm">
+                        <i class="fas fa-check"></i> 
+                        <span>Confirm Enrollment</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Bookings Modal -->
+    <div class="modal" id="myBookingsModal" role="dialog" aria-labelledby="my-bookings-modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close" aria-label="Close modal">&times;</span>
+            <h2 id="my-bookings-modal-title"><i class="fas fa-calendar-check"></i> حجوزاتي</h2>
+            <div id="myBookingsContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Make database data available to JavaScript
+        window.destinationsData = <%- JSON.stringify(destinations) %>;
+        window.projectsData = <%- JSON.stringify(projects) %>;
+    </script>
+    <script src="/js/script.js"></script>
+</body>
+</html>

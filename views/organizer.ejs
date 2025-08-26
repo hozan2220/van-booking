@@ -1,0 +1,4228 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام حجز الفانات | لوحة تحكم منسق الرحلات</title>
+    <link rel="stylesheet" href="/css/style.css">
+<link rel="icon" href="/images/favicon.ico">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            --radius-sm: 0.25rem;
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body[dir="rtl"] {
+            text-align: right;
+
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+        
+        /* Add this new animation for highlighting */
+        @keyframes pulseHighlight {
+            0% { transform: scale(1); box-shadow: none; }
+            50% { transform: scale(1.02); box-shadow: 0 0 15px rgba(67, 97, 238, 0.5); }
+            100% { transform: scale(1); box-shadow: none; }
+        }
+        
+        .highlight-trip {
+            animation: pulseHighlight 1.5s ease-in-out;
+            border-left: 4px solid var(--primary) !important;
+        }
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.highlight-trip {
+    border-left: 4px solid var(--primary) !important;
+    box-shadow: 0 0 15px rgba(67, 97, 238, 0.2);
+}
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Add to your existing styles */
+        .trip-status.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .trip-status.closed {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .closed-trip {
+            opacity: 0.7;
+            border-left-color: var(--warning) !important;
+        }
+#modalTripContent{
+padding-top:35px;
+padding-buttom: 35px;
+
+}
+#modalTripTitle{
+padding-top:35px;
+padding-buttom: 35px;
+
+}
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            background: white;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+   left: 20px;
+            right: auto;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .toast.warning {
+            border-left: 4px solid var(--warning);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-right: 1px solid var(--gray-light);
+            padding: 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+ right: 0;
+            left: auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .trip-meta .meta-item {
+            direction: ltr;
+        }
+
+        
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+         .calendar-header-day, .day-number {
+            direction: ltr;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            color: var(--gray);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .nav-item:hover {
+            background: var(--gray-light);
+            color: var(--dark);
+        }
+        
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main {
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+.stat-change, .stat-value {
+            direction: ltr;
+        }
+        
+        /* Stats Cards */
+.stats-grid {
+        direction: ltr; /* Keep numbers LTR */
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Much smaller - from 240px */
+    gap: 0.75rem; /* Tighter spacing */
+    margin-top: 1rem; /* Reduced margin */
+
+    margin-bottom: 1rem; /* Reduced margin */
+}    
+.stat-card {
+    background: white;
+    border-radius: var(--radius-sm); /* Smaller radius */
+    padding: 0.75rem; /* Much smaller padding */
+    box-shadow: var(--shadow-sm); /* Lighter shadow */
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem; /* Minimal gap */
+    text-align: center; /* Center align for compact look */
+}      
+  .stat-header {
+    display: flex;
+    justify-content: center; /* Center the icon */
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+        
+.stat-title {
+    font-size: 0.75rem; /* Much smaller text */
+    color: var(--gray);
+    font-weight: 500;
+    line-height: 1.1;
+    margin-bottom: 0.25rem;
+}
+        
+.stat-icon {
+    width: 24px; /* Much smaller - from 40px */
+    height: 24px; /* Much smaller - from 40px */
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem; /* Smaller icon size */
+    margin-bottom: 0.25rem; /* Space below icon */
+
+}
+.complete-trip-btn:disabled,
+.btn:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+
+/* Spinner animation for loading states */
+.fa-spinner.fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Modal button states */
+.modal-buttons .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+/* Update these existing styles in your CSS */
+
+/* Departure trips in calendar */
+.day-journey.departure-trip {
+    background-color: rgba(67, 97, 238, 0.1);
+    border-left: 3px solid var(--primary); /* Blue */
+}
+
+/* Return trips in calendar - FIXED */
+.day-journey.return-trip {
+    background-color: rgba(239, 68, 68, 0.1); /* Light red background */
+    border-left: 3px solid #ef4444; /* Red border - This was the issue */
+}
+/* Keep existing completed/closed styles */
+.day-journey.completed-trip {
+    opacity: 0.7;
+    border-left-color: var(--gray) !important;
+}
+
+.day-journey.closed-trip {
+    opacity: 0.7;
+    border-left-color: var(--warning) !important;
+}
+        
+        .stat-icon.primary {
+            background: var(--primary);
+        }
+        
+        .stat-icon.warning {
+            background: var(--warning);
+        }
+        
+        .stat-icon.danger {
+            background: var(--danger);
+        }
+        
+.stat-value {
+    font-size: 1.25rem; /* Smaller - from 1.75rem */
+    font-weight: 700;
+    line-height: 1;
+}
+        
+.stat-change {
+    font-size: 0.625rem; /* Very small text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.125rem;
+    margin-top: 0.125rem;
+}
+        
+        .stat-change.positive {
+            color: var(--success);
+        }
+        
+        .stat-change.negative {
+            color: var(--danger);
+        }
+        
+        /* Calendar Section */
+        .calendar-section {
+            margin-top: 2rem;
+            background: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .calendar-container {
+            position: relative;
+            margin-top: 1.5rem;
+        }
+        
+        .calendar-controls {
+            display: flex;
+            flex-direction: row-reverse;
+
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .calendar-controls button {
+            background: var(--light);
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .calendar-controls button:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+        
+        #currentMonth {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.75rem;
+        }
+        
+        .calendar-header-day {
+            text-align: center;
+            font-weight: 600;
+            padding: 0.75rem 0;
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .day {
+            padding: 0.75rem;
+            min-height: 100px;
+            border-radius: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+            background-color: white;
+            border: 1px solid var(--light-gray);
+        }
+        
+        .day:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transform: scale(1.02);
+        }
+        
+        .day-number {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--dark);
+        }
+        
+        .other-month {
+            background-color: var(--light);
+            color: var(--gray);
+            opacity: 0.6;
+        }
+        
+        .has-bookings {
+            background-color: rgba(67, 97, 238, 0.05);
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            cursor: pointer;
+        }
+        
+        .needs-van {
+            background-color: rgba(252, 165, 3, 0.1);
+            border: 1px solid rgba(252, 165, 3, 0.3);
+        }
+        
+        .day-bookings {
+            margin-top: 0.5rem;
+            max-height: 70px;
+            overflow-y: auto;
+            padding-right: 0.25rem;
+        }
+      .tabs {
+            flex-direction: row-reverse;
+        }
+        
+        .day-journey {
+            font-size: 0.7rem;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+ /* Update the calendar day journey styling to match */
+.departure-trip {
+    background-color: rgba(67, 97, 238, 0.1);
+    border-left: 3px solid var(--primary); /* Blue */
+}
+        
+.return-trip {
+    background-color: rgba(239, 68, 68, 0.1); /* Light red background */
+    border-left: 3px solid #ef4444; /* Red border */
+}
+        
+        .completed-trip {
+            opacity: 0.7;
+            border-left-color: var(--gray) !important;
+        }
+        
+        .closed-trip {
+            opacity: 0.7;
+            border-left-color: var(--warning) !important;
+        }
+        
+        .journey-van {
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+        
+        .departure-trip .journey-van {
+            color: var(--primary-dark);
+        }
+        
+.return-trip .journey-van {
+    color: #dc2626; /* Darker red for better contrast */
+}
+        
+        .journey-project {
+            font-weight: 500;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .journey-time {
+            color: var(--gray);
+            font-size: 0.65rem;
+            font-style: italic;
+        }
+        
+        .booking-count {
+            position: absolute;
+            bottom: 0.75rem;
+            right: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+            padding-bottom: 0.5rem;
+        }
+        
+        .tab {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tab:hover {
+            background: var(--gray-light);
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Trip Cards */
+        .trips-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+/* Trip Cards with colored left borders */
+.trip-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-left: 4px solid transparent; /* Default transparent border */
+}
+/* Departure trips - Blue left border */
+.trip-card[data-trip-type="departure"] {
+    border-left: 4px solid #4361ee; /* Blue color */
+}
+/* Return trips - Red left border */
+.trip-card[data-trip-type="return"] {
+    border-left: 4px solid #ef4444; /* Red color */
+}
+        
+        .trip-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .trip-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .trip-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .trip-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .trip-status.assigned {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+        
+        .trip-status.unassigned {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .trip-status.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .trip-status.closed {
+            background: #fef3c7;
+            color: #92400e;
+        }
+.booking-item p {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray);
+}
+
+.booking-item p i {
+    width: 16px;
+    color: var(--gray);
+}
+/* Modal booking item headings */
+.booking-item h4 {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.trip-status-badge {
+    background: var(--success);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+/* Modal booking item base styling */
+.booking-item {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-radius: var(--radius);
+    border-left: 4px solid transparent;
+    background: white;
+    box-shadow: var(--shadow-sm);
+}
+/* Departure trips in modal */
+.booking-item.departure {
+    background-color: rgba(67, 97, 238, 0.05);
+    border-left: 4px solid var(--primary); /* Blue */
+}
+
+/* Return trips in modal */
+.booking-item.return {
+    background-color: rgba(239, 68, 68, 0.05);
+    border-left: 4px solid #ef4444; /* Red */
+}
+.booking-item.completed {
+    opacity: 0.7;
+    border-left-color: var(--gray) !important;
+}
+
+/* Closed trips in modal */
+.booking-item.closed {
+    opacity: 0.7;
+    border-left-color: var(--warning) !important;
+}
+        
+        .trip-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .meta-item i {
+            color: var(--gray);
+            width: 16px;
+        }
+        
+        .trip-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.8125rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--gray-light);
+            color: var(--dark);
+        }
+        
+        .btn-outline:hover {
+            background: var(--gray-light);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #ef4444;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: #e6950f;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #3da735;
+        }
+        
+        /* Van Selector */
+        .van-selector {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: var(--radius);
+            display: none;
+        }
+        
+        .van-selector.show {
+            display: block;
+        }
+        
+        .van-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .van-item {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .van-item:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .van-item.selected {
+            border-color: var(--primary);
+            background: #e0e7ff;
+        }
+        
+        .van-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .van-details {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        
+        /* Passenger Details */
+        .passenger-details {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .passenger-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .passenger-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .passenger-avatar {
+            direction: ltr;
+
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .passenger-info {
+            flex: 1;
+        }
+        
+        .passenger-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .passenger-email {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+text-align: right;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        .close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.75rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .close:hover {
+            color: var(--danger);
+            background-color: rgba(239, 35, 60, 0.1);
+        }
+        
+        /* Complete Trip Modal Styles */
+        .complete-trip-modal {
+            padding: 1rem;
+        }
+        
+        .complete-trip-modal h4 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .complete-trip-modal .form-group {
+            margin: 1rem 0;
+        }
+        
+        .complete-trip-modal label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .complete-trip-modal input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        
+        .modal-buttons {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            color: var(--gray-light);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-text {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        
+        /* Responsive */
+       @media (max-width: 768px) {
+            /* Dashboard Layout */
+            .dashboard {
+                grid-template-columns: 1fr;
+                min-height: 100vh;
+            }
+            
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Changed from left: -100% */
+    width: 80%;
+    max-width: 280px;
+    height: 100vh;
+    z-index: 1001;
+    transition: right 0.3s ease; /* Changed from left */
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1); /* Changed shadow direction */
+}
+            
+          .sidebar.open {
+    right: 0; /* Changed from left: 0 */
+}
+            
+            /* Mobile overlay */
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 1000;
+            }
+            
+            .mobile-overlay.show {
+                display: block;
+            }
+            
+            /* Mobile Header */
+            .main {
+                padding: 1rem;
+                padding-top: 70px; /* Space for mobile header */
+            }
+            
+
+            .mobile-header {
+            flex-direction: row-reverse;
+
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                padding: 1rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid var(--gray-light);
+                z-index: 999;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .mobile-menu-btn {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--primary);
+                cursor: pointer;
+                padding: 0.5rem;
+                border-radius: var(--radius);
+                transition: background 0.2s;
+            }
+            
+            .mobile-menu-btn:hover {
+                background: var(--gray-light);
+            }
+            
+            .mobile-logo {
+                display: flex;
+            flex-direction: row-reverse;
+
+                align-items: center;
+                gap: 0.5rem;
+                font-weight: 600;
+                color: var(--dark);
+            }
+            
+            .mobile-logo-icon {
+                width: 28px;
+                height: 28px;
+                background: var(--primary);
+                border-radius: var(--radius-sm);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 0.9rem;
+            }
+            
+            /* Header adjustments */
+            .header {
+                margin-bottom: 1rem;
+            }
+            
+            .header-title {
+                font-size: 1.5rem;
+            }
+            
+            .user-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+            }
+            
+            /* Stats Grid - Responsive */
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); /* Very compact on mobile */
+        gap: 0.5rem; 
+        margin-bottom: 1rem;
+    }
+            
+     .stat-card {
+        padding: 0.5rem; /* Very tight padding */
+    }
+    
+   .stat-icon {
+        width: 20px; /* Tiny icons on mobile */
+        height: 20px;
+        font-size: 0.65rem;
+    }
+   .stat-value {
+        font-size: 1rem; /* Smaller values */
+    }
+    .stat-title {
+        font-size: 0.65rem; /* Very small title */
+        line-height: 1;
+    }
+    
+    .stat-change {
+        font-size: 0.55rem; /* Tiny change text */
+    }
+            
+            /* Calendar Mobile Optimizations */
+            .calendar-section {
+                margin-top: 1rem;
+                padding: 1rem;
+            }
+            
+            .calendar-controls {
+                margin-bottom: 1rem;
+            }
+            
+            .calendar-controls button {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            
+            #currentMonth {
+                font-size: 1.1rem;
+            }
+            
+            /* Smaller calendar for mobile */
+            .calendar {
+                gap: 0.25rem;
+            }
+            
+            .calendar-header-day {
+                padding: 0.5rem 0;
+                font-size: 0.75rem;
+            }
+            
+            .day {
+                min-height: 70px;
+                padding: 0.5rem 0.25rem;
+                font-size: 0.8rem;
+            }
+            
+            .day-number {
+                font-size: 0.8rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .day-journey {
+                font-size: 0.6rem;
+                margin-bottom: 0.25rem;
+                padding: 0.25rem;
+            }
+            
+            .journey-van {
+                font-size: 0.65rem;
+            }
+            
+            .journey-project {
+                font-size: 0.6rem;
+            }
+            
+            .journey-time {
+                font-size: 0.55rem;
+            }
+            
+            .booking-count {
+                width: 20px;
+                height: 20px;
+                font-size: 0.65rem;
+                bottom: 0.5rem;
+                right: 0.5rem;
+            }
+            
+            /* Tabs Mobile */
+            .tabs {
+                overflow-x: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                padding-bottom: 0.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .tabs::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .tab {
+                flex-shrink: 0;
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+                white-space: nowrap;
+            }
+            
+            /* Trip Cards Mobile */
+     .trip-card {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem; /* Reduced from 0.75rem */
+        border-radius: var(--radius-sm);
+    }
+    
+    .trip-header {
+        flex-direction: row; /* Keep horizontal on mobile */
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem; /* Reduced from 0.75rem */
+    }
+    
+    .trip-title {
+        font-size: 0.9rem; /* Smaller title */
+        line-height: 1.2;
+        flex: 1;
+        margin-right: 0.5rem;
+    }
+    
+    .trip-status {
+        font-size: 0.65rem; /* Smaller status */
+        padding: 0.2rem 0.4rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    
+    /* Compact Trip Meta - Horizontal Layout */
+    .trip-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem; /* Reduced from 0.75rem */
+        font-size: 0.75rem; /* Smaller text */
+    }
+    
+    .meta-item {
+        font-size: 0.75rem; /* Consistent smaller size */
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    
+    .meta-item i {
+        width: 12px;
+        font-size: 0.7rem;
+        color: var(--gray);
+    }
+    
+    /* Compact Trip Actions - Horizontal scroll on mobile */
+    .trip-actions {
+        display: flex;
+        gap: 0.375rem;
+        margin-top: 0.5rem;
+        overflow-x: auto;
+        padding-bottom: 0.25rem;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+   .trip-actions::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .trip-actions .btn-sm {
+        padding: 0.375rem 0.5rem;
+        font-size: 0.7rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+        min-width: auto;
+        width: auto;
+    }
+    
+            
+            .btn-sm {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+                justify-content: center;
+                width: 100%;
+            }
+            
+            /* Van Selector Mobile */
+     .van-selector {
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        border-radius: var(--radius-sm);
+    }
+  .van-selector h4 {
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+
+       .van-list {
+        gap: 0.375rem;
+    }
+            
+       .van-item {
+        padding: 0.5rem;
+        border-radius: var(--radius-sm);
+    }
+    .van-details {
+        font-size: 0.7rem;
+    }
+    
+    .van-details div {
+        margin-bottom: 0.125rem;
+    }
+            /* Passenger Details Mobile */
+      .passenger-grid {
+        gap: 0.5rem;
+    }
+            
+       .passenger-card {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+        .passenger-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+    .passenger-name {
+        font-size: 0.8rem;
+        margin-bottom: 0.125rem;
+    }
+    
+    .passenger-email {
+        font-size: 0.7rem;
+    }
+            
+            /* Modal Mobile */
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+                padding: 1.5rem;
+                max-height: 85vh;
+                border-radius: var(--radius);
+            }
+            
+            .close {
+                top: 1rem;
+                right: 1rem;
+                font-size: 1.5rem;
+                width: 32px;
+                height: 32px;
+            }
+            
+            /* Modal buttons stack on mobile */
+            .modal-buttons {
+                flex-direction: column-reverse;
+                gap: 0.5rem;
+            }
+            
+            .modal-buttons .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+@media (max-width: 480px) {
+            .main {
+                padding: 0.75rem;
+                padding-top: 65px;
+            }
+            
+            .mobile-header {
+                padding: 0.75rem;
+            }
+            
+            .header-title {
+                font-size: 1.25rem;
+            }
+            
+            /* Even smaller calendar for very small screens */
+            .day {
+                min-height: 60px;
+                padding: 0.25rem;
+            }
+            
+            .day-number {
+                font-size: 0.75rem;
+            }
+            
+            .day-journey {
+                font-size: 0.55rem;
+                padding: 0.2rem;
+            }
+            
+            .booking-count {
+                width: 18px;
+                height: 18px;
+                font-size: 0.6rem;
+            }
+            
+            /* Stats grid single column on very small screens */
+   .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr)); /* Ultra compact */
+        gap: 0.375rem;
+    }
+    
+    .stat-card {
+        padding: 0.375rem; /* Minimal padding */
+    }
+    
+    .stat-icon {
+        width: 18px;
+        height: 18px;
+        font-size: 0.6rem;
+    }
+    
+    .stat-value {
+        font-size: 0.875rem;
+    }
+    
+    .stat-title {
+        font-size: 0.6rem;
+        line-height: 0.9;
+    }
+    
+    .stat-change {
+        font-size: 0.5rem;
+    }     
+            .trip-card {
+                padding: 0.75rem;
+            }
+            
+            .trip-title {
+                font-size: 0.9rem;
+            }
+        }
+  @media (max-width: 768px) and (orientation: landscape) {
+            .mobile-header {
+                padding: 0.5rem 1rem;
+            }
+            
+            .main {
+                padding-top: 60px;
+            }
+            
+            .day {
+                min-height: 50px;
+            }
+        }
+        
+        /* Additional utility classes for mobile */
+        .mobile-only {
+            display: block;
+        }
+        
+        .desktop-only {
+            display: none;
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none;
+            }
+            
+            .desktop-only {
+                display: block;
+            }
+            
+            .mobile-header {
+                display: none;
+            }
+            
+            .main {
+                padding-top: 2rem;
+            }
+        }
+        
+        /* Touch-friendly improvements */
+        @media (max-width: 768px) {
+            /* Larger touch targets */
+            .btn {
+                min-height: 44px;
+                padding: 0.625rem 1rem;
+            }
+            
+            .nav-item {
+                min-height: 48px;
+                padding: 0.75rem;
+            }
+            
+            .van-item {
+                min-height: 48px;
+            }
+            
+            .tab {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+            }
+            
+            /* Improve scrolling */
+            .calendar, .tabs, .trips-container {
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Better form elements */
+            input[type="checkbox"] {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+<body dir="rtl">
+    <div class="mobile-only">
+        <!-- Mobile header -->
+        <div class="mobile-header">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="mobile-logo">
+                <div class="mobile-logo-icon">
+                    <i class="fas fa-van-shuttle"></i>
+                </div>
+                <span>منسق الرحلات</span>
+            </div>
+        </div>
+        
+        <!-- Overlay -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+    </div>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-van-shuttle"></i>
+                </div>
+                <div class="logo-text">VanTrack</div>
+            </div>
+            
+            <nav class="nav">
+                <a href="/dashboard" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>لوحة الحجز</span>
+                </a>
+                <a href="/organizer" class="nav-item active">
+                    <i class="fas fa-tasks"></i>
+                    <span>منسق الرحلات</span>
+                </a>
+                <a href="/projects" class="nav-item">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>المشاريع  & المناطق & الفانات</span>
+                </a>
+
+                <a href="/reports" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>التقارير</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <% projects.forEach(project => { %>
+<div class="stat-card" data-project-id="<%= project.id %>">
+    <div class="stat-header">
+        <div class="stat-title"><%= project.name %> </div>
+        <div class="stat-icon <%= project.journeyCount <= 10 ? 'warning' : 'primary' %>">
+            <i class="fas fa-route"></i>
+        </div>
+    </div>
+    <div class="stat-value"><%= project.journeyCount %></div>
+    <div class="stat-change <%= project.journeyCount < 50 ? 'negative' : 'positive' %>">
+        <i class="fas <%= project.journeyCount < 50 ? 'fa-arrow-down' : 'fa-arrow-up' %>"></i>
+        <%= Math.floor((project.journeyCount / 50) * 100) %>% متبقي
+    </div>
+</div>
+                <% }); %>
+            </div>
+            
+            <!-- Calendar Section -->
+            <div class="calendar-section">
+                <h2><i class="fas fa-calendar-alt"></i> تقويم الرحلات</h2>
+                <div class="calendar-container">
+                    <div class="calendar-controls">
+                        <button id="prevMonth"><i class="fas fa-chevron-right"></i></button>
+                        <h3 id="currentMonth">الشهر السنة</h3>
+                        <button id="nextMonth"><i class="fas fa-chevron-left"></i></button>
+                    </div>
+                    <div class="calendar" id="calendar"></div>
+                </div>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="all">جميع الرحلات</div>
+                <div class="tab" data-tab="unassigned">غير مخصصة</div>
+                <div class="tab" data-tab="assigned">مخصصة</div>
+                <div class="tab" data-tab="closed">مغلقة</div>
+            </div>
+            
+            <!-- Trips Container -->
+            <div class="trips-container">
+                <% if (trips.length === 0) { %>
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-van-shuttle"></i>
+                        </div>
+                        <h3>لا توجد رحلات مجدولة</h3>
+                        <p class="empty-text">لا توجد أي رحلات للعرض حاليًا</p>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> إنشاء رحلة جديدة
+                        </button>
+                    </div>
+                <% } else { %>
+                   <% trips.forEach(trip => { %>
+<div class="trip-card" 
+     data-trip-id="<%= trip.id %>" 
+     data-trip-date="<%= trip.isReturnTrip ? trip.returnDate : trip.goDate %>"
+     data-trip-type="<%= trip.isReturnTrip ? 'return' : 'departure' %>"
+     data-created-at="<%= trip.createdAt %>">
+    <div class="trip-header">
+        <h3 class="trip-title">
+            <%= trip.isReturnTrip ? 'عودة من' : 'انطلاق إلى' %> <%= trip.destination %>
+            <% if (trip.isCustom) { %>
+                <span class="trip-status-badge" style="background: var(--accent); margin-right: 0.5rem;">مخصص</span>
+            <% } %>
+        </h3>
+        <div class="trip-status <%= trip.isCompleted ? 'completed' : trip.isClosed ? 'closed' : trip.vanId ? 'assigned' : 'unassigned' %>">
+            <% if (trip.isCompleted) { %>
+                مكتملة
+            <% } else if (trip.isClosed) { %>
+                <% if (trip.vanId && trip.van && trip.van.driver) { %>
+                    <%= trip.van.driver %> - مغلقة
+                <% } else { %>
+                    مغلقة
+                <% } %>
+            <% } else if (trip.vanId && trip.van && trip.van.driver) { %>
+                <%= trip.van.driver %>
+            <% } else { %>
+                بحاجة إلى فان
+            <% } %>
+        </div>
+    </div>
+                        
+    <div class="trip-meta">
+        <div class="meta-item">
+            <i class="fas fa-calendar-day"></i>
+            <span><%= trip.isReturnTrip ? trip.returnDate : trip.goDate %></span>
+        </div>
+        <div class="meta-item">
+            <i class="fas fa-clock"></i>
+            <span><%= trip.isReturnTrip ? trip.returnTime : trip.goTime %></span>
+        </div>
+        <div class="meta-item">
+            <i class="fas fa-users"></i>
+            <span><%= trip.passengerCount %> راكب</span>
+        </div>
+        <div class="meta-item">
+            <i class="fas fa-briefcase"></i>
+            <span><%= trip.projectName %></span>
+        </div>
+        <!-- Add creation time display -->
+        <div class="meta-item" style="font-size: 0.875rem; color: var(--gray);">
+            <i class="fas fa-calendar-plus"></i>
+            <span>تم الإنشاء: <%= new Date(trip.createdAt).toLocaleString('ar') %></span>
+        </div>
+    </div>
+                            
+    <div class="trip-actions">
+        <% if (trip.vanId && !trip.isCompleted) { %>
+            <button class="btn btn-danger btn-sm release-van-btn">
+                <i class="fas fa-van-shuttle"></i> تحرير الفان
+            </button>
+        <% } %>
+        <% if (!trip.vanId && !trip.isCompleted) { %>
+            <button class="btn btn-primary btn-sm assign-van-btn">
+                <i class="fas fa-van-shuttle"></i> تعيين فان
+            </button>
+        <% } %>
+        <% if (!trip.isCompleted) { %>
+            <% if (!trip.isClosed) { %>
+                <button class="btn btn-warning btn-sm close-trip-btn" data-trip-id="<%= trip.id %>">
+                    <i class="fas fa-lock"></i> إغلاق الرحلة
+                </button>
+            <% } else { %>
+                <button class="btn btn-success btn-sm reopen-trip-btn" data-trip-id="<%= trip.id %>">
+                    <i class="fas fa-unlock"></i> إعادة فتح الرحلة
+                </button>
+            <% } %>
+        <% } %>
+        <% if (trip.vanId && !trip.isCompleted) { %>
+            <button class="btn btn-success btn-sm complete-trip-btn" data-trip-id="<%= trip.id %>" data-is-return="<%= trip.isReturnTrip %>">
+                <i class="fas fa-check-circle"></i> إكمال الرحلة
+            </button>
+        <% } %>
+        <button class="btn btn-outline btn-sm toggle-passengers-btn" data-trip-id="<%= trip.id %>">
+            <i class="fas fa-users"></i> عرض الركاب
+        </button>
+    </div>
+    
+    <!-- Van Selector -->
+    <% if (1) { %>
+        <div class="van-selector" id="vanSelector-<%= trip.id %>">
+            <h4>اختر فان لهذه الرحلة:</h4>
+            <div class="van-list">
+                <% vans.forEach(van => { %>
+                    <% if (van.projectId === trip.projectId) { %>
+                        <div class="van-item" data-van-id="<%= van.id %>">
+                            <div class="van-details">
+                                <div><i class="fas fa-user"></i> <%= van.driver %></div>
+                                <div><i class="fas fa-chair"></i> <%= van.capacity %> مقعد</div>
+                            </div>
+                        </div>
+                    <% } %>
+                <% }); %>
+            </div>
+            <button class="btn btn-outline btn-sm btn-cancel" style="margin-top: 1rem;">
+                <i class="fas fa-times"></i> إلغاء
+            </button>
+        </div>
+    <% } %>
+    
+    <!-- Passenger Details -->
+    <div class="passenger-details" id="passengerDetails-<%= trip.id %>">
+        <h4>قائمة الركاب</h4>
+        <% if (trip.bookings.length === 0) { %>
+            <p>لا يوجد ركاب حاليًا</p>
+        <% } else { %>
+            <div class="passenger-grid">
+                <% trip.bookings.forEach(booking => { %>
+                    <div class="passenger-card">
+                        <div class="passenger-avatar">
+                            <%= booking.name.charAt(0).toUpperCase() %>
+                        </div>
+                        <div class="passenger-info">
+                            <div class="passenger-name"><%= booking.name %></div>
+                            <div class="passenger-email"><%= booking.email %></div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </div>
+</div>
+                    <% }); %>
+                <% } %>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal for Trip Details -->
+    <div class="modal" id="tripModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalTripTitle"><i class="fas fa-calendar-day"></i> تفاصيل الرحلة</h3>
+            <div id="modalTripContent"></div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Calendar functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.querySelector('.sidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            if (mobileMenuBtn && sidebar && mobileOverlay) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                    mobileOverlay.classList.toggle('show');
+                });
+                
+                mobileOverlay.addEventListener('click', function() {
+                    sidebar.classList.remove('open');
+                    mobileOverlay.classList.remove('show');
+                });
+                
+                // Close menu when nav item is clicked
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        sidebar.classList.remove('open');
+                        mobileOverlay.classList.remove('show');
+                    });
+                });
+            }
+            
+            const calendarEl = document.getElementById('calendar');
+            const currentMonthEl = document.getElementById('currentMonth');
+            const prevMonthBtn = document.getElementById('prevMonth');
+            const completionRequests = new Set();
+            const nextMonthBtn = document.getElementById('nextMonth');
+            const tripModal = document.getElementById('tripModal');
+            const modalTripTitle = document.getElementById('modalTripTitle');
+            const modalTripContent = document.getElementById('modalTripContent');
+            const closeModalBtn = document.querySelector('.close');
+            
+            let currentDate = new Date();
+            
+            // Event listener tracking
+            const eventListeners = new Map();
+            
+            // Helper function to safely add event listeners
+            function addEventListener(element, event, handler) {
+                // Remove existing listener if any
+                if (eventListeners.has(element)) {
+                    const existing = eventListeners.get(element);
+                    element.removeEventListener(event, existing);
+                }
+                
+                // Add new listener
+                element.addEventListener(event, handler);
+                eventListeners.set(element, handler);
+            }
+
+            // Initialize calendar
+            renderCalendar(currentDate);
+            
+            // Calendar event listeners
+            prevMonthBtn.addEventListener('click', () => updateMonth(-1));
+            nextMonthBtn.addEventListener('click', () => updateMonth(1));
+            closeModalBtn.addEventListener('click', closeModal);
+            window.addEventListener('click', (e) => e.target === tripModal && closeModal());
+            
+            // Calendar functions
+            function updateMonth(monthDelta) {
+                currentDate.setMonth(currentDate.getMonth() + monthDelta);
+                renderCalendar(currentDate);
+            }
+            
+            function sortTripsByCreatedAt(trips) {
+                return trips.sort((a, b) => {
+                    const dateA = new Date(a.createdAt || '1970-01-01');
+                    const dateB = new Date(b.createdAt || '1970-01-01');
+                    return dateB - dateA; // Newest first (descending order)
+                });
+            }
+            
+            function renderCalendar(date) {
+                const year = date.getFullYear();
+                const month = date.getMonth();
+                
+                // Arabic month names
+                const arabicMonths = [
+                    "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                    "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+                ];
+                
+                currentMonthEl.textContent = `${arabicMonths[month]} ${year}`;
+                
+                calendarEl.innerHTML = '';
+                createDayHeaders();
+                
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const prevMonthDays = new Date(year, month, 0).getDate();
+
+                // Previous month days
+                for (let i = firstDay - 1; i >= 0; i--) {
+                    createDayElement(prevMonthDays - i, true);
+                }
+
+                // Current month days
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const dateStr = formatDate(year, month + 1, i);
+                    createDayElement(i, false, dateStr);
+                }
+
+                // Next month days
+                const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+                for (let i = 1; i <= (totalCells - (firstDay + daysInMonth)); i++) {
+                    createDayElement(i, true);
+                }
+            }
+            
+            function createDayHeaders() {
+                // Arabic day names
+                const arabicDays = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
+                arabicDays.forEach(day => {
+                    const header = document.createElement('div');
+                    header.className = 'calendar-header-day';
+                    header.textContent = day;
+                    calendarEl.appendChild(header);
+                });
+            }
+            
+            function createDayElement(dayNum, isOtherMonth, dateStr = '') {
+                const dayEl = document.createElement('div');
+                dayEl.className = `day ${isOtherMonth ? 'other-month' : ''}`;
+                
+                const dayNumberEl = document.createElement('div');
+                dayNumberEl.className = 'day-number';
+                dayNumberEl.textContent = dayNum;
+                dayEl.appendChild(dayNumberEl);
+
+                if (!isOtherMonth && dateStr) {
+                    fetchBookingsForDate(dateStr, dayEl);
+                }
+                
+                calendarEl.appendChild(dayEl);
+            }
+            
+            function fetchBookingsForDate(dateStr, dayEl) {
+                fetch(`/bookings/${dateStr}?excludeCompleted=true`)
+                    .then(res => res.json())
+                    .then(trips => {
+                        // Ensure trips are sorted by createdAt (newest first)
+                        const sortedTrips = sortTripsByCreatedAt(trips);
+                        
+                        // Filter out completed trips from the calendar view in organizer
+                        const activeTrips = sortedTrips.filter(trip => !trip.isCompleted);
+                        
+                        // Clear existing booking-related classes and elements first
+                        dayEl.classList.remove('has-bookings', 'needs-van');
+                        const existingBookings = dayEl.querySelector('.day-bookings');
+                        const existingCount = dayEl.querySelector('.booking-count');
+                        if (existingBookings) existingBookings.remove();
+                        if (existingCount) existingCount.remove();
+                        
+                        if (activeTrips.length > 0) {
+                            dayEl.classList.add('has-bookings');
+                            
+                            // Check if any trips need a van (and are not closed)
+                            const needsVan = activeTrips.some(trip => !trip.vanId && !trip.isCompleted && !trip.isClosed);
+                            if (needsVan) {
+                                dayEl.classList.add('needs-van');
+                            }
+                            
+                            const detailsEl = document.createElement('div');
+                            detailsEl.className = 'day-bookings';
+                            
+                            // Display trips in sorted order (newest first)
+                            activeTrips.forEach(trip => {
+                                const journeyEl = document.createElement('div');
+                                journeyEl.className = `day-journey ${trip.isReturnTrip ? 'return-trip' : 'departure-trip'} ${trip.isCompleted ? 'completed-trip' : trip.isClosed ? 'closed-trip' : ''}`;
+                                
+                                // Arabic labels
+                                const tripType = trip.isReturnTrip ? '(عودة)' : '(انطلاق)';
+                                const closedLabel = trip.isClosed ? '(مغلقة)' : '';
+                                const vanStatus = trip.vanId ? `السائق: ${trip.driver}` : 'لم يتم تعيين فان';
+                                
+                                journeyEl.innerHTML = `
+                                    <div class="journey-van">${vanStatus}</div>
+                                    <div class="journey-project">${trip.projectName}</div>
+                                    <div class="journey-destination">${trip.destination}</div>
+                                    <div class="journey-time">${trip.time} ${tripType} ${closedLabel}</div>
+                                    <div class="journey-created" style="font-size: 0.75rem; color: var(--gray); margin-top: 0.25rem;">
+                                        تم الإنشاء: ${new Date(trip.createdAt).toLocaleString('ar')}
+                                    </div>
+                                `;
+                                detailsEl.appendChild(journeyEl);
+                            });
+
+                            dayEl.appendChild(detailsEl);
+                            
+                            const countEl = document.createElement('div');
+                            countEl.className = 'booking-count';
+                            countEl.textContent = activeTrips.length;
+                            dayEl.appendChild(countEl);
+                            
+                            dayEl.addEventListener('click', (e) => {
+                                if (!e.target.closest('.day-journey')) {
+                                    showTripDetailsModal(dateStr, activeTrips);
+                                }
+                            });
+                        }
+                    })
+                    .catch(() => console.error('Failed to load bookings for this date'));
+            }          
+            
+            function showTripDetailsModal(dateStr, trips) {
+                const date = new Date(dateStr);
+                
+                // Format date in Arabic
+                const arabicMonths = [
+                    "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                    "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+                ];
+                const arabicDays = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+                
+                const dayName = arabicDays[date.getDay()];
+                const monthName = arabicMonths[date.getMonth()];
+                const day = date.getDate();
+                const year = date.getFullYear();
+                
+                modalTripTitle.innerHTML = `<i class="fas fa-calendar-day"></i> الرحلات في ${dayName}، ${day} ${monthName} ${year}`;
+                
+                let modalContent = '';
+                
+                if (trips.length === 0) {
+                    modalContent = '<p>لا توجد رحلات مجدولة في هذا التاريخ</p>';
+                } else {
+                    // Ensure trips are sorted by creation time (newest first)
+                    const sortedTrips = sortTripsByCreatedAt(trips);
+                    
+                    sortedTrips.forEach(trip => {
+                        const createdDate = new Date(trip.createdAt);
+                        
+                        // Arabic labels
+                        const tripTypeIcon = trip.isReturnTrip ? 'fa-arrow-left' : 'fa-arrow-right';
+                        const tripDirection = trip.isReturnTrip ? 'عودة من' : 'انطلاق إلى';
+                        const vanStatus = trip.vanId ? `السائق: ${trip.driver}` : 'لم يتم تعيين فان';
+                        const timeLabel = trip.isReturnTrip ? 'وقت العودة' : 'وقت الانطلاق';
+                        
+                        modalContent += `
+                            <div class="booking-item ${trip.isReturnTrip ? 'return' : 'departure'} ${trip.isCompleted ? 'completed' : trip.isClosed ? 'closed' : ''}">
+                                <h4>
+                                    <i class="fas ${tripTypeIcon}"></i> 
+                                    ${vanStatus} ${tripDirection} ${trip.destination}
+                                    ${trip.isCompleted ? '<span class="trip-status-badge">مكتملة</span>' : ''}
+                                    ${trip.isClosed ? '<span class="trip-status-badge" style="background: var(--warning);">مغلقة</span>' : ''}
+                                    ${!trip.vanId && !trip.isCompleted && !trip.isClosed ? '<span class="trip-status-badge" style="background: var(--warning);">بحاجة إلى فان</span>' : ''}
+                                </h4>
+                                <p><i class="fas fa-briefcase"></i> المشروع: ${trip.projectName}</p>
+                                <p><i class="fas fa-clock"></i> ${timeLabel}: ${trip.time}</p>
+                                <p><i class="fas fa-users"></i> ${trip.passengerCount} راكب</p>
+                                <p style="font-size: 0.875rem; color: var(--gray); margin-top: 0.5rem;">
+                                    <i class="fas fa-calendar-plus"></i> تم الإنشاء: ${createdDate.toLocaleString('ar')}
+                                </p>
+                                
+                                <div class="trip-actions" style="margin-top: 1rem;">
+                                    <button class="btn btn-primary btn-sm focus-trip-btn" data-trip-id="${trip.tripId}" style="margin-left: 0.5rem;">
+                                        <i class="fas fa-search"></i> البحث في القائمة
+                                    </button>
+                                    ${trip.canComplete ? `
+                                    <button class="btn btn-success btn-sm complete-trip-btn" data-trip-id="${trip.tripId}">
+                                        <i class="fas fa-check-circle"></i> إكمال الرحلة
+                                    </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                modalTripContent.innerHTML = modalContent;
+                
+                // Add event listeners to modal buttons
+                modalTripContent.querySelectorAll('.focus-trip-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const tripId = this.dataset.tripId;
+                        closeModal();
+                        focusTripInList(tripId);
+                    });
+                });
+                
+                modalTripContent.querySelectorAll('.complete-trip-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const tripId = this.dataset.tripId;
+                        const isReturnTrip = this.closest('.booking-item').classList.contains('return');
+                        createCompleteTripHandler(tripId, isReturnTrip)();
+                    });
+                });
+                
+                tripModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeModal() {
+                tripModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            
+            function focusTripInList(tripId) {
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (tripCard) {
+                    // Scroll to the card
+                    tripCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Add highlight class
+                    tripCard.classList.add('highlight-trip');
+                    
+                    // Add pulsing animation
+                    tripCard.style.animation = 'pulse 1.5s ease-in-out 2';
+                    
+                    // Remove animations after they complete
+                    setTimeout(() => {
+                        tripCard.classList.remove('highlight-trip');
+                        tripCard.style.animation = '';
+                    }, 3000);
+                }
+            }
+            
+            function formatDate(year, month, day) {
+                return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            }
+            
+            function showToast(message, type) {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-times-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                `;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.animation = 'fadeOut 0.3s ease-out';
+                    toast.addEventListener('animationend', () => toast.remove());
+                }, 3000);
+            }
+            
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const tabType = this.dataset.tab;
+                    filterTrips(tabType);
+                });
+            });
+            
+            function filterTrips(type, dateFilter = null) {
+                document.querySelectorAll('.trip-card').forEach(card => {
+                    const isAssigned = card.querySelector('.trip-status').classList.contains('assigned');
+                    const isClosed = card.querySelector('.trip-status').classList.contains('closed');
+                    const isCompleted = card.querySelector('.trip-status').classList.contains('completed');
+                    const tripDate = card.dataset.tripDate;
+                    
+                    let shouldShow = true;
+                    
+                    if (type === 'unassigned' && (isAssigned || isClosed || isCompleted)) {
+                        shouldShow = false;
+                    } else if (type === 'assigned' && (!isAssigned || isClosed || isCompleted)) {
+                        shouldShow = false;
+                    } else if (type === 'closed' && (!isClosed || isCompleted)) {
+                        shouldShow = false;
+                    }
+                    
+                    if (dateFilter && tripDate !== dateFilter) {
+                        shouldShow = false;
+                    }
+                    
+                    card.style.display = shouldShow ? 'block' : 'none';
+                });
+            }
+
+            // Assign van buttons
+            document.querySelectorAll('.assign-van-btn').forEach(btn => {
+                const tripCard = btn.closest('.trip-card');
+                addEventListener(btn, 'click', createAssignVanHandler(tripCard));
+            });
+            
+            // Cancel buttons in van selectors
+            document.querySelectorAll('.btn-cancel').forEach(btn => {
+                addEventListener(btn, 'click', function() {
+                    this.closest('.van-selector').classList.remove('show');
+                });
+            });
+            
+            // Van selection
+            document.querySelectorAll('.van-item').forEach(item => {
+                addEventListener(item, 'click', function() {
+                    const vanId = this.dataset.vanId;
+                    const tripCard = this.closest('.trip-card');
+                    const tripId = tripCard.dataset.tripId;
+                    
+                    // Show loading
+                    tripCard.style.opacity = '0.5';
+                    
+                    // Send request to assign van
+                    fetch(`/assign-van/${tripId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ vanId })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        tripCard.style.opacity = '1';
+                        if (data.success) {
+                            showToast('تم تعيين الفان بنجاح!', 'success');
+                        } else {
+                            showToast(data.error || 'فشل في تعيين الفان', 'error');
+                        }
+                    })
+                    .catch(err => {
+                        tripCard.style.opacity = '1';
+                        showToast('فشل في تعيين الفان', 'error');
+                    });
+                });
+            });
+            
+            // Release van buttons
+            document.querySelectorAll('.release-van-btn').forEach(btn => {
+                const tripCard = btn.closest('.trip-card');
+                const tripId = tripCard.dataset.tripId;
+                addEventListener(btn, 'click', createReleaseVanHandler(tripId, tripCard));
+            });
+            
+            // Close trip buttons
+            document.querySelectorAll('.close-trip-btn').forEach(btn => {
+                const tripCard = btn.closest('.trip-card');
+                const tripId = btn.dataset.tripId;
+                addEventListener(btn, 'click', createCloseTripHandler(tripId, tripCard));
+            });
+            
+            // Reopen trip buttons
+            document.querySelectorAll('.reopen-trip-btn').forEach(btn => {
+                const tripCard = btn.closest('.trip-card');
+                const tripId = btn.dataset.tripId;
+                addEventListener(btn, 'click', createReopenTripHandler(tripId, tripCard));
+            });
+            
+            // Complete trip buttons
+            document.querySelectorAll('.complete-trip-btn').forEach(btn => {
+                const tripId = btn.dataset.tripId;
+                const isReturnTrip = btn.dataset.isReturn === 'true';
+                addEventListener(btn, 'click', createCompleteTripHandler(tripId, isReturnTrip));
+            });
+            
+            // Toggle passenger details
+            document.querySelectorAll('.toggle-passengers-btn').forEach(btn => {
+                addEventListener(btn, 'click', function() {
+                    const tripId = this.dataset.tripId;
+                    const passengerDetails = document.getElementById(`passengerDetails-${tripId}`);
+                    
+                    // Hide all van selectors
+                    document.querySelectorAll('.van-selector').forEach(selector => {
+                        selector.classList.remove('show');
+                    });
+                    
+                    if (passengerDetails.style.display === 'none' || !passengerDetails.style.display) {
+                        // Hide all other passenger details
+                        document.querySelectorAll('.passenger-details').forEach(details => {
+                            if (details !== passengerDetails) {
+                                details.style.display = 'none';
+                            }
+                        });
+                        
+                        // Reset all other "Show Passengers" buttons
+                        document.querySelectorAll('.toggle-passengers-btn').forEach(otherBtn => {
+                            if (otherBtn !== this) {
+                                otherBtn.innerHTML = '<i class="fas fa-users"></i> عرض الركاب';
+                            }
+                        });
+                        
+                        passengerDetails.style.display = 'block';
+                        this.innerHTML = '<i class="fas fa-users"></i> إخفاء الركاب';
+                    } else {
+                        passengerDetails.style.display = 'none';
+                        this.innerHTML = '<i class="fas fa-users"></i> عرض الركاب';
+                    }
+                });
+            });
+            
+            // Helper functions for button handlers
+            function createReleaseVanHandler(tripId, tripCard) {
+                return function() {
+                    if (!confirm('هل أنت متأكد أنك تريد تحرير هذا الفان من الرحلة؟')) return;
+                    
+                    // Show loading
+                    tripCard.style.opacity = '0.5';
+                    
+                    // Send request to release van
+                    fetch(`/release-van/${tripId}`, {
+                        method: 'POST'
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        tripCard.style.opacity = '1';
+                        if (data.success) {
+                            showToast('تم تحرير الفان بنجاح!', 'success');
+                        } else {
+                            showToast(data.error || 'فشل في تحرير الفان', 'error');
+                        }
+                    })
+                    .catch(err => {
+                        tripCard.style.opacity = '1';
+                        showToast('فشل في تحرير الفان', 'error');
+                    });
+                };
+            }
+
+            function createCloseTripHandler(tripId, tripCard) {
+                return function() {
+                    if (!confirm('هل أنت متأكد أنك تريد إغلاق هذه الرحلة؟ هذا سيمنع أي تسجيلات جديدة.')) return;
+                    
+                    // Show loading
+                    tripCard.style.opacity = '0.5';
+                    
+                    // Send request to close trip
+                    fetch(`/close-trip/${tripId}`, {
+                        method: 'POST'
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        tripCard.style.opacity = '1';
+                        if (data.success) {
+                            showToast('تم إغلاق الرحلة بنجاح! لا يُسمح بتسجيلات جديدة.', 'success');
+                        } else {
+                            showToast(data.error || 'فشل في إغلاق الرحلة', 'error');
+                        }
+                    })
+                    .catch(err => {
+                        tripCard.style.opacity = '1';
+                        showToast('فشل في إغلاق الرحلة', 'error');
+                    });
+                };
+            }
+
+            function createReopenTripHandler(tripId, tripCard) {
+                return function() {
+                    if (!confirm('هل أنت متأكد أنك تريد إعادة فتح هذه الرحلة؟ هذا سيسمح بتسجيلات جديدة.')) return;
+                    
+                    // Show loading
+                    tripCard.style.opacity = '0.5';
+                    
+                    // Send request to reopen trip
+                    fetch(`/reopen-trip/${tripId}`, {
+                        method: 'POST'
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        tripCard.style.opacity = '1';
+                        if (data.success) {
+                            showToast('تم إعادة فتح الرحلة بنجاح! التسجيلات الجديدة مسموحة الآن.', 'success');
+                        } else {
+                            showToast(data.error || 'فشل في إعادة فتح الرحلة', 'error');
+                        }
+                    })
+                    .catch(err => {
+                        tripCard.style.opacity = '1';
+                        showToast('فشل في إعادة فتح الرحلة', 'error');
+                    });
+                };
+            }
+
+            function createCompleteTripHandler(tripId, isReturnTrip) {
+                return function() {
+                    // Prevent multiple clicks - check if request is already in progress
+                    if (completionRequests.has(tripId)) {
+                        console.log(`Trip ${tripId} completion already in progress`);
+                        return;
+                    }
+
+                    // Get the trip card to ensure we have the latest data
+                    const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                    if (!tripCard) return;
+
+                    // Disable the button immediately to prevent multiple clicks
+                    const completeBtn = this;
+                    const originalHTML = completeBtn.innerHTML;
+                    completeBtn.disabled = true;
+                    completeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+                    completeBtn.style.opacity = '0.7';
+                    completeBtn.style.cursor = 'not-allowed';
+
+                    // Add to requests tracking
+                    completionRequests.add(tripId);
+
+                    // Get project ID from the trip card
+                    const projectName = tripCard.querySelector('.meta-item:nth-child(4) span').textContent;
+                    const projectCard = Array.from(document.querySelectorAll('.stat-card')).find(card => 
+                        card.querySelector('.stat-title').textContent.includes(projectName.replace(' Trips', ''))
+                    );
+                    
+                    if (!projectCard) {
+                        showToast('تعذر العثور على معلومات المشروع', 'error');
+                        resetCompleteButton();
+                        return;
+                    }
+                    
+                    const projectId = projectCard.dataset.projectId;
+                    const remainingTrips = parseInt(projectCard.querySelector('.stat-value').textContent);
+
+                    // More reliable way to determine if it's a return trip
+                    const tripTitle = tripCard.querySelector('.trip-title').textContent;
+                    const isActuallyReturnTrip = tripTitle.includes('عودة من');
+
+                    // Check if trip can be completed for departure trips
+                    if (!isActuallyReturnTrip && remainingTrips <= 0) {
+                        showToast(`لا يمكن إكمال الرحلة. المشروع "${projectName.replace(' Trips', '')}" ليس لديه رحلات متبقية متاحة.`, 'error');
+                        resetCompleteButton();
+                        return;
+                    }
+
+                    // Show confirmation modal with appropriate message
+                    const modalContent = `
+                        <div class="complete-trip-modal">
+                            <h4>تأكيد إكمال الرحلة</h4>
+                            ${isActuallyReturnTrip ? `
+                                <div class="form-group" style="margin: 1rem 0;">
+                                    <label>
+                                        <input type="checkbox" id="decrementTripsCheckbox">
+                                        إنقاص عدد الرحلات المتبقية للمشروع بواحد
+                                    </label>
+                                    <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--gray);">
+                                        الرحلات المتبقية الحالية: <strong>${remainingTrips}</strong>
+                                    </div>
+                                </div>
+                            ` : `
+                                <p>إكمال هذه الرحلة سينقص عدد الرحلات المتبقية للمشروع بواحد.</p>
+                                <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--gray);">
+                                    الرحلات المتبقية الحالية: <strong>${remainingTrips}</strong> → <strong>${remainingTrips - 1}</strong>
+                                </div>
+                            `}
+                            <div class="modal-buttons" style="margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: flex-start;">
+                                <button class="btn btn-outline btn-sm cancel-btn">إلغاء</button>
+                                <button class="btn btn-success btn-sm confirm-btn">تأكيد</button>
+                            </div>
+                        </div>
+                    `;
+
+                    const modal = document.createElement('div');
+                    modal.className = 'modal';
+                    modal.style.display = 'flex';
+                    modal.innerHTML = `
+                        <div class="modal-content" style="max-width: 500px;">
+                            <span class="close">&times;</span>
+                            ${modalContent}
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                    document.body.style.overflow = 'hidden';
+
+                    function resetCompleteButton() {
+                        // Remove from requests tracking
+                        completionRequests.delete(tripId);
+                        
+                        // Re-enable the button
+                        completeBtn.disabled = false;
+                        completeBtn.innerHTML = originalHTML;
+                        completeBtn.style.opacity = '1';
+                        completeBtn.style.cursor = 'pointer';
+                    }
+
+                    const closeModal = () => {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                        modal.remove();
+                        resetCompleteButton(); // Reset button when modal is closed
+                    };
+
+                    modal.querySelector('.close').addEventListener('click', closeModal);
+                    modal.querySelector('.cancel-btn').addEventListener('click', closeModal);
+                    
+                    // Prevent closing modal by clicking outside during processing
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal && !modal.querySelector('.confirm-btn').disabled) {
+                            closeModal();
+                        }
+                    });
+                    
+                    modal.querySelector('.confirm-btn').addEventListener('click', function() {
+                        const shouldDecrement = isActuallyReturnTrip ? 
+                            document.getElementById('decrementTripsCheckbox').checked : 
+                            true;
+
+                        // Final check for return trips when decrementing
+                        if (isActuallyReturnTrip && shouldDecrement && remainingTrips <= 0) {
+                            showToast(`لا يمكن إكمال الرحلة. المشروع "${projectName.replace(' Trips', '')}" ليس لديه رحلات متبقية متاحة.`, 'error');
+                            closeModal();
+                            return;
+                        }
+
+                        // Disable confirm button to prevent double-clicking
+                        this.disabled = true;
+                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+                        const cancelBtn = modal.querySelector('.cancel-btn');
+                        cancelBtn.disabled = true;
+                        cancelBtn.style.opacity = '0.5';
+
+                        // Add timeout for the request to handle network issues
+                        const requestTimeout = setTimeout(() => {
+                            showToast('انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.', 'error');
+                            closeModal();
+                        }, 30000); // 30 second timeout
+
+                        fetch(`/complete-trip/${tripId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                shouldDecrement: shouldDecrement
+                            })
+                        })
+                        .then(res => {
+                            clearTimeout(requestTimeout);
+                            if (!res.ok) {
+                                throw new Error(`HTTP error! status: ${res.status}`);
+                            }
+                            return res.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                updateTripCompletion(tripId, data.remainingTrips, data.projectId);
+                                showToast('تم إكمال الرحلة بنجاح!', 'success');
+                                closeModal();
+                            } else {
+                                showToast(data.error || 'فشل في إكمال الرحلة', 'error');
+                                // Re-enable buttons for retry
+                                this.disabled = false;
+                                this.innerHTML = 'تأكيد';
+                                cancelBtn.disabled = false;
+                                cancelBtn.style.opacity = '1';
+                            }
+                        })
+                        .catch(error => {
+                            clearTimeout(requestTimeout);
+                            console.error('Complete trip error:', error);
+                            showToast('فشل في إكمال الرحلة. يرجى المحاولة مرة أخرى.', 'error');
+                            // Re-enable buttons for retry
+                            this.disabled = false;
+                            this.innerHTML = 'تأكيد';
+                            cancelBtn.disabled = false;
+                            cancelBtn.style.opacity = '1';
+                        });
+                    });
+
+                    // Helper function for resetting button state
+                    function resetCompleteButton() {
+                        completionRequests.delete(tripId);
+                        completeBtn.disabled = false;
+                        completeBtn.innerHTML = originalHTML;
+                        completeBtn.style.opacity = '1';
+                        completeBtn.style.cursor = 'pointer';
+                    }
+                };
+            }
+
+            function canCompleteTrip(projectId, isReturnTrip) {
+                // Get the project stats from the DOM
+                const projectCard = document.querySelector(`.stat-card[data-project-id="${projectId}"]`);
+                if (!projectCard) return false;
+                
+                const remainingTrips = parseInt(projectCard.querySelector('.stat-value').textContent);
+                
+                // For departure trips, we always need at least 1 remaining trip
+                // For return trips, it depends on the checkbox selection (handled in modal)
+                if (!isReturnTrip && remainingTrips <= 0) {
+                    return false;
+                }
+                
+                return true;
+            }
+
+            function createAssignVanHandler(tripCard) {
+                return function() {
+                    const tripId = tripCard.dataset.tripId;
+                    const vanSelector = document.getElementById(`vanSelector-${tripId}`);
+                    
+                    // Hide all other van selectors
+                    document.querySelectorAll('.van-selector').forEach(selector => {
+                        if (selector !== vanSelector) {
+                            selector.classList.remove('show');
+                        }
+                    });
+                    
+                    // Hide all passenger details
+                    document.querySelectorAll('.passenger-details').forEach(details => {
+                        details.style.display = 'none';
+                    });
+                    
+                    // Reset all "Show Passengers" buttons
+                    document.querySelectorAll('.toggle-passengers-btn').forEach(btn => {
+                        btn.innerHTML = '<i class="fas fa-users"></i> عرض الركاب';
+                    });
+                    
+                    vanSelector.classList.toggle('show');
+                };
+            }
+
+            // SSE Client Implementation
+            function setupSSE() {
+                const eventSource = new EventSource('/events');
+                
+                eventSource.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    
+                    switch(data.type) {
+                        case 'init':
+                            break;
+                        case 'custom-trip-completed':
+                            updateTripCompletionWithFetch(data.tripId, true);
+                            updateProjectStats(data.projectId, data.remainingTrips);
+                            break;
+                            
+                        case 'new-trip':
+                            addNewTripToUI(data.trip);
+                            break;
+                            
+                        case 'van-assigned':
+                            updateVanAssignment(data.tripId, data.vanId);
+                            break;
+                        case 'booking-deleted':
+                            handleBookingDeletion(data.tripId, data.bookingId, false, data.remainingPassengerCount);
+                            break;
+
+                        case 'custom-booking-deleted':
+                            handleCustomBookingDeletion(
+                                data.tripId, 
+                                data.bookingId, 
+                                data.passengerName, 
+                                data.remainingPassengerCount
+                            );
+                            break;
+
+                        case 'trip-deleted':
+                            handleTripDeletion(data.tripId);
+                            break;
+
+                        case 'custom-trip-deleted':
+                            handleTripDeletion(data.tripId);
+                            break;
+                        case 'custom-passenger-added':
+                            updateCustomPassengerList(data.tripId, data.passengerName, data.passengerCount);
+                            break;
+                            
+                        case 'custom-trip-created':
+                            data.trips.forEach(trip => addNewCustomTripToUI(trip));
+                            break;
+                            
+                        case 'van-released':
+                            updateVanRelease(data.tripId);
+                            break;
+                            
+                        case 'booking-added':
+                            updatePassengerList(data.tripId || data.bookings);
+                            break;
+                            
+                        case 'passenger-added':
+                            // Update the passenger count immediately
+                            const tripCard = document.querySelector(`.trip-card[data-trip-id="${data.tripId}"]`);
+                            if (tripCard) {
+                                tripCard.style.opacity = '1';
+                                const metaItem = tripCard.querySelector('.meta-item:nth-child(3)');
+                                if (metaItem) {
+                                    metaItem.querySelector('span').textContent = `${data.passengerCount} راكب`;
+                                }
+                                
+                                // ALWAYS update the passenger details HTML by fetching fresh data
+                                // This ensures consistency whether the details are visible or not
+                                updatePassengerList(data.tripId);
+                                
+                                // Highlight the trip card
+                                tripCard.classList.add('highlight-trip');
+                                setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+                            }
+                            break;
+
+                        case 'trip-completed':
+                            updateTripCompletionWithFetch(data.tripId);
+                            updateProjectStats(data.projectId, data.remainingTrips);
+                            break;
+                            
+                        case 'trip-closed':
+                            updateTripStatus(data.tripId, true);
+                            // Refresh calendar to show closed status
+                            renderCalendar(currentDate);
+                            break;
+                            
+                        case 'trip-reopened':
+                            updateTripStatus(data.tripId, false);
+                            // Refresh calendar to show reopened status
+                            renderCalendar(currentDate);
+                            break;
+                    }
+                };
+                
+                eventSource.onerror = function() {
+                    console.error('SSE connection error');
+                    // Attempt to reconnect after a delay
+                    setTimeout(setupSSE, 5000);
+                };
+            }
+            
+            function updateCustomTripBookingAdded(tripId, passengerCount, passengers) {
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) return;
+                
+                // Update passenger count
+                const metaItem = tripCard.querySelector('.meta-item:nth-child(3)');
+                if (metaItem) {
+                    metaItem.querySelector('span').textContent = `${passengerCount} راكب`;
+                }
+                
+                // Update passenger details with the provided passenger data
+                updateCustomTripPassengers(tripId, passengers, passengerCount);
+                
+                // Highlight the trip card
+                tripCard.classList.add('highlight-trip');
+                setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+                
+                // Update calendar
+                renderCalendar(currentDate);
+            }
+            
+            function handleCustomBookingDeletion(tripId, bookingId, passengerName, remainingPassengerCount) {
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) return;
+
+                // Update passenger count
+                const metaItem = tripCard.querySelector('.meta-item:nth-child(3)');
+                if (metaItem) {
+                    metaItem.querySelector('span').textContent = `${remainingPassengerCount} راكب`;
+                }
+
+                // Remove the specific passenger from the list
+                const passengerDetails = document.getElementById(`passengerDetails-${tripId}`);
+                if (passengerDetails) {
+                    const passengerGrid = passengerDetails.querySelector('.passenger-grid');
+                    if (passengerGrid) {
+                        // Find and remove the passenger card with matching name
+                        const passengerCards = passengerGrid.querySelectorAll('.passenger-card');
+                        passengerCards.forEach(card => {
+                            const nameElement = card.querySelector('.passenger-name');
+                            if (nameElement && nameElement.textContent === passengerName) {
+                                // Add fade-out animation
+                                card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                                card.style.opacity = '0';
+                                card.style.transform = 'translateX(20px)';
+                                
+                                // Remove after animation completes
+                                setTimeout(() => {
+                                    card.remove();
+                                    
+                                    // If no passengers left, show empty message
+                                    if (passengerGrid.children.length === 0) {
+                                        const emptyMessage = document.createElement('p');
+                                        emptyMessage.textContent = 'لا يوجد ركاب حاليًا';
+                                        passengerDetails.appendChild(emptyMessage);
+                                    }
+                                }, 300);
+                            }
+                        });
+                    }
+                }
+
+                // Highlight the trip card
+                tripCard.classList.add('highlight-trip');
+                setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+
+                // Update calendar
+                renderCalendar(currentDate);
+            }
+            
+            function updateCustomTripPassengers(tripId, passengers, passengerCount) {
+                const passengerDetails = document.getElementById(`passengerDetails-${tripId}`);
+                if (!passengerDetails) return;
+                
+                // Find or create the passenger grid
+                let passengerGrid = passengerDetails.querySelector('.passenger-grid');
+                let emptyMessage = passengerDetails.querySelector('p');
+                
+                if (!passengers || passengers.length === 0) {
+                    // Remove passenger grid if it exists
+                    if (passengerGrid) {
+                        passengerGrid.remove();
+                    }
+                    
+                    // Show "No passengers" message
+                    if (!emptyMessage) {
+                        emptyMessage = document.createElement('p');
+                        emptyMessage.textContent = 'لا يوجد ركاب حاليًا';
+                        passengerDetails.appendChild(emptyMessage);
+                    }
+                } else {
+                    // Remove "No passengers" message if it exists
+                    if (emptyMessage) {
+                        emptyMessage.remove();
+                    }
+                    
+                    // Create passenger grid if it doesn't exist
+                    if (!passengerGrid) {
+                        passengerGrid = document.createElement('div');
+                        passengerGrid.className = 'passenger-grid';
+                        passengerDetails.appendChild(passengerGrid);
+                    }
+                    
+                    // Clear and rebuild the passenger grid
+                    passengerGrid.innerHTML = '';
+                    
+                    // Add all passengers
+                    passengers.forEach(passenger => {
+                        const passengerName = typeof passenger === 'string' ? passenger : 
+                                            (passenger.name || passenger.passengerName || passenger);
+                        const passengerEmail = typeof passenger === 'object' ? 
+                                            (passenger.email || passenger.passengerEmail || '') : '';
+                        
+                        const passengerCard = document.createElement('div');
+                        passengerCard.className = 'passenger-card';
+                        passengerCard.innerHTML = `
+                            <div class="passenger-avatar">
+                                ${passengerName.charAt(0).toUpperCase()}
+                            </div>
+                            <div class="passenger-info">
+                                <div class="passenger-name">${passengerName}</div>
+                                ${passengerEmail ? `<div class="passenger-email">${passengerEmail}</div>` : ''}
+                            </div>
+                        `;
+                        passengerGrid.appendChild(passengerCard);
+                    });
+                }
+                
+                // Add a subtle animation to indicate the update
+                passengerDetails.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
+                setTimeout(() => {
+                    passengerDetails.style.backgroundColor = '';
+                }, 1000);
+            }
+            
+            function updateCustomPassengerList(tripId, passengerName, passengerCount) {
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) return;
+                
+                // Update passenger count
+                const metaItem = tripCard.querySelector('.meta-item:nth-child(3)');
+                if (metaItem) {
+                    metaItem.querySelector('span').textContent = `${passengerCount} راكب`;
+                }
+                
+                // For custom trips, we need to fetch the updated passenger list
+                // since we might not have all passenger details in the SSE event
+                fetch(`/api/custom-trip/${tripId}/passengers`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateCustomTripPassengers(tripId, data.passengers, passengerCount);
+                        } else {
+                            // Fallback: just add the new passenger name if API fails
+                            addPassengerToList(tripId, passengerName);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Failed to fetch updated passenger list:', error);
+                        // Fallback: just add the new passenger name
+                        addPassengerToList(tripId, passengerName);
+                    });
+                
+                // Highlight the trip card
+                tripCard.classList.add('highlight-trip');
+                setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+            }
+            
+            // Fallback function to add a single passenger when API fetch fails
+            function addPassengerToList(tripId, passengerName) {
+                const passengerDetails = document.getElementById(`passengerDetails-${tripId}`);
+                if (!passengerDetails) return;
+                
+                // Remove empty message if it exists
+                const emptyMessage = passengerDetails.querySelector('p');
+                if (emptyMessage && emptyMessage.textContent === 'لا يوجد ركاب حاليًا') {
+                    emptyMessage.remove();
+                }
+                
+                // Find or create passenger grid
+                let passengerGrid = passengerDetails.querySelector('.passenger-grid');
+                if (!passengerGrid) {
+                    passengerGrid = document.createElement('div');
+                    passengerGrid.className = 'passenger-grid';
+                    passengerDetails.appendChild(passengerGrid);
+                }
+                
+                // Check if passenger already exists in the list
+                const existingPassengers = Array.from(passengerGrid.querySelectorAll('.passenger-name'));
+                const passengerExists = existingPassengers.some(el => el.textContent === passengerName);
+                
+                if (!passengerExists) {
+                    // Add new passenger card
+                    const passengerCard = document.createElement('div');
+                    passengerCard.className = 'passenger-card';
+                    passengerCard.innerHTML = `
+                        <div class="passenger-avatar">
+                            ${passengerName.charAt(0).toUpperCase()}
+                        </div>
+                        <div class="passenger-info">
+                            <div class="passenger-name">${passengerName}</div>
+                        </div>
+                    `;
+                    passengerGrid.appendChild(passengerCard);
+                    
+                    // Animate the new passenger card
+                    passengerCard.style.transform = 'scale(0.8)';
+                    passengerCard.style.opacity = '0';
+                    setTimeout(() => {
+                        passengerCard.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                        passengerCard.style.transform = 'scale(1)';
+                        passengerCard.style.opacity = '1';
+                    }, 100);
+                }
+            }
+            
+            // Add a function to create custom trip cards
+            function addNewCustomTripToUI(trip) {
+                const tripsContainer = document.querySelector('.trips-container');
+                
+                // If empty state is shown, remove it
+                const emptyState = tripsContainer.querySelector('.empty-state');
+                if (emptyState) {
+                    emptyState.remove();
+                }
+                
+                // Check if trip already exists in UI
+                const existingTrip = document.querySelector(`.trip-card[data-trip-id="${trip.id}"]`);
+                if (existingTrip) return;
+                
+                // Create new trip card HTML
+                const tripCard = document.createElement('div');
+                tripCard.className = 'trip-card';
+                tripCard.dataset.tripId = trip.id;
+                tripCard.dataset.tripDate = trip.isReturnTrip ? trip.returnDate : trip.goDate;
+                tripCard.dataset.isCustom = 'true';
+                
+                // Arabic labels
+                const tripDirection = trip.isReturnTrip ? 'عودة من' : 'انطلاق إلى';
+                const vanStatus = trip.isCompleted ? 'مكتملة' : trip.isClosed ? 'مغلقة' : trip.vanId ? `تم تعيين فان ${trip.van.id}` : 'بحاجة إلى فان';
+                
+                tripCard.innerHTML = `
+                    <div class="trip-header">
+                        <h3 class="trip-title">
+                            ${tripDirection} ${trip.destination}
+                            <span class="trip-status-badge" style="background: var(--accent);">مخصص</span>
+                        </h3>
+                        <div class="trip-status ${trip.isCompleted ? 'completed' : trip.isClosed ? 'closed' : trip.vanId ? 'assigned' : 'unassigned'}">
+                            ${vanStatus}
+                        </div>
+                    </div>
+                    
+                    <div class="trip-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>${trip.isReturnTrip ? trip.returnDate : trip.goDate}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>${trip.isReturnTrip ? trip.returnTime : trip.goTime}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>${trip.passengerCount} راكب</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>${trip.projectName}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="trip-actions">
+                        ${trip.vanId && !trip.isCompleted && !trip.isClosed ? `
+                            <button class="btn btn-danger btn-sm release-van-btn">
+                                <i class="fas fa-van-shuttle"></i> تحرير الفان
+                            </button>
+                        ` : ''}
+                        ${!trip.vanId && !trip.isCompleted && !trip.isClosed ? `
+                            <button class="btn btn-primary btn-sm assign-van-btn">
+                                <i class="fas fa-van-shuttle"></i> تعيين فان
+                            </button>
+                        ` : ''}
+                        ${!trip.isCompleted ? `
+                            ${!trip.isClosed ? `
+                                <button class="btn btn-warning btn-sm close-trip-btn" data-trip-id="${trip.id}">
+                                    <i class="fas fa-lock"></i> إغلاق الرحلة
+                                </button>
+                            ` : `
+                                <button class="btn btn-success btn-sm reopen-trip-btn" data-trip-id="${trip.id}">
+                                    <i class="fas fa-unlock"></i> إعادة فتح الرحلة
+                                </button>
+                            `}
+                        ` : ''}
+                        <button class="btn btn-outline btn-sm toggle-passengers-btn" data-trip-id="${trip.id}">
+                            <i class="fas fa-users"></i> عرض الركاب
+                        </button>
+                    </div>
+                    
+                    ${!trip.isCompleted && !trip.isClosed ? `
+                    <!-- Van Selector -->
+                    <div class="van-selector" id="vanSelector-${trip.id}">
+                        <h4>اختر فان لهذه الرحلة:</h4>
+                        ${trip.isCustom ? `<p style="font-size: 0.875rem; color: var(--accent); margin-bottom: 1rem;">الرحلات المخصصة يمكنها استخدام أي فان من أي مشروع</p>` : ''}
+                        <div class="van-list">
+                            ${trip.vanOptions ? trip.vanOptions.map(van => `
+                                <div class="van-item" data-van-id="${van.id}">
+                                    <div class="van-details">
+                                        <div><i class="fas fa-user"></i> ${van.driver}</div>
+                                        <div><i class="fas fa-chair"></i> ${van.capacity} مقعد</div>
+                                        ${trip.isCustom ? `<div><i class="fas fa-briefcase"></i> ${van.projectName || 'المشروع'}</div>` : ''}
+                                    </div>
+                                </div>
+                            `).join('') : ''}
+                        </div>
+                        <button class="btn btn-outline btn-sm btn-cancel" style="margin-top: 1rem;">
+                            <i class="fas fa-times"></i> إلغاء
+                        </button>
+                    </div>
+                    ` : ''}
+                    
+                    <!-- Passenger Details -->
+                    <div class="passenger-details" id="passengerDetails-${trip.id}">
+                        <h4>قائمة الركاب</h4>
+                        ${trip.bookings.length === 0 ? `
+                            <p>لا يوجد ركاب حاليًا</p>
+                        ` : `
+                            <div class="passenger-grid">
+                                ${trip.bookings.map(booking => `
+                                    <div class="passenger-card">
+                                        <div class="passenger-avatar">
+                                            ${booking.name.charAt(0).toUpperCase()}
+                                        </div>
+                                        <div class="passenger-info">
+                                            <div class="passenger-name">${booking.name}</div>
+                                            <div class="passenger-email">${booking.email}</div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `}
+                    </div>
+                `;
+                
+                // Add the new trip card to the top of the container
+                tripsContainer.insertBefore(tripCard, tripsContainer.firstChild);
+
+                // For custom trips, populate van selector with ALL vans
+                if (!trip.isCompleted && !trip.isClosed) {
+                    const vanList = tripCard.querySelector(`#vanSelector-${trip.id} .van-list`);
+                    if (vanList) {
+                        // Fetch all vans for custom trips
+                        fetch('/debug/database')
+                            .then(res => res.json())
+                            .then(dbData => {
+                                if (dbData.vans) {
+                                    vanList.innerHTML = dbData.vans.map(van => {
+                                        const project = dbData.projects.find(p => p.id === van.projectId);
+                                        return `
+                                            <div class="van-item" data-van-id="${van.id}">
+                                                <div class="van-details">
+                                                    <div><i class="fas fa-user"></i> ${van.driver}</div>
+                                                    <div><i class="fas fa-chair"></i> ${van.capacity} مقعد</div>
+                                                    <div><i class="fas fa-briefcase"></i> المشروع: ${project ? project.name : 'غير معروف'}</div>
+                                                </div>
+                                            </div>
+                                        `;
+                                    }).join('');
+                                    
+                                    // Add event listeners for van selection
+                                    vanList.querySelectorAll('.van-item').forEach(item => {
+                                        item.addEventListener('click', function() {
+                                            const vanId = this.dataset.vanId;
+                                            
+                                            // Show loading
+                                            tripCard.style.opacity = '0.5';
+                                            
+                                            // Send request to assign van
+                                            fetch(`/assign-van/${trip.id}`, {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({ vanId })
+                                            })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                tripCard.style.opacity = '1';
+                                                if (data.success) {
+                                                    showToast('تم تعيين الفان بنجاح!', 'success');
+                                                    // Hide van selector after successful assignment
+                                                    tripCard.querySelector('.van-selector').classList.remove('show');
+                                                } else {
+                                                    showToast(data.error || 'فشل في تعيين الفان', 'error');
+                                                }
+                                            })
+                                            .catch(err => {
+                                                tripCard.style.opacity = '1';
+                                                showToast('فشل في تعيين الفان', 'error');
+                                            });
+                                        });
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Failed to fetch vans:', error);
+                            });
+                    }
+                }
+                
+                // Add event listeners to the new trip card
+                addTripEventListeners(tripCard);
+                
+                // Highlight the new trip
+                tripCard.classList.add('highlight-trip');
+                setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+                
+                // Update the calendar
+                renderCalendar(currentDate);
+            }
+
+            // Function to add a new trip to the UI
+            function addNewTripToUI(trip) {
+                const tripsContainer = document.querySelector('.trips-container');
+                
+                // If empty state is shown, remove it
+                const emptyState = tripsContainer.querySelector('.empty-state');
+                if (emptyState) {
+                    emptyState.remove();
+                }
+                
+                // Check if trip already exists in UI
+                const existingTrip = document.querySelector(`.trip-card[data-trip-id="${trip.id}"]`);
+                if (existingTrip) return;
+                
+                // Create new trip card HTML
+                const tripCard = document.createElement('div');
+                tripCard.className = 'trip-card';
+                tripCard.dataset.tripId = trip.id;
+                tripCard.dataset.tripDate = trip.isReturnTrip ? trip.returnDate : trip.goDate;
+                tripCard.dataset.createdAt = trip.createdAt; // Add creation time to dataset
+
+                // Arabic labels
+                const tripDirection = trip.isReturnTrip ? 'عودة من' : 'انطلاق إلى';
+                const vanStatus = trip.isCompleted ? 'مكتملة' : trip.isClosed ? 'مغلقة' : trip.vanId ? `تم تعيين فان ${trip.van.id}` : 'بحاجة إلى فان';
+                
+                tripCard.innerHTML = `
+                    <div class="trip-header">
+                        <h3 class="trip-title">
+                            ${tripDirection} ${trip.destination}
+                        </h3>
+                        <div class="trip-status ${trip.isCompleted ? 'completed' : trip.isClosed ? 'closed' : trip.vanId ? 'assigned' : 'unassigned'}">
+                            ${vanStatus}
+                        </div>
+                    </div>
+                    
+                    <div class="trip-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>${trip.isReturnTrip ? trip.returnDate : trip.goDate}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>${trip.isReturnTrip ? trip.returnTime : trip.goTime}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>${trip.passengerCount} راكب</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>${trip.projectName}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="trip-actions">
+                        ${trip.vanId && !trip.isCompleted && !trip.isClosed ? `
+                            <button class="btn btn-danger btn-sm release-van-btn">
+                                <i class="fas fa-van-shuttle"></i> تحرير الفان
+                            </button>
+                        ` : ''}
+                        ${!trip.vanId && !trip.isCompleted && !trip.isClosed ? `
+                            <button class="btn btn-primary btn-sm assign-van-btn">
+                                <i class="fas fa-van-shuttle"></i> تعيين فان
+                            </button>
+                        ` : ''}
+                        ${!trip.isCompleted ? `
+                            ${!trip.isClosed ? `
+                                <button class="btn btn-warning btn-sm close-trip-btn" data-trip-id="${trip.id}">
+                                    <i class="fas fa-lock"></i> إغلاق الرحلة
+                                </button>
+                            ` : `
+                                <button class="btn btn-success btn-sm reopen-trip-btn" data-trip-id="${trip.id}">
+                                    <i class="fas fa-unlock"></i> إعادة فتح الرحلة
+                                </button>
+                            `}
+                        ` : ''}
+                        ${trip.vanId && !trip.isCompleted ? `
+                            <button class="btn btn-success btn-sm complete-trip-btn" data-trip-id="${trip.id}" data-is-return="${trip.isReturnTrip}">
+                                <i class="fas fa-check-circle"></i> إكمال الرحلة
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-outline btn-sm toggle-passengers-btn" data-trip-id="${trip.id}">
+                            <i class="fas fa-users"></i> عرض الركاب
+                        </button>
+                    </div>
+                    
+                    ${!trip.isCompleted && !trip.isClosed ? `
+                    <!-- Van Selector -->
+                    <div class="van-selector" id="vanSelector-${trip.id}">
+                        <h4>اختر فان لهذه الرحلة:</h4>
+                        <div class="van-list">
+                            ${trip.vanOptions ? trip.vanOptions.map(van => `
+                                <div class="van-item" data-van-id="${van.id}">
+                                    <div class="van-details">
+                                        <div><i class="fas fa-user"></i> ${van.driver}</div>
+                                        <div><i class="fas fa-chair"></i> ${van.capacity} مقعد</div>
+                                    </div>
+                                </div>
+                            `).join('') : ''}
+                        </div>
+                        <button class="btn btn-outline btn-sm btn-cancel" style="margin-top: 1rem;">
+                            <i class="fas fa-times"></i> إلغاء
+                        </button>
+                    </div>
+                    ` : ''}
+                    
+                    <!-- Passenger Details -->
+                    <div class="passenger-details" id="passengerDetails-${trip.id}">
+                        <h4>قائمة الركاب</h4>
+                        ${trip.bookings.length === 0 ? `
+                            <p>لا يوجد ركاب حاليًا</p>
+                        ` : `
+                            <div class="passenger-grid">
+                                ${trip.bookings.map(booking => `
+                                    <div class="passenger-card">
+                                        <div class="passenger-avatar">
+                                            ${booking.name.charAt(0).toUpperCase()}
+                                        </div>
+                                        <div class="passenger-info">
+                                            <div class="passenger-name">${booking.name}</div>
+                                            <div class="passenger-email">${booking.email}</div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `}
+                    </div>
+                `;
+                
+                // Add the new trip card to the top of the container
+                tripsContainer.insertBefore(tripCard, tripsContainer.firstChild);
+                
+                // Add event listeners to the new trip card
+                addTripEventListeners(tripCard);
+                
+                // Highlight the new trip
+                tripCard.classList.add('highlight-trip');
+                setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+                
+                // Update the calendar
+                renderCalendar(currentDate);
+            }
+
+            // Helper function to add event listeners to a trip card
+            function addTripEventListeners(tripCard) {
+                const tripId = tripCard.dataset.tripId;
+                
+                // Assign van button
+                const assignBtn = tripCard.querySelector('.assign-van-btn');
+                if (assignBtn) {
+                    addEventListener(assignBtn, 'click', createAssignVanHandler(tripCard));
+                }
+                
+                // Release van button
+                const releaseBtn = tripCard.querySelector('.release-van-btn');
+                if (releaseBtn) {
+                    addEventListener(releaseBtn, 'click', createReleaseVanHandler(tripId, tripCard));
+                }
+                
+                // Close trip button
+                const closeBtn = tripCard.querySelector('.close-trip-btn');
+                if (closeBtn) {
+                    addEventListener(closeBtn, 'click', createCloseTripHandler(tripId, tripCard));
+                }
+                
+                // Reopen trip button
+                const reopenBtn = tripCard.querySelector('.reopen-trip-btn');
+                if (reopenBtn) {
+                    addEventListener(reopenBtn, 'click', createReopenTripHandler(tripId, tripCard));
+                }
+                
+                // Complete trip button
+                const completeBtn = tripCard.querySelector('.complete-trip-btn');
+                if (completeBtn) {
+                    const isReturnTrip = completeBtn.dataset.isReturn === 'true';
+                    addEventListener(completeBtn, 'click', createCompleteTripHandler(tripId, isReturnTrip));
+                }
+                
+                // Toggle passengers button
+                const togglePassengersBtn = tripCard.querySelector('.toggle-passengers-btn');
+                if (togglePassengersBtn) {
+                    addEventListener(togglePassengersBtn, 'click', function() {
+                        const passengerDetails = tripCard.querySelector('.passenger-details');
+                        
+                        if (passengerDetails.style.display === 'none' || !passengerDetails.style.display) {
+                            // Hide all other passenger details
+                            document.querySelectorAll('.passenger-details').forEach(details => {
+                                if (details !== passengerDetails) {
+                                    details.style.display = 'none';
+                                }
+                            });
+                            
+                            // Reset all other "Show Passengers" buttons
+                            document.querySelectorAll('.toggle-passengers-btn').forEach(otherBtn => {
+                                if (otherBtn !== this) {
+                                    otherBtn.innerHTML = '<i class="fas fa-users"></i> عرض الركاب';
+                                }
+                            });
+                            
+                            passengerDetails.style.display = 'block';
+                            this.innerHTML = '<i class="fas fa-users"></i> إخفاء الركاب';
+                        } else {
+                            passengerDetails.style.display = 'none';
+                            this.innerHTML = '<i class="fas fa-users"></i> عرض الركاب';
+                        }
+                    });
+                }
+                
+                // Van selection
+                tripCard.querySelectorAll('.van-item').forEach(item => {
+                    addEventListener(item, 'click', function() {
+                        const vanId = this.dataset.vanId;
+                        const vanSelector = this.closest('.van-selector');
+                        
+                        // Show loading
+                        tripCard.style.opacity = '0.5';
+                        
+                        // Send request to assign van
+                        fetch(`/assign-van/${tripId}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ vanId })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            tripCard.style.opacity = '1';
+                            if (data.success) {
+                                showToast('تم تعيين الفان بنجاح!', 'success');
+                            } else {
+                                showToast(data.error || 'فشل في تعيين الفان', 'error');
+                            }
+                        })
+                        .catch(err => {
+                            tripCard.style.opacity = '1';
+                            showToast('فشل في تعيين الفان', 'error');
+                        });
+                    });
+                });
+                
+                // Cancel button in van selector
+                const cancelBtn = tripCard.querySelector('.btn-cancel');
+                if (cancelBtn) {
+                    addEventListener(cancelBtn, 'click', function() {
+                        this.closest('.van-selector').classList.remove('show');
+                    });
+                }
+            }
+            
+            function handleBookingDeletion(tripId, bookingId, isCustom, remainingPassengerCount) {
+                if (isCustom) {
+                    // For custom trips, we'll let the handleCustomBookingDeletion function handle it
+                    return;
+                }
+                
+                console.log('Handling regular booking deletion:', { tripId, bookingId, remainingPassengerCount });
+                
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) {
+                    console.warn('Trip card not found for deletion');
+                    return;
+                }
+
+                // Update passenger count
+                const metaItem = tripCard.querySelector('.meta-item:nth-child(3)');
+                if (metaItem) {
+                    metaItem.querySelector('span').textContent = `${remainingPassengerCount} راكب`;
+                }
+
+                // Fetch updated passenger list
+                fetchAndUpdatePassengerList(tripId);
+
+                // Highlight the trip card
+                tripCard.classList.add('highlight-trip');
+                setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+
+                // Update calendar
+                renderCalendar(currentDate);
+
+                // Show toast notification
+                showToast('تم حذف الحجز بنجاح!', 'success');
+            }
+
+            function fetchAndUpdatePassengerList(tripId) {
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) return;
+                
+                const isCustomTrip = tripCard.dataset.isCustom === 'true' || 
+                                    tripCard.querySelector('.trip-status-badge');
+                
+                if (isCustomTrip) {
+                    fetch(`/api/custom-trip/${tripId}/passengers`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                updatePassengerDetailsHTML(tripId, data.passengers);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Failed to fetch custom trip passengers:', error);
+                        });
+                } else {
+                    // For regular trips, fetch from bookings endpoint
+                    fetch(`/bookings/${tripCard.dataset.tripDate}?excludeCompleted=true`)
+                        .then(res => res.json())
+                        .then(trips => {
+                            const trip = trips.find(t => t.tripId == tripId);
+                            if (trip) {
+                                updatePassengerDetailsHTML(tripId, trip.passengers || []);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Failed to fetch regular trip passengers:', error);
+                        });
+                }
+            }
+            
+            function handleTripDeletion(tripId) {
+                console.log('Handling trip deletion:', tripId);
+                
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) return;
+
+                // Add fade-out animation before removing
+                tripCard.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                tripCard.style.opacity = '0';
+                tripCard.style.transform = 'translateX(100%)';
+                
+                // Remove the trip card after animation
+                setTimeout(() => {
+                    tripCard.remove();
+                    checkEmptyState();
+                }, 500);
+
+                // Update calendar to reflect the changes
+                renderCalendar(currentDate);
+                
+                // Show toast notification
+                showToast('تم حذف الرحلة (لا يوجد ركاب متبقي)', 'warning');
+            }
+            
+            function checkEmptyState() {
+                const tripsContainer = document.querySelector('.trips-container');
+                const remainingTripCards = tripsContainer.querySelectorAll('.trip-card').length;
+                
+                if (remainingTripCards === 0) {
+                    const emptyState = document.createElement('div');
+                    emptyState.className = 'empty-state';
+                    emptyState.innerHTML = `
+                        <div class="empty-icon">
+                            <i class="fas fa-van-shuttle"></i>
+                        </div>
+                        <h3>لا توجد رحلات مجدولة</h3>
+                        <p class="empty-text">لا توجد أي رحلات للعرض حاليًا</p>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> إنشاء رحلة جديدة
+                        </button>
+                    `;
+                    tripsContainer.appendChild(emptyState);
+                }
+            }
+            
+            function updateProjectStats(projectId, remainingTrips) {
+                const projectCard = document.querySelector(`.stat-card[data-project-id="${projectId}"]`);
+                if (!projectCard) return;
+
+                const statValue = projectCard.querySelector('.stat-value');
+                const statChange = projectCard.querySelector('.stat-change');
+                const statIcon = projectCard.querySelector('.stat-icon');
+                
+                if (statValue) statValue.textContent = remainingTrips;
+                
+                if (statChange) {
+                    const percentage = Math.floor((remainingTrips / 50) * 100);
+                    statChange.className = `stat-change ${remainingTrips < 50 ? 'negative' : 'positive'}`;
+                    statChange.innerHTML = `<i class="fas ${remainingTrips < 50 ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                                        ${percentage}% متبقي`;
+                }
+                
+                if (statIcon) {
+                    statIcon.className = `stat-icon ${remainingTrips <= 10 ? 'warning' : 'primary'}`;
+                }
+                
+                // Add a highlight effect to show the update
+                projectCard.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
+                setTimeout(() => {
+                    projectCard.style.backgroundColor = '';
+                }, 1000);
+            }
+
+            // Helper functions to update the UI
+            function updateVanAssignment(tripId, vanId) {
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) return;
+                
+                // Reset opacity
+                tripCard.style.opacity = '1';
+                
+                // Fetch van details to get driver name
+                fetch('/debug/database')
+                    .then(res => res.json())
+                    .then(dbData => {
+                        const van = dbData.vans.find(v => v.id == vanId);
+                        const driverName = van ? van.driver : `الفان ${vanId}`;
+                        
+                        // Update status with driver name only
+                        const statusEl = tripCard.querySelector('.trip-status');
+                        statusEl.textContent = driverName;
+                        statusEl.className = 'trip-status assigned';
+                    })
+                    .catch(error => {
+                        // Fallback if fetch fails
+                        const statusEl = tripCard.querySelector('.trip-status');
+                        statusEl.textContent = `تم تعيين الفان ${vanId}`;
+                        statusEl.className = 'trip-status assigned';
+                    });
+                
+                // Update assign button to release button
+                const assignBtn = tripCard.querySelector('.assign-van-btn');
+                if (assignBtn) {
+                    assignBtn.className = 'btn btn-danger btn-sm release-van-btn';
+                    assignBtn.innerHTML = '<i class="fas fa-van-shuttle"></i> تحرير الفان';
+                    addEventListener(assignBtn, 'click', createReleaseVanHandler(tripId, tripCard));
+                }
+                
+                // Hide van selector if open
+                const vanSelector = tripCard.querySelector('.van-selector');
+                if (vanSelector) vanSelector.classList.remove('show');
+                
+                // Add complete trip button if it doesn't exist
+                if (!tripCard.querySelector('.complete-trip-btn')) {
+                    const isReturnTrip = tripCard.dataset.tripDate === tripCard.querySelector('.meta-item:nth-child(2) span').textContent;
+                    const completeBtn = document.createElement('button');
+                    completeBtn.className = 'btn btn-success btn-sm complete-trip-btn';
+                    completeBtn.innerHTML = '<i class="fas fa-check-circle"></i> إكمال الرحلة';
+                    completeBtn.dataset.tripId = tripId;
+                    completeBtn.dataset.isReturn = isReturnTrip;
+                    addEventListener(completeBtn, 'click', createCompleteTripHandler(tripId, isReturnTrip));
+                    
+                    // Insert before the toggle passengers button
+                    const toggleBtn = tripCard.querySelector('.toggle-passengers-btn');
+                    toggleBtn.parentNode.insertBefore(completeBtn, toggleBtn);
+                }
+                
+                // Highlight the trip card
+                tripCard.classList.add('highlight-trip');
+                setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+                
+                // Update calendar if needed
+                renderCalendar(currentDate);
+            }
+            
+            async function updateTripCompletionWithFetch(tripId, isCustomTrip = false) {
+                // Remove from tracking set
+                completionRequests.delete(tripId);
+                
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) return;
+
+                // Get the project name from the trip card
+                const projectNameElement = tripCard.querySelector('.meta-item:nth-child(4) span');
+                if (!projectNameElement) return;
+                
+                const projectName = projectNameElement.textContent.trim();
+
+                // Find the project card to get the projectId
+                const projectCard = Array.from(document.querySelectorAll('.stat-card')).find(card => {
+                    const cardTitle = card.querySelector('.stat-title');
+                    if (!cardTitle) return false;
+                    return cardTitle.textContent.replace(' Trips', '').trim() === projectName;
+                });
+
+                if (!projectCard) return;
+
+                const projectId = projectCard.dataset.projectId;
+
+                // Remove the trip card with animation
+                tripCard.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                tripCard.style.opacity = '0';
+                tripCard.style.transform = 'translateX(100%)';
+                
+                setTimeout(() => {
+                    tripCard.remove();
+                    checkEmptyState();
+                }, 500);
+
+                // Fetch the latest project data from the backend
+                try {
+                    const response = await fetch('/debug/database');
+                    const dbData = await response.json();
+                    
+                    const project = dbData.projects.find(p => p.id.toString() === projectId.toString());
+                    if (project) {
+                        updateProjectStats(projectId, project.number_of_remaining_trips);
+                        updateCompleteButtonStates(projectId, project.number_of_remaining_trips);
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch latest project data:', error);
+                    // Fallback: decrease the current displayed value by 1
+                    const currentValue = parseInt(projectCard.querySelector('.stat-value').textContent);
+                    const newValue = Math.max(0, currentValue - 1);
+                    updateProjectStats(projectId, newValue);
+                    updateCompleteButtonStates(projectId, newValue);
+                }
+
+                renderCalendar(currentDate);
+                showToast(`${isCustomTrip ? 'الرحلة المخصصة' : 'الرحلة'} مكتملة وتم نقلها إلى التقارير!`, 'success');
+            }
+
+            function updateVanRelease(tripId) {
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) return;
+                
+                // Reset opacity
+                tripCard.style.opacity = '1';
+                
+                // Update status
+                const statusEl = tripCard.querySelector('.trip-status');
+                statusEl.textContent = 'بحاجة إلى فان';
+                statusEl.className = 'trip-status unassigned';
+                
+                // Update release button to assign button
+                const releaseBtn = tripCard.querySelector('.release-van-btn');
+                if (releaseBtn) {
+                    releaseBtn.className = 'btn btn-primary btn-sm assign-van-btn';
+                    releaseBtn.innerHTML = '<i class="fas fa-van-shuttle"></i> تعيين فان';
+                    addEventListener(releaseBtn, 'click', createAssignVanHandler(tripCard));
+                }
+                
+                // Remove complete trip button if it exists
+                const completeBtn = tripCard.querySelector('.complete-trip-btn');
+                if (completeBtn) {
+                    completeBtn.remove();
+                }
+                
+                // Highlight the trip card
+                tripCard.classList.add('highlight-trip');
+                setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+                
+                // Update calendar if needed
+                renderCalendar(currentDate);
+            }
+
+            function updateTripStatus(tripId, isClosed) {
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) return;
+                
+                // Store current van assignment state before any changes
+                const currentStatusEl = tripCard.querySelector('.trip-status');
+                const currentStatusText = currentStatusEl.textContent;
+                const isCurrentlyAssigned = currentStatusEl.classList.contains('assigned');
+                let currentDriverName = null;
+                
+                if (isCurrentlyAssigned) {
+                    // Extract driver name from current status (excluding " - Closed" if present)
+                    currentDriverName = currentStatusText.replace(' - مغلقة', '').trim();
+                }
+                
+                // When closing a trip, preserve the driver name
+                if (isClosed && isCurrentlyAssigned && currentDriverName) {
+                    currentStatusEl.textContent = `${currentDriverName} - مغلقة`;
+                    currentStatusEl.className = 'trip-status assigned closed';
+                    
+                    // Update only the close/reopen button
+                    const closeBtn = tripCard.querySelector('.close-trip-btn');
+                    if (closeBtn) {
+                        closeBtn.className = 'btn btn-success btn-sm reopen-trip-btn';
+                        closeBtn.innerHTML = '<i class="fas fa-unlock"></i> إعادة فتح الرحلة';
+                        closeBtn.dataset.tripId = tripId;
+                        
+                        const newReopenBtn = closeBtn.cloneNode(true);
+                        closeBtn.parentNode.replaceChild(newReopenBtn, closeBtn);
+                        addEventListener(newReopenBtn, 'click', createReopenTripHandler(tripId, tripCard));
+                    }
+                    
+                    tripCard.classList.add('highlight-trip');
+                    setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+                    renderCalendar(currentDate);
+                    return;
+                }
+                
+                // Continue with the rest of the existing function logic...
+                // When reopening, we need to fetch the current trip state from the server
+                if (!isClosed) {
+                    fetch(`/debug/database`)
+                        .then(res => res.json())
+                        .then(dbData => {
+                            let trip = dbData.trips.find(t => t.id === tripId);
+                            let isCustomTrip = false;
+                            
+                            if (!trip) {
+                                trip = dbData.custom_trips.find(t => t.id === tripId);
+                                isCustomTrip = true;
+                            }
+                            
+                            if (!trip) return;
+                            
+                            updateTripStatusWithData(tripCard, tripId, isClosed, trip, isCustomTrip, dbData);
+                        })
+                        .catch(error => {
+                            console.error('Failed to fetch trip data:', error);
+                            updateTripStatusWithCurrentState(tripCard, tripId, isClosed, isCurrentlyAssigned, null, currentDriverName);
+                        });
+                } else {
+                    // This is the case for closing an unassigned trip
+                    currentStatusEl.textContent = 'مغلقة';
+                    currentStatusEl.className = 'trip-status closed';
+                    
+                    const closeBtn = tripCard.querySelector('.close-trip-btn');
+                    if (closeBtn) {
+                        closeBtn.className = 'btn btn-success btn-sm reopen-trip-btn';
+                        closeBtn.innerHTML = '<i class="fas fa-unlock"></i> إعادة فتح الرحلة';
+                        
+                        const newReopenBtn = closeBtn.cloneNode(true);
+                        closeBtn.parentNode.replaceChild(newReopenBtn, closeBtn);
+                        addEventListener(newReopenBtn, 'click', createReopenTripHandler(tripId, tripCard));
+                    }
+                    
+                    tripCard.classList.add('highlight-trip');
+                    setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+                    renderCalendar(currentDate);
+                }
+            }
+
+            function updateTripStatusWithData(tripCard, tripId, isClosed, trip, isCustomTrip, dbData) {
+                const statusEl = tripCard.querySelector('.trip-status');
+                const tripActions = tripCard.querySelector('.trip-actions');
+                
+                let isAssigned = false;
+                let vanId = null;
+                let vanDriver = null;
+                
+                if (trip && trip.vanId) {
+                    isAssigned = true;
+                    vanId = trip.vanId;
+                    
+                    // Find van details
+                    if (dbData && dbData.vans) {
+                        const van = dbData.vans.find(v => v.id === trip.vanId);
+                        if (van) {
+                            vanDriver = van.driver;
+                        }
+                    }
+                }
+                
+                // Update status display with driver name only (no "Van X")
+                if (isClosed) {
+                    if (isAssigned && vanDriver) {
+                        statusEl.textContent = `${vanDriver} - مغلقة`;
+                        statusEl.className = 'trip-status assigned closed';
+                    } else {
+                        statusEl.textContent = 'مغلقة';
+                        statusEl.className = 'trip-status closed';
+                    }
+                } else {
+                    if (isAssigned && vanDriver) {
+                        statusEl.textContent = vanDriver;
+                        statusEl.className = 'trip-status assigned';
+                    } else {
+                        statusEl.textContent = 'بحاجة إلى فان';
+                        statusEl.className = 'trip-status unassigned';
+                    }
+                }
+                
+                // Add Custom badge if it's a custom trip and doesn't already exist
+                const tripTitle = tripCard.querySelector('.trip-title');
+                if (isCustomTrip && !tripTitle.querySelector('.trip-status-badge')) {
+                    const customBadge = document.createElement('span');
+                    customBadge.className = 'trip-status-badge';
+                    customBadge.style.background = 'var(--accent)';
+                    customBadge.style.marginRight = '0.5rem';
+                    customBadge.textContent = 'مخصص';
+                    tripTitle.appendChild(customBadge);
+                }
+                
+                // Rest of the function remains the same for button updates...
+                // Remove all existing buttons
+                tripActions.innerHTML = '';
+                
+                // Add assign/release van buttons
+                if (isAssigned && vanId) {
+                    const releaseBtn = document.createElement('button');
+                    releaseBtn.className = 'btn btn-danger btn-sm release-van-btn';
+                    releaseBtn.innerHTML = '<i class="fas fa-van-shuttle"></i> تحرير الفان';
+                    addEventListener(releaseBtn, 'click', createReleaseVanHandler(tripId, tripCard));
+                    tripActions.appendChild(releaseBtn);
+                } else {
+                    const assignBtn = document.createElement('button');
+                    assignBtn.className = 'btn btn-primary btn-sm assign-van-btn';
+                    assignBtn.innerHTML = '<i class="fas fa-van-shuttle"></i> تعيين فان';
+                    addEventListener(assignBtn, 'click', createAssignVanHandler(tripCard));
+                    tripActions.appendChild(assignBtn);
+                }
+                
+                // Add close/reopen trip button
+                if (isClosed) {
+                    const reopenBtn = document.createElement('button');
+                    reopenBtn.className = 'btn btn-success btn-sm reopen-trip-btn';
+                    reopenBtn.innerHTML = '<i class="fas fa-unlock"></i> إعادة فتح الرحلة';
+                    reopenBtn.dataset.tripId = tripId;
+                    addEventListener(reopenBtn, 'click', createReopenTripHandler(tripId, tripCard));
+                    tripActions.appendChild(reopenBtn);
+                } else {
+                    const closeBtn = document.createElement('button');
+                    closeBtn.className = 'btn btn-warning btn-sm close-trip-btn';
+                    closeBtn.innerHTML = '<i class="fas fa-lock"></i> إغلاق الرحلة';
+                    closeBtn.dataset.tripId = tripId;
+                    addEventListener(closeBtn, 'click', createCloseTripHandler(tripId, tripCard));
+                    tripActions.appendChild(closeBtn);
+                }
+                
+                // Add complete trip button if van is assigned and trip is not completed
+                if (isAssigned && vanId && !tripCard.querySelector('.trip-status.completed')) {
+                    const isReturnTrip = trip ? trip.isReturnTrip : 
+                        tripCard.querySelector('.trip-title').textContent.includes('عودة من');
+                    const completeBtn = document.createElement('button');
+                    completeBtn.className = 'btn btn-success btn-sm complete-trip-btn';
+                    completeBtn.innerHTML = '<i class="fas fa-check-circle"></i> إكمال الرحلة';
+                    completeBtn.dataset.tripId = tripId;
+                    completeBtn.dataset.isReturn = isReturnTrip;
+                    addEventListener(completeBtn, 'click', createCompleteTripHandler(tripId, isReturnTrip));
+                    tripActions.appendChild(completeBtn);
+                }
+                
+                // Always add show passengers button
+                const toggleBtn = document.createElement('button');
+                toggleBtn.className = 'btn btn-outline btn-sm toggle-passengers-btn';
+                toggleBtn.innerHTML = '<i class="fas fa-users"></i> عرض الركاب';
+                toggleBtn.dataset.tripId = tripId;
+                addEventListener(toggleBtn, 'click', function() {
+                    const passengerDetails = tripCard.querySelector('.passenger-details');
+                    if (passengerDetails.style.display === 'none' || !passengerDetails.style.display) {
+                        passengerDetails.style.display = 'block';
+                        this.innerHTML = '<i class="fas fa-users"></i> إخفاء الركاب';
+                    } else {
+                        passengerDetails.style.display = 'none';
+                        this.innerHTML = '<i class="fas fa-users"></i> عرض الركاب';
+                    }
+                });
+                tripActions.appendChild(toggleBtn);
+                
+                // Highlight the trip card
+                tripCard.classList.add('highlight-trip');
+                setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+                
+                // Update calendar to reflect the status change
+                renderCalendar(currentDate);
+            }
+            
+            function updatePassengerList(tripIds) {
+                // Handle both single trip ID (from passenger-added) or array (from booking-added)
+                if (!Array.isArray(tripIds)) tripIds = [tripIds];
+                
+                tripIds.forEach(tripId => {
+                    const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                    if (!tripCard) return;
+                    
+                    // Fetch updated trip data
+                    fetch(`/bookings/${tripCard.dataset.tripDate}`)
+                        .then(res => res.json())
+                        .then(trips => {
+                            const trip = trips.find(t => t.tripId == tripId);
+                            if (!trip) return;
+                            
+                            // Update passenger count
+                            const metaItem = tripCard.querySelector('.meta-item:nth-child(3)');
+                            if (metaItem) {
+                                metaItem.querySelector('span').textContent = `${trip.passengerCount} راكب`;
+                            }
+                            
+                            // ALWAYS update the passenger details HTML, regardless of visibility
+                            updatePassengerDetailsHTML(tripId, trip.passengers || []);
+                            
+                            // Highlight the trip card
+                            tripCard.classList.add('highlight-trip');
+                            setTimeout(() => tripCard.classList.remove('highlight-trip'), 1500);
+                        })
+                        .catch(err => {
+                            console.error('Failed to update passenger list:', err);
+                        });
+                });
+            }
+            
+            function updatePassengerDetailsHTML(tripId, passengers) {
+                const passengerDetails = document.getElementById(`passengerDetails-${tripId}`);
+                if (!passengerDetails) return;
+                
+                // Find or create the passenger grid
+                let passengerGrid = passengerDetails.querySelector('.passenger-grid');
+                let emptyMessage = passengerDetails.querySelector('p');
+                
+                if (passengers.length === 0) {
+                    // Remove passenger grid if it exists
+                    if (passengerGrid) {
+                        passengerGrid.remove();
+                    }
+                    
+                    // Show "No passengers" message
+                    if (!emptyMessage) {
+                        emptyMessage = document.createElement('p');
+                        emptyMessage.textContent = 'لا يوجد ركاب حاليًا';
+                        passengerDetails.appendChild(emptyMessage);
+                    }
+                } else {
+                    // Remove "No passengers" message if it exists
+                    if (emptyMessage) {
+                        emptyMessage.remove();
+                    }
+                    
+                    // Create passenger grid if it doesn't exist
+                    if (!passengerGrid) {
+                        passengerGrid = document.createElement('div');
+                        passengerGrid.className = 'passenger-grid';
+                        passengerDetails.appendChild(passengerGrid);
+                    }
+                    
+                    // Clear and rebuild the passenger grid
+                    passengerGrid.innerHTML = '';
+                    
+                    // Add all passengers (handle both string array and object array)
+                    passengers.forEach(passenger => {
+                        const passengerName = typeof passenger === 'string' ? passenger : passenger.name;
+                        const passengerEmail = typeof passenger === 'object' ? passenger.email : '';
+                        
+                        const passengerCard = document.createElement('div');
+                        passengerCard.className = 'passenger-card';
+                        passengerCard.innerHTML = `
+                            <div class="passenger-avatar">
+                                ${passengerName.charAt(0).toUpperCase()}
+                            </div>
+                            <div class="passenger-info">
+                                <div class="passenger-name">${passengerName}</div>
+                                ${passengerEmail ? `<div class="passenger-email">${passengerEmail}</div>` : ''}
+                            </div>
+                        `;
+                        passengerGrid.appendChild(passengerCard);
+                    });
+                }
+            }
+            
+            function ensureTripsAreSorted() {
+                const tripsContainer = document.querySelector('.trips-container');
+                const tripCards = Array.from(tripsContainer.querySelectorAll('.trip-card'));
+                
+                if (tripCards.length === 0) return;
+                
+                // Sort existing cards by createdAt (newest first)
+                tripCards.sort((a, b) => {
+                    const dateA = new Date(a.dataset.createdAt || '1970-01-01');
+                    const dateB = new Date(b.dataset.createdAt || '1970-01-01');
+                    return dateB - dateA;
+                });
+                
+                // Remove all cards and re-append in sorted order
+                tripCards.forEach(card => card.remove());
+                tripCards.forEach(card => tripsContainer.appendChild(card));
+            }
+            
+            function updateCustomTripCompletion(tripId, remainingTrips, projectId) {
+                console.log('Updating custom trip completion:', { tripId, remainingTrips, projectId });
+                
+                // Remove from tracking set when completion is successful
+                completionRequests.delete(tripId);
+                
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) {
+                    console.warn('Custom trip card not found for tripId:', tripId);
+                    return;
+                }
+
+                // Add fade-out animation before removing
+                tripCard.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                tripCard.style.opacity = '0';
+                tripCard.style.transform = 'translateX(100%)';
+                
+                // Remove the trip card after animation
+                setTimeout(() => {
+                    tripCard.remove();
+                    
+                    // Check if there are no more trips left and show empty state if needed
+                    const tripsContainer = document.querySelector('.trips-container');
+                    const remainingTripCards = tripsContainer.querySelectorAll('.trip-card').length;
+                    
+                    if (remainingTripCards === 0) {
+                        const emptyState = document.createElement('div');
+                        emptyState.className = 'empty-state';
+                        emptyState.innerHTML = `
+                            <div class="empty-icon">
+                                <i class="fas fa-van-shuttle"></i>
+                            </div>
+                            <h3>لا توجد رحلات مجدولة</h3>
+                            <p class="empty-text">لا توجد أي رحلات للعرض حاليًا</p>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus"></i> إنشاء رحلة جديدة
+                            </button>
+                        `;
+                        tripsContainer.appendChild(emptyState);
+                    }
+                }, 500);
+
+                // Update project stats if projectId and remainingTrips are provided
+                if (projectId !== undefined && remainingTrips !== undefined) {
+                    console.log('Updating custom trip project stats for projectId:', projectId, 'remaining trips:', remainingTrips);
+                    
+                    const projectCard = document.querySelector(`.stat-card[data-project-id="${projectId}"]`);
+                    if (projectCard) {
+                        console.log('Found project card for custom trip, updating stats');
+                        
+                        const statValue = projectCard.querySelector('.stat-value');
+                        const statChange = projectCard.querySelector('.stat-change');
+                        const statIcon = projectCard.querySelector('.stat-icon');
+                        
+                        if (statValue) {
+                            statValue.textContent = remainingTrips;
+                            console.log('Updated custom trip stat value to:', remainingTrips);
+                        }
+                        
+                        if (statChange) {
+                            const percentage = Math.floor((remainingTrips / 50) * 100);
+                            statChange.className = `stat-change ${remainingTrips < 50 ? 'negative' : 'positive'}`;
+                            statChange.innerHTML = `<i class="fas ${remainingTrips < 50 ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                                                ${percentage}% متبقي`;
+                            console.log('Updated custom trip stat change to:', percentage + '% remaining');
+                        }
+                        
+                        if (statIcon) {
+                            statIcon.className = `stat-icon ${remainingTrips <= 10 ? 'warning' : 'primary'}`;
+                        }
+                        
+                        // Add a subtle highlight effect to show the update
+                        projectCard.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
+                        setTimeout(() => {
+                            projectCard.style.backgroundColor = '';
+                        }, 1000);
+                        
+                    } else {
+                        console.warn('Project card not found for custom trip projectId:', projectId);
+                    }
+
+                    // Update complete trip buttons for remaining trips of the same project
+                    updateCompleteButtonStates(projectId, remainingTrips);
+                }
+
+                // Update calendar to reflect the changes
+                renderCalendar(currentDate);
+                
+                // Show success toast
+                showToast('الرحلة المخصصة مكتملة وتم نقلها إلى التقارير!', 'success');
+            }
+
+            function updatePassengerDetails(tripId, passengers) {
+                // This function now just calls the HTML update function
+                updatePassengerDetailsHTML(tripId, passengers);
+            }
+
+            function updateCompleteButtonStates(projectId, remainingTrips) {
+                // Find all trip cards and check if they belong to this project
+                document.querySelectorAll('.trip-card').forEach(tripCard => {
+                    // Get the project name from the trip card
+                    const projectNameElement = tripCard.querySelector('.meta-item:nth-child(4) span');
+                    if (!projectNameElement) return;
+                    
+                    const projectName = projectNameElement.textContent.trim();
+                    
+                    // Find the matching project card by comparing project names
+                    const matchingProjectCard = Array.from(document.querySelectorAll('.stat-card')).find(card => {
+                        const cardTitle = card.querySelector('.stat-title');
+                        if (!cardTitle) return false;
+                        
+                        // Extract project name from "ProjectName Trips" format
+                        const cardProjectName = cardTitle.textContent.replace(' Trips', '').trim();
+                        return cardProjectName === projectName;
+                    });
+                    
+                    // Only proceed if this trip belongs to the project being updated
+                    if (matchingProjectCard && matchingProjectCard.dataset.projectId === projectId.toString()) {
+                        const tripTitle = tripCard.querySelector('.trip-title').textContent;
+                        const isReturnTrip = tripTitle.includes('عودة من');
+                        const completeBtn = tripCard.querySelector('.complete-trip-btn');
+                        
+                        if (completeBtn && !isReturnTrip && remainingTrips <= 0) {
+                            // Disable complete button for departure trips when no trips remaining
+                            completeBtn.disabled = true;
+                            completeBtn.style.opacity = '0.5';
+                            completeBtn.style.cursor = 'not-allowed';
+                            completeBtn.title = 'لا توجد رحلات متبقية متاحة لهذا المشروع';
+                        } else if (completeBtn && !isReturnTrip && remainingTrips > 0) {
+                            // Re-enable complete button if trips become available again
+                            completeBtn.disabled = false;
+                            completeBtn.style.opacity = '1';
+                            completeBtn.style.cursor = 'pointer';
+                            completeBtn.title = '';
+                        }
+                    }
+                });
+            }
+
+            function updateTripCompletion(tripId, remainingTrips, projectId) {
+                console.log('Updating trip completion:', { tripId, remainingTrips, projectId });
+                
+                // Remove from tracking set when completion is successful
+                completionRequests.delete(tripId);
+                
+                const tripCard = document.querySelector(`.trip-card[data-trip-id="${tripId}"]`);
+                if (!tripCard) {
+                    console.warn('Trip card not found for tripId:', tripId);
+                    return;
+                }
+
+                // Add fade-out animation before removing
+                tripCard.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                tripCard.style.opacity = '0';
+                tripCard.style.transform = 'translateX(100%)';
+                
+                // Remove the trip card after animation
+                setTimeout(() => {
+                    tripCard.remove();
+                    
+                    // Check if there are no more trips left and show empty state if needed
+                    const tripsContainer = document.querySelector('.trips-container');
+                    const remainingTripCards = tripsContainer.querySelectorAll('.trip-card').length;
+                    
+                    if (remainingTripCards === 0) {
+                        const emptyState = document.createElement('div');
+                        emptyState.className = 'empty-state';
+                        emptyState.innerHTML = `
+                            <div class="empty-icon">
+                                <i class="fas fa-van-shuttle"></i>
+                            </div>
+                            <h3>لا توجد رحلات مجدولة</h3>
+                            <p class="empty-text">لا توجد أي رحلات للعرض حاليًا</p>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus"></i> إنشاء رحلة جديدة
+                            </button>
+                        `;
+                        tripsContainer.appendChild(emptyState);
+                    }
+                }, 500);
+
+                // Update the project stats using the projectId directly
+                if (projectId !== undefined && remainingTrips !== undefined) {
+                    console.log('Updating project stats for projectId:', projectId, 'remaining trips:', remainingTrips);
+                    
+                    const projectCard = document.querySelector(`.stat-card[data-project-id="${projectId}"]`);
+                    if (projectCard) {
+                        console.log('Found project card, updating stats');
+                        
+                        const statValue = projectCard.querySelector('.stat-value');
+                        const statChange = projectCard.querySelector('.stat-change');
+                        const statIcon = projectCard.querySelector('.stat-icon');
+                        
+                        if (statValue) {
+                            statValue.textContent = remainingTrips;
+                            console.log('Updated stat value to:', remainingTrips);
+                        }
+                        
+                        if (statChange) {
+                            const percentage = Math.floor((remainingTrips / 50) * 100);
+                            statChange.className = `stat-change ${remainingTrips < 50 ? 'negative' : 'positive'}`;
+                            statChange.innerHTML = `<i class="fas ${remainingTrips < 50 ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                                                ${percentage}% متبقي`;
+                            console.log('Updated stat change to:', percentage + '% remaining');
+                        }
+                        
+                        if (statIcon) {
+                            statIcon.className = `stat-icon ${remainingTrips <= 10 ? 'warning' : 'primary'}`;
+                        }
+                        
+                        // Add a subtle highlight effect to show the update
+                        projectCard.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
+                        setTimeout(() => {
+                            projectCard.style.backgroundColor = '';
+                        }, 1000);
+                        
+                    } else {
+                        console.warn('Project card not found for projectId:', projectId);
+                    }
+
+                    // Update complete trip buttons for remaining trips of the same project
+                    updateCompleteButtonStates(projectId, remainingTrips);
+                } else {
+                    console.warn('Missing projectId or remainingTrips data');
+                }
+
+                // Update calendar to reflect the changes
+                renderCalendar(currentDate);
+                
+                // Show success toast
+                showToast('الرحلة مكتملة وتم نقلها إلى التقارير!', 'success');
+            }
+
+            // Initialize SSE when the page loads
+            setupSSE();
+        });
+    </script>
+</body>
+</html>

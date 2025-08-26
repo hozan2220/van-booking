@@ -1,0 +1,3044 @@
+/* Modern Color Palette */
+:root {
+  --primary: #4361ee;
+  --primary-light: #4895ef;
+  --primary-dark: #3f37c9;
+  --secondary: #f72585;
+  --accent: #4cc9f0;
+  --dark: #212529;
+  --light: #f8f9fa;
+  --success: #4bb543;
+  --warning: #fca311;
+  --danger: #ef233c;
+  --gray: #6c757d;
+  --light-gray: #e9ecef;
+}
+ /* Logo styles */
+        .organization-logo {
+            height: 50px;
+            width: auto;
+            max-width: 200px;
+            margin-left: 20px;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .organization-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Update header navigation to accommodate logo */
+        header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .logo i {
+            font-size: 1.5rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .organization-logo {
+                height: 40px;
+                margin-left: 10px;
+            }
+            
+            .header-left {
+                gap: 10px;
+            }
+            
+            .logo span {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .organization-logo {
+                height: 35px;
+                margin-left: 5px;
+            }
+        }
+/* Base Modern Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.updated-count {
+    animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.passenger-count {
+    transition: all 0.3s ease;
+}
+#booking-modal-title{
+padding-top: 35px;
+}
+#my-bookings-modal-title{
+padding-top: 35px;
+}
+.admin-badge {
+    background: #e74c3c;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 8px;
+}
+
+.nav-link {
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+}
+/* Add these styles to your CSS file */
+
+/* Updated Custom Trips Notification for Sidebar */
+.custom-trips-notification {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.notification-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.collapse-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.collapse-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.notification-content {
+    padding: 15px 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.custom-trip-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-left: 4px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.custom-trip-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.custom-trip-item:last-child {
+    margin-bottom: 0;
+}
+/* Add this CSS to your style.css file */
+
+/* Confirmation Modal Styles */
+.confirmation-modal {
+    max-width: 500px;
+    text-align: center;
+}
+
+.confirmation-content {
+    padding: 2rem 1rem;
+}
+
+.confirmation-icon {
+    font-size: 4rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.confirmation-message {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    text-align: left;
+    border-left: 4px solid var(--primary);
+}
+
+.confirmation-message h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.confirmation-message p {
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+.confirmation-message .trip-details {
+    background: white;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+    border: 1px solid #e0e0e0;
+}
+
+.confirmation-message .trip-detail-item {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+.confirmation-message .trip-detail-item i {
+    width: 20px;
+    margin-right: 0.5rem;
+    color: var(--primary);
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.btn-cancel {
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #5a6268, #495057);
+    transform: translateY(-2px);
+}
+
+.btn-confirm {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-confirm:hover {
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    transform: translateY(-2px);
+}
+
+.btn-confirm:disabled,
+.btn-cancel:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+.custom-trip-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.custom-trip-destination {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.custom-trip-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+/* My Bookings Modal Styles */
+#myBookingsModal .modal-content {
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.my-bookings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.bookings-group {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+.bookings-group.active-group {
+    border: 2px solid #007bff;
+    background: linear-gradient(135deg, #f8f9ff, #ffffff);
+}
+
+.bookings-group.completed-group {
+    border: 2px solid #28a745;
+    background: linear-gradient(135deg, #f8fff9, #ffffff);
+    opacity: 0.9;
+}
+
+.bookings-group-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.active-group .bookings-group-header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+}
+
+.completed-group .bookings-group-header {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+}
+/* Bookings Section Styles */
+.bookings-section {
+    margin-bottom: 1.5rem;
+}
+
+.bookings-section:last-child {
+    margin-bottom: 0;
+}
+
+.bookings-section h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+
+.bookings-group-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.booking-count-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.group-subtitle {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    font-weight: 400;
+}
+
+.bookings-group-content {
+    padding: 1rem;
+}
+
+.bookings-section h3 {
+    margin-bottom: 1rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bookings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.booking-item {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.booking-item.completed {
+    opacity: 0.7;
+    background-color: #f9f9f9;
+}
+
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.booking-header h4 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.delete-booking-btn {
+    background: var(--danger-light);
+    color: var(--danger);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.delete-booking-btn:hover {
+    background: var(--danger);
+    color: white;
+}
+
+.booking-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.booking-details p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.booking-status {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--success-light);
+    color: var(--success);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+/* Completed booking styles */
+.booking-item.completed {
+    background-color: #f8f9fa;
+    border-left: 4px solid #28a745;
+    opacity: 0.8;
+}
+
+.booking-item.completed .booking-header h4 {
+    color: #28a745;
+}
+
+
+.booking-status.completed {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 0.9em;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.booking-status.completed i {
+    font-size: 1em;
+}
+
+/* Ensure delete button is completely hidden for completed trips */
+.booking-item.completed .delete-booking-btn {
+    display: none !important;
+}
+
+.booking-status.completed {
+    background: var(--gray-light);
+    color: var(--gray-dark);
+}
+
+.no-bookings {
+    text-align: center;
+    padding: 2rem;
+    color: #777;
+}
+
+.no-bookings i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #ddd;
+}
+.custom-trip-date {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.custom-trip-passengers {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.custom-enroll-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+}
+
+.custom-enroll-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.custom-enroll-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.custom-destination-group {
+    position: relative;
+}
+
+.custom-trip-indicator {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border-left: 4px solid #1976d2;
+    font-size: 0.9rem;
+}
+
+.custom-trip-indicator i {
+    margin-right: 8px;
+}
+
+/* Add these styles to your style.css file */
+.custom-trips-notification {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.custom-trips-notification.collapsed .notification-content {
+    display: none;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.notification-header h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+}
+
+.collapse-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.collapse-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.custom-trip-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(5px);
+}
+
+.custom-trip-item:last-child {
+    margin-bottom: 0;
+}
+
+.custom-trip-header {
+    margin-bottom: 1rem;
+}
+
+.custom-trip-destination {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+}
+
+.custom-trip-destination i {
+    margin-right: 0.5rem;
+    color: #ffd700;
+}
+
+.custom-trip-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.custom-trip-segment {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 1rem;
+    border-left: 4px solid #4CAF50;
+    transition: all 0.3s ease;
+}
+
+.custom-trip-segment.full-trip {
+    border-left-color: #FF9800;
+    background: rgba(255, 152, 0, 0.1);
+}
+
+.custom-trip-segment.closed-trip {
+    border-left-color: #f44336;
+    background: rgba(244, 67, 54, 0.1);
+}
+
+.custom-trip-date {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.custom-trip-date i {
+    margin-right: 0.5rem;
+    width: 16px;
+}
+
+.custom-trip-passengers {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.custom-trip-passengers i {
+    margin-right: 0.5rem;
+    width: 16px;
+}
+
+.custom-trip-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.custom-enroll-btn {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.custom-enroll-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.custom-enroll-btn.disabled {
+    background: #666;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.custom-enroll-btn.disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.trip-status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-left: 0.5rem;
+}
+
+.trip-status-badge.full {
+    background: #FF9800;
+    color: white;
+}
+
+.trip-status-badge.closed {
+    background: #f44336;
+    color: white;
+}
+
+/* Responsive design for smaller screens */
+/* Mobile-Enhanced Responsive Design */
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+  /* Header adjustments */
+  header {
+    padding: 0.75rem 1rem;
+  }
+
+  nav {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .logo {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .user-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .user-info a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .add-booking-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    order: -1; /* Move to top on mobile */
+  }
+
+  /* Dashboard container */
+  .dashboard-container {
+    margin: 1rem auto;
+    padding: 0 0.75rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  /* Custom trips notification - make it compact */
+  .custom-trips-notification {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .notification-header h4 {
+    font-size: 1rem;
+  }
+
+  .custom-trip-item {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .custom-trip-destination {
+    font-size: 1rem;
+  }
+
+  .custom-trip-details {
+    gap: 0.5rem;
+  }
+
+  .custom-enroll-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  /* Calendar full view - make it more compact */
+  .calendar-fullview {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .calendar-controls {
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .calendar-controls button {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  #currentMonth {
+    font-size: 1.1rem;
+    width: 100%;
+    text-align: center;
+    order: -1;
+  }
+
+  /* Compact calendar grid */
+  .calendar {
+    gap: 0.25rem;
+  }
+
+  .calendar-header-day {
+    padding: 0.5rem 0;
+    font-size: 0.75rem;
+  }
+
+  /* Smaller day cells for mobile */
+  .day {
+    min-height: 60px;
+    padding: 0.4rem 0.25rem;
+    font-size: 0.8rem;
+  }
+
+  .day-number {
+    font-size: 0.85rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .day-bookings {
+    max-height: 40px;
+    margin-top: 0.25rem;
+  }
+
+  .day-journey {
+    font-size: 0.6rem;
+    padding: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .journey-van {
+    font-size: 0.65rem;
+  }
+
+  .journey-project {
+    font-size: 0.6rem;
+  }
+
+  .journey-time {
+    font-size: 0.55rem;
+  }
+
+  .booking-count {
+    width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+    bottom: 0.25rem;
+    right: 0.25rem;
+  }
+
+  /* Modal adjustments for mobile */
+  .modal-content {
+    width: 95%;
+    margin: 1rem;
+    padding: 1.5rem;
+    max-height: 85vh;
+  }
+
+  /* Booking form adjustments */
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  /* Booking details modal */
+  .booking-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .booking-item h4 {
+    font-size: 1rem;
+  }
+
+  .booking-item p {
+    font-size: 0.9rem;
+  }
+
+  .passengers {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .passenger-count {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  /* Projects status - make cards smaller */
+  .project-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .project-card {
+    padding: 1.25rem;
+  }
+
+  .project-card h3 {
+    font-size: 1.1rem;
+  }
+
+  /* My Bookings Modal - mobile optimized */
+  .bookings-group-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .bookings-group-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .bookings-group-content {
+    padding: 0.75rem;
+  }
+
+  .booking-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .delete-booking-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  /* Toast notifications */
+  .toast {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+    font-size: 0.9rem;
+  }
+
+  /* Confirmation modal */
+  .confirmation-modal {
+    max-width: none;
+  }
+
+  .confirmation-content {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .confirmation-icon {
+    font-size: 3rem;
+  }
+
+  .confirmation-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn-cancel,
+  .btn-confirm {
+    width: 100%;
+  }
+}
+/* Extra small mobile screens */
+@media (max-width: 480px) {
+  /* Even more compact calendar with fixed structure */
+  .calendar {
+    gap: 0.1rem;
+  }
+
+  .calendar-header-day {
+    padding: 0.3rem 0.1rem;
+    font-size: 0.65rem;
+  }
+
+  .day {
+    min-height: 45px;
+    max-height: 45px;
+    padding: 0.15rem;
+  }
+
+  .day-number {
+    font-size: 0.75rem;
+    margin-bottom: 0.05rem;
+  }
+
+  .day-bookings {
+    max-height: 25px;
+  }
+
+  .day-journey {
+    font-size: 0.5rem;
+    padding: 0.1rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .journey-van {
+    font-size: 0.55rem;
+  }
+
+  .journey-project {
+    font-size: 0.45rem;
+  }
+
+  .booking-count {
+    width: 14px;
+    height: 14px;
+    font-size: 0.55rem;
+    bottom: 0.1rem;
+    right: 0.1rem;
+  }
+
+  /* Header even more compact */
+  .logo {
+    font-size: 1.1rem;
+  }
+
+  .user-info a {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  /* Modal full screen on very small devices */
+  .modal-content {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
+    max-height: 100vh;
+  }
+
+  /* Form inputs smaller */
+  .form-group input,
+  .form-group select {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  /* Calendar container scrollable if needed */
+  .calendar-fullview {
+    overflow-x: auto;
+  }
+}
+
+/* Landscape orientation optimizations for tablets */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .dashboard-grid {
+    grid-template-columns: 300px 1fr;
+  }
+
+  .day {
+    min-height: 70px;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .calendar-controls button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .day {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .day:active {
+    background-color: rgba(67, 97, 238, 0.1);
+  }
+
+  .custom-enroll-btn {
+    min-height: 44px;
+    padding: 0.6rem 1rem;
+  }
+
+  /* Better button spacing */
+  .user-info a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Larger close buttons */
+  .close {
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem;
+  }
+}
+
+/* Landscape orientation optimizations for tablets */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .dashboard-grid {
+    grid-template-columns: 300px 1fr;
+  }
+
+  .day {
+    min-height: 70px;
+  }
+}
+@media (max-width: 1024px) and (orientation: landscape) {
+  .dashboard-grid {
+    grid-template-columns: 300px 1fr;
+  }
+
+  .day {
+    min-height: 70px;
+  }
+}
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .calendar-controls button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .day {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .day:active {
+    background-color: rgba(67, 97, 238, 0.1);
+  }
+
+  .custom-enroll-btn {
+    min-height: 44px;
+    padding: 0.6rem 1rem;
+  }
+
+  /* Better button spacing */
+  .user-info a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Larger close buttons */
+  .close {
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem;
+  }
+}
+
+/* Accessibility improvements for mobile */
+@media (max-width: 768px) {
+   .form-group input:focus,
+  .form-group select:focus {
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+  }
+
+  /* Improved contrast for small text */
+  .journey-time {
+    color: #555;
+  }
+
+  .day-journey {
+    border-radius: 6px;
+  }
+
+  /* Better visual hierarchy */
+  .custom-trip-destination {
+    font-weight: 700;
+  }
+
+  .booking-item h4 {
+    font-weight: 600;
+  }
+}@media (max-width: 768px) {
+  /* Better focus indicators */
+  .form-group input:focus,
+  .form-group select:focus {
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+  }
+
+  /* Improved contrast for small text */
+  .journey-time {
+    color: #555;
+  }
+
+  .day-journey {
+    border-radius: 6px;
+  }
+
+  /* Better visual hierarchy */
+  .custom-trip-destination {
+    font-weight: 700;
+  }
+
+  .booking-item h4 {
+    font-weight: 600;
+  }
+}
+/* Animation for notification appearance */
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Collapsed state */
+.custom-trips-notification.collapsed .notification-content {
+    display: none;
+}
+
+.custom-trips-notification.collapsed .collapse-btn i {
+    transform: rotate(180deg);
+}
+
+/* Custom trip badge for calendar */
+.custom-trip-badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 5px;
+}
+
+.day-journey.custom-trip {
+    border-left: 3px solid #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+}
+
+body {
+  background-color: #f5f7ff;
+  color: var(--dark);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Fixed disabled project options styling */
+#project option:disabled {
+    color: #999;
+    background-color: #f5f5f5;
+    font-style: italic;
+    display: list-item;
+    position: relative;
+    padding-left: 25px;
+}
+
+#project option:disabled::before {
+    content: "✖";
+    position: absolute;
+    left: 5px;
+    color: var(--danger);
+}
+
+/* Alternative styling for better browser compatibility */
+#project option[disabled] {
+    color: #999;
+    background-color: #f5f5f5;
+    text-decoration: line-through;
+}
+
+/* Trip Status Update Styles */
+.booking-item.closed {
+    opacity: 0.8;
+    background-color: rgba(239, 35, 60, 0.05);
+    border-left: 4px solid var(--danger) !important;
+    position: relative;
+}
+
+.booking-item.closed::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(239, 35, 60, 0.05) 10px,
+        rgba(239, 35, 60, 0.05) 20px
+    );
+    pointer-events: none;
+}
+
+.trip-status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    background-color: var(--success);
+    color: white;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.booking-item.completed .trip-status-badge {
+    background-color: var(--gray);
+}
+
+.booking-item.closed .trip-status-badge {
+    background-color: var(--danger);
+}
+
+/* Trip closed message styling */
+.trip-closed-message {
+    color: var(--danger);
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    animation: fadeIn 0.3s ease-out;
+    padding: 0.5rem;
+    background-color: rgba(239, 35, 60, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(239, 35, 60, 0.2);
+}
+
+/* Enhanced day journey styles for closed trips */
+.day-journey.closed-trip {
+    opacity: 0.6;
+    border-left-color: var(--danger) !important;
+    background-color: rgba(239, 35, 60, 0.05);
+}
+
+.day-journey.closed-trip .journey-van {
+    color: var(--danger) !important;
+}
+
+.day-journey.closed-trip::after {
+    content: '🔒';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 0.6rem;
+}
+
+/* Animation for status changes */
+@keyframes statusChange {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.booking-item.status-changed {
+    animation: statusChange 0.5s ease-out;
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Modern Header */
+header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo i {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-info a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1.25rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.user-info a:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Modern Container */
+.container {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+/* Glassmorphism Card Style */
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Modern Form Styles */
+.form-group {
+  margin-bottom: 1.75rem;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--dark);
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  border: 2px solid var(--light-gray);
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--primary-light);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+}
+
+input:disabled,
+select:disabled {
+  background-color: var(--light-gray);
+  cursor: not-allowed;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+/* Floating Labels Animation */
+.floating-label-group {
+  position: relative;
+  margin-bottom: 1.75rem;
+}
+
+.floating-label {
+  position: absolute;
+  top: 0.85rem;
+  left: 1.25rem;
+  font-size: 1rem;
+  color: var(--gray);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  background: white;
+  padding: 0 0.25rem;
+}
+
+.floating-input:focus + .floating-label,
+.floating-input:not(:placeholder-shown) + .floating-label {
+  top: -0.6rem;
+  left: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--primary);
+}
+
+/* Time Warnings */
+.time-warning {
+  display: none;
+  background-color: rgba(72, 149, 239, 0.1);
+  border-left: 4px solid var(--primary-light);
+  padding: 1rem;
+  border-radius: 12px;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  animation: fadeIn 0.3s ease-out;
+}
+
+#returnTimeWarning {
+  background-color: rgba(247, 37, 133, 0.1);
+  border-left-color: var(--secondary);
+}
+
+.time-warning i {
+  color: var(--primary-light);
+  font-size: 1.2rem;
+  margin-right: 0.75rem;
+}
+
+#returnTimeWarning i {
+  color: var(--secondary);
+}
+
+/* Modern Button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(67, 97, 238, 0.2);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn i {
+  font-size: 1.1rem;
+}
+
+/* Modern Calendar */
+.calendar-container {
+  position: relative;
+}
+
+.calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.calendar-controls button {
+  background: var(--light);
+  border: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+.calendar-controls button:hover {
+  background: var(--primary-light);
+  color: white;
+}
+
+#currentMonth {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.75rem;
+}
+
+.calendar-header-day {
+  text-align: center;
+  font-weight: 600;
+  padding: 0.75rem 0;
+  color: var(--primary-dark);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.day {
+  padding: 0.75rem;
+  min-height: 100px;
+  border-radius: 12px;
+  position: relative;
+  transition: all 0.3s ease;
+  background-color: white;
+  border: 1px solid var(--light-gray);
+}
+
+.day:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transform: scale(1.02);
+}
+
+.day-number {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--dark);
+}
+
+.other-month {
+  background-color: var(--light);
+  color: var(--gray);
+  opacity: 0.6;
+}
+
+.has-bookings {
+  background-color: rgba(67, 97, 238, 0.05);
+  border: 1px solid rgba(67, 97, 238, 0.2);
+  cursor: pointer;
+}
+
+.day-bookings {
+  margin-top: 0.5rem;
+  max-height: 70px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* Custom Scrollbar */
+.day-bookings::-webkit-scrollbar {
+  width: 4px;
+}
+
+.day-bookings::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.day-bookings::-webkit-scrollbar-thumb {
+  background: rgba(67, 97, 238, 0.3);
+  border-radius: 10px;
+}
+
+.day-journey {
+  font-size: 0.7rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.departure-trip {
+  background-color: rgba(67, 97, 238, 0.1);
+  border-left: 3px solid var(--primary);
+}
+
+.return-trip {
+  background-color: rgba(247, 37, 133, 0.1);
+  border-left: 3px solid var(--secondary);
+}
+
+.completed-trip {
+  opacity: 0.7;
+  border-left-color: var(--gray) !important;
+}
+
+.journey-van {
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.departure-trip .journey-van {
+  color: var(--primary-dark);
+}
+
+.return-trip .journey-van {
+  color: var(--secondary);
+}
+
+.journey-project {
+  font-weight: 500;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.journey-time {
+  color: var(--gray);
+  font-size: 0.65rem;
+  font-style: italic;
+}
+
+.booking-count {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+/* Projects Status */
+.projects-status {
+  margin-top: 2rem;
+}
+
+.project-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.project-card {
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.project-card.warning {
+  border-left: 4px solid var(--warning);
+  background: linear-gradient(to right, rgba(252, 163, 17, 0.05), white);
+}
+
+.project-card.disabled {
+  border-left: 4px solid var(--danger);
+  background: linear-gradient(to right, rgba(239, 35, 60, 0.05), white);
+  opacity: 0.9;
+}
+
+.project-card h3 {
+  margin-bottom: 1rem;
+  color: var(--dark);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.project-card h3 i {
+  color: var(--primary);
+}
+
+.project-card.warning h3 i {
+  color: var(--warning);
+}
+
+.project-card.disabled h3 i {
+  color: var(--danger);
+}
+
+.journey-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.journey-count .count {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.project-card .count {
+  color: var(--primary);
+}
+
+.project-card.warning .count {
+  color: var(--warning);
+}
+
+.project-card.disabled .count {
+  color: var(--danger);
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 6px;
+  background-color: var(--light-gray);
+  border-radius: 3px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  transition: width 0.5s ease;
+}
+
+.project-card.warning .progress {
+  background: linear-gradient(135deg, var(--warning), #e6950f);
+}
+
+.project-card.disabled .progress {
+  background: linear-gradient(135deg, var(--danger), #d91e37);
+}
+
+/* Modern Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 700px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.4s ease-out;
+}
+
+.close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 1.75rem;
+  cursor: pointer;
+  color: var(--gray);
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.close:hover {
+  color: var(--danger);
+  background-color: rgba(239, 35, 60, 0.1);
+}
+
+#modalDate {
+  margin-bottom: 1.5rem;
+  color: var(--primary-dark);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.booking-item {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.booking-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.booking-item.departure {
+  border-left: 4px solid var(--primary);
+}
+
+.booking-item.return {
+  border-left: 4px solid var(--secondary);
+}
+
+.booking-item.completed {
+  opacity: 0.8;
+  background-color: rgba(108, 117, 125, 0.05);
+}
+
+.booking-item h4 {
+  margin-bottom: 0.75rem;
+  color: var(--dark);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.booking-item p {
+  margin-bottom: 0.75rem;
+  color: var(--gray);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.passengers {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.passenger-count {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.departure .passenger-count {
+  background-color: var(--primary);
+  color: white;
+}
+
+.return .passenger-count {
+  background-color: var(--secondary);
+  color: white;
+}
+
+.passenger-count:last-child {
+  background-color: rgba(76, 201, 240, 0.1);
+  color: var(--accent);
+  border-left: 3px solid var(--accent);
+}
+
+.booking-item ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.booking-item li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--light-gray);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.booking-item li:last-child {
+  border-bottom: none;
+}
+
+.booking-item li:before {
+  content: "•";
+  color: var(--primary);
+  font-size: 1.5rem;
+  line-height: 0;
+}
+
+.return li:before {
+  color: var(--secondary);
+}
+
+/* Trip Status Badges */
+.trip-status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  background-color: var(--success);
+  color: white;
+}
+
+.completed .trip-status-badge {
+  background-color: var(--gray);
+}
+
+/* Complete Trip Button */
+.complete-trip-btn {
+  background: linear-gradient(135deg, var(--success), #3da735);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.complete-trip-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Enroll Button Styles */
+.enroll-btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.enroll-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.enroll-btn:disabled {
+  background: var(--gray) !important;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* Trip Full Message */
+.trip-full-message {
+  color: var(--danger);
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Dashboard Grid Layout */
+.dashboard-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 2rem;
+    align-items: start;
+    transition: grid-template-columns 0.3s ease;
+}
+
+/* When no custom trips, make calendar full width */
+.dashboard-grid.no-custom-trips {
+    grid-template-columns: 1fr;
+}
+
+.dashboard-grid.no-custom-trips .dashboard-sidebar {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .dashboard-sidebar {
+        position: static;
+        max-height: none;
+    }
+    
+    .custom-trips-notification {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Mobile Navigation and Container fixes */
+@media (max-width: 768px) {
+  /* Prevent horizontal scrolling */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Header adjustments */
+  header {
+    padding: 0.75rem 1rem;
+  }
+
+  nav {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .user-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .add-booking-btn {
+    grid-column: 1 / -1;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    order: -1;
+  }
+
+  .user-info a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .user-dropdown {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+
+  .user-email {
+    font-size: 0.85rem;
+  }
+
+  /* Dashboard container - prevent overflow */
+  .dashboard-container {
+    margin: 0.75rem auto;
+    padding: 0 0.75rem;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  /* Custom trips notification - make it compact */
+  .custom-trips-notification {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .notification-header h4 {
+    font-size: 0.95rem;
+  }
+
+ 
+
+  .custom-trip-item {
+    padding: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .custom-trip-destination {
+    font-size: 0.95rem;
+  }
+
+  .custom-trip-details {
+    gap: 0.4rem;
+  }
+
+  .custom-enroll-btn {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.8rem;
+  }
+
+  /* Calendar full view - make it more compact and structured */
+  .calendar-fullview {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .calendar-controls {
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+  }
+
+  .calendar-controls button {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  #currentMonth {
+    font-size: 1rem;
+    text-align: center;
+    flex: 1;
+    margin: 0 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+/* Calendar Structure Fixes for Mobile */
+@media (max-width: 768px) {
+  /* Base calendar grid - force 7 columns always */
+  .calendar {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 0.15rem;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  /* Ensure all calendar items follow grid */
+  .calendar > * {
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  /* Header days - always 7 items */
+  .calendar-header-day {
+    grid-column: span 1;
+    padding: 0.4rem 0.1rem;
+    font-size: 0.65rem;
+    text-align: center;
+    font-weight: 600;
+    color: var(--primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: rgba(67, 97, 238, 0.05);
+    border-radius: 4px 4px 0 0;
+  }
+
+  /* Day cells - force structure */
+  .day {
+    grid-column: span 1;
+    min-height: 50px !important;
+    max-height: 50px !important;
+    padding: 0.2rem !important;
+    font-size: 0.75rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    position: relative;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+
+  /* Fix day content layout */
+  .day-number {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 0 0 0.1rem 0;
+    line-height: 1;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .day-bookings {
+    flex: 1;
+    max-height: 28px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Booking entries - ultra compact */
+  .day-journey {
+    font-size: 0.5rem;
+    padding: 0.1rem;
+    margin: 0 0 0.1rem 0;
+    line-height: 1.1;
+    border-radius: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .journey-van {
+    font-size: 0.55rem;
+    font-weight: 600;
+    display: block;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .journey-project {
+    font-size: 0.45rem;
+    display: block;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.8;
+  }
+
+  /* Hide time completely on mobile */
+  .journey-time {
+    display: none !important;
+  }
+
+  /* Position booking count absolutely */
+  .booking-count {
+    position: absolute;
+    bottom: 0.1rem;
+    right: 0.1rem;
+    width: 14px;
+    height: 14px;
+    font-size: 0.55rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  /* Other month styling */
+  .other-month {
+    opacity: 0.4;
+    background-color: #f8f8f8;
+  }
+
+  /* Has bookings styling */
+  .has-bookings {
+    background-color: rgba(67, 97, 238, 0.03);
+    border: 1px solid rgba(67, 97, 238, 0.15);
+  }
+
+  /* Trip type borders - make them thinner */
+  .departure-trip {
+    border-left: 2px solid var(--primary);
+  }
+
+  .return-trip {
+    border-left: 2px solid var(--secondary);
+  }
+
+  .completed-trip {
+    opacity: 0.6;
+    border-left: 2px solid var(--gray);
+  }
+}
+
+  .day-number {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .day-bookings {
+    max-height: 35px;
+    margin-top: 0.1rem;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .day-journey {
+    font-size: 0.55rem;
+    padding: 0.15rem;
+    margin-bottom: 0.15rem;
+    line-height: 1.1;
+    border-radius: 3px;
+  }
+
+  .journey-van {
+    font-size: 0.6rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.05rem;
+  }
+
+  .journey-project {
+    font-size: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+
+  .journey-time {
+    font-size: 0.5rem;
+    display: none; /* Hide time on mobile to save space */
+  }
+
+  .booking-count {
+    width: 16px;
+    height: 16px;
+    font-size: 0.6rem;
+    bottom: 0.15rem;
+    right: 0.15rem;
+    position: absolute;
+  }
+
+  /* Modal adjustments for mobile */
+  .modal-content {
+    width: 95%;
+    margin: 1rem;
+    padding: 1.5rem;
+    max-height: 85vh;
+  }
+
+  /* Booking form adjustments */
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  /* Booking details modal */
+  .booking-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .booking-item h4 {
+    font-size: 1rem;
+  }
+
+  .booking-item p {
+    font-size: 0.9rem;
+  }
+
+  .passengers {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .passenger-count {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  /* Projects status - make cards smaller */
+  .project-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .project-card {
+    padding: 1.25rem;
+  }
+
+  .project-card h3 {
+    font-size: 1.1rem;
+  }
+
+  /* My Bookings Modal - mobile optimized */
+  .bookings-group-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .bookings-group-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .bookings-group-content {
+    padding: 0.75rem;
+  }
+
+  .booking-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .delete-booking-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  /* Toast notifications */
+  .toast {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+    font-size: 0.9rem;
+  }
+
+  /* Confirmation modal */
+  .confirmation-modal {
+    max-width: none;
+  }
+
+  .confirmation-content {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .confirmation-icon {
+    font-size: 3rem;
+  }
+
+  .confirmation-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn-cancel,
+  .btn-confirm {
+    width: 100%;
+  }
+}
+
+
+.dashboard-sidebar {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+}
+
+.dashboard-main {
+    min-height: 600px;
+}
+
+.calendar-fullview {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Add Booking Button */
+.add-booking-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    background: linear-gradient(135deg, var(--success), #3da735);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(67, 97, 238, 0.2);
+}
+.user-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 8px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    z-index: 1;
+    border-radius: 4px;
+    padding: 8px 0;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dropdown-content a:hover {
+    background-color: #f5f5f5;
+}
+
+.user-dropdown:hover .dropdown-content {
+    display: block;
+}
+/* Login Page Styles */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    padding: 20px;
+}
+
+.login-card {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-card .logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-card .logo i {
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+.login-card .logo h2 {
+    margin-top: 10px;
+    color: #333;
+}
+
+.login-card .form-group {
+    margin-bottom: 20px;
+}
+
+.login-card .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.login-card .form-group input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.login-card .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+}
+/* Confirmation Modal Styles */
+#confirmEnrollModal .modal-content {
+    padding: 2rem;
+}
+
+#confirmEnrollModal h3 {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#confirmEnrollModal .btn-secondary {
+    background: #f0f0f0;
+    color: #333;
+}
+
+#confirmEnrollModal .btn-secondary:hover {
+    background: #e0e0e0;
+}
+
+.alert {
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+/* Add these styles to your existing CSS */
+.signup-link, .login-link {
+    margin-top: 1rem;
+    text-align: center;
+    color: #666;
+}
+
+.signup-link a, .login-link a {
+    color: #4361ee;
+    text-decoration: none;
+}
+
+.signup-link a:hover, .login-link a:hover {
+    text-decoration: underline;
+}
+
+.hint {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.2rem;
+}
+
+.alert.error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.add-booking-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+    background: linear-gradient(135deg, #3da735, var(--success));
+}
+
+/* Modal Backdrop Effect */
+.modal.active ~ .dashboard-container {
+    filter: blur(5px);
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 0 1rem;
+    }
+    
+    .calendar-fullview {
+        padding: 1rem;
+    }
+    
+    .user-info {
+        gap: 0.75rem;
+    }
+    
+    .add-booking-btn {
+        padding: 0.65rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-20px); }
+}
+
+/* Modern Toast Notifications */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease-out;
+  z-index: 1100;
+  max-width: 350px;
+}
+
+.toast.success {
+  background: linear-gradient(135deg, var(--success), #3da735);
+}
+
+.toast.error {
+  background: linear-gradient(135deg, var(--danger), #d91e37);
+}
+
+.toast.warning {
+  background: linear-gradient(135deg, var(--warning), #e6950f);
+}
+
+.toast i {
+  font-size: 1.5rem;
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(67, 97, 238, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s ease-in-out infinite;
+  margin: 2rem auto;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Updated Count Animation */
+.updated-count {
+  animation: pulse 0.5s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .calendar {
+    gap: 0.5rem;
+  }
+
+  .day {
+    min-height: 80px;
+    padding: 0.5rem;
+  }
+
+  .project-cards {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    padding: 1rem 1.5rem;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .user-info a {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .booking-item {
+    padding: 1rem;
+  }
+
+  .passengers {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+}
