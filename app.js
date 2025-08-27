@@ -979,13 +979,13 @@ app.post('/book-custom', checkBookingTime ,async (req, res) => {
             }
         }
 
-        let message = `Successfully booked custom trip to ${destination}! `;
+     let message = `تم فتح رحلة مخصصة الى ${destination}! `;
         if (!departureResult.isNew && !returnResult.isNew) {
-            message += 'Added to existing trips.';
+            message += 'واضافتها الى الرحلات الموجودة مسبقاً.';
         } else if (!departureResult.isNew || !returnResult.isNew) {
-            message += 'Added to existing trip and created new trip.';
+            message += 'والانضمام لها بنجاح.';
         } else {
-            message += 'New custom trips created.';
+            message += ' ';
         }
 
         res.json({
