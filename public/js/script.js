@@ -103,7 +103,7 @@ function validateDateNotInPast(dateInput, dateType) {
     
     if (selectedDate && selectedDate < today) {
         dateInput.value = '';
-        showToast(`${dateType} date cannot be in the past`, 'error');
+        showToast(`${dateType} تاريخ العودة لا يمكن ان يكون في الماضي`, 'error');
         return false;
     }
     return true;
@@ -1169,7 +1169,6 @@ function handleSSEUpdate(data) {
                 }
             }
             
-            showToast(`🎉 Trip completed successfully! Project has ${data.remainingTrips} trips remaining.`, 'success');
             break;
 
         case 'van-assigned':
@@ -1226,7 +1225,7 @@ function handleSSEUpdate(data) {
 
         case 'custom-trip-created':
             loadCustomTrips();
-            showToast('Custom trip created successfully!', 'success');
+            showToast('تم فتح رحلة مخصصة بنجاح والحجز فيها', 'success');
             break;
             
         case 'custom-passenger-added':
