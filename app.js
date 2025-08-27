@@ -243,6 +243,7 @@ app.use(requireAuth);
 // 1. Fix the requireAuth middleware order and logic
 
 // Add this helper function near the top of your app.js file (after the imports)
+// Add this helper function near the top of your app.js file (after the imports)
 function isBookingAllowed() {
     const now = new Date();
     const currentHour = now.getHours();
@@ -250,17 +251,19 @@ function isBookingAllowed() {
     
     // Convert current time to minutes since midnight for easier comparison
     const currentTimeInMinutes = currentHour * 60 + currentMinute;
+    const startTimeInMinutes = 8 * 60; // 8:00 AM in minutes
     const cutoffTimeInMinutes = 15 * 60; // 3:00 PM in minutes (15:00)
     
-    return currentTimeInMinutes < cutoffTimeInMinutes;
+    // Allow bookings between 8 AM and 3 PM
+    return currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < cutoffTimeInMinutes;
 }
 
 // Add this middleware function after the isBookingAllowed function
 const checkBookingTime = (req, res, next) => {
     if (!isBookingAllowed()) {
         return res.status(403).json({ 
-            error: 'Booking is not allowed after 3:00 PM. Please try again tomorrow before 3:00 PM.',
-            cutoffTime: '15:00'
+            error: 'عذراًُ، يمكنك القيام بالحجوزات فقط من الساعة الثامنة صباحاً حتى الساعة الثالثة مساءاً.',
+            allowedTime: '08:00 - 15:00'
         });
     }
     next();
