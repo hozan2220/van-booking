@@ -253,6 +253,8 @@ function isBookingAllowed() {
     const currentTimeInMinutes = currentHour * 60 + currentMinute;
     const startTimeInMinutes = 6 * 60; // 8:00 AM in minutes
     const cutoffTimeInMinutes = 15 * 60; // 3:00 PM in minutes (15:00)
+        console.log(`Current time in minutes: ${currentTimeInMinutes}`);
+
     
     // Allow bookings between 8 AM and 3 PM
     return currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < cutoffTimeInMinutes;
