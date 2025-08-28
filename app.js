@@ -16,8 +16,9 @@ const eventEmitter = new events.EventEmitter();
 
 const ADMIN_USERS = [
     'hozan.fattah@drd-me.org',
-    'manager@drd-me.org',
-    'organizer@drd-me.org'
+    'ahmed.hussein@drd-me.org',
+    'bashar.al-ali@drd-me.org',
+    'mohammad.ahmad@drd-me.org',
     // Add more admin emails as needed
 ];
 const requireAdmin = async (req, res, next) => {
