@@ -252,8 +252,8 @@ function isBookingAllowed() {
     
     // Convert current time to minutes since midnight for easier comparison
     const currentTimeInMinutes = currentHour * 60 + currentMinute;
-    const startTimeInMinutes = 6 * 60; // 8:00 AM in minutes
-    const cutoffTimeInMinutes = 15 * 60; // 3:00 PM in minutes (15:00)
+    const startTimeInMinutes = 13 * 60; // 8:00 AM in minutes
+    const cutoffTimeInMinutes = 14 * 60; // 3:00 PM in minutes (15:00)
         console.log(`Current time in minutes: ${currentTimeInMinutes}`);
 
     
